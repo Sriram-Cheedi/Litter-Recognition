@@ -1,7 +1,7 @@
 # Autonomous Litter Recognition System
 
 ## Contents
-- [Autonomus Litter Recognition System]
+- [Autonomus Litter Recognition System](https://github.com/spe-uob/2024-LitterRecognition1/blob/main/README.md#autonomous-litter-recognition-system)
 
 
 
