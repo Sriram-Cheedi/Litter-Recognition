@@ -21,3 +21,15 @@ An autonomous system that can identify roadside litter, determine how to dispose
 
 ## User Stories
 * As a member of the public, I want a safe and contained system so that it doesn't impede on my use of the road.
+
+
+
+
+## Group Members
+|     Member     |         Email         |
+| -------------- | --------------------- |
+|  Ryan Venn     | oc23252@bristol.ac.uk |
+|  Sriram Cheedi | dz23405@bristol.ac.uk |
+|  Hanzhong Qiu  | dw22963@bristol.ac.uk |
+|  Jude Beaton   | ww23682@bristol.ac.uk |
+|  Jack Cains    | ep23722@bristol.ac.uk |
