@@ -1,7 +1,11 @@
 # Autonomous Litter Recognition System
 
-## Contents
+## Contents:
 - [Autonomus Litter Recognition System](https://github.com/spe-uob/2024-LitterRecognition1/blob/main/README.md#autonomous-litter-recognition-system)
+  *[Project Description](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#project-description)
+  *[Stakeholders](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#stakeholders)
+  *[User Stories](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#user-stories)
+  *[Group Members](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#group-members)
 
 
 
@@ -12,14 +16,14 @@ An autonomous system that can identify roadside litter, determine how to dispose
 
 
 
-## Stakeholders
+## Stakeholders:
 * Moss&Gund Ltd - The group that would deploy the autonomous system as a commercial solution.
 * The General Public - The system would roam the roadside used by the general public.
 
 
 
 
-## User Stories
+## User Stories:
 - As a **client**, I want a system that can identify a wide variety of roadside litter and can identify how to deal with it.
 - As a **member of the public**, I want a safe and contained system so that it doesn't impede on my use of the road.
 
