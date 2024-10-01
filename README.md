@@ -1,4 +1,10 @@
-# Litter Recognition SEP group
+# Autonomous Litter Recognition System
+
+## Contents
+- [Autonomus Litter Recognition System]
+
+
+
 
 ## Project Description:
 An autonomous system that can identify roadside litter, determine how to dispose of it effectively, and place it into a container. 
