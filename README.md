@@ -20,7 +20,8 @@ An autonomous system that can identify roadside litter, determine how to dispose
 
 
 ## User Stories
-* As a member of the public, I want a safe and contained system so that it doesn't impede on my use of the road.
+- As a **client**, I want a system that can identify a wide variety of roadside litter and can identify how to deal with it.
+- As a **member of the public**, I want a safe and contained system so that it doesn't impede on my use of the road.
 
 
 
