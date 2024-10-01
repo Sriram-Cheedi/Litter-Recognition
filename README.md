@@ -16,6 +16,17 @@ An autonomous system that can identify roadside litter, determine how to dispose
 
 
 
+## Project Requirements
+### Our system needs to be able to:
+- Detect the presence of man made items in the verge and roadside - on the ground and in 
+the trees and shrubs.
+- Differentiate between different sizes and categories of litter.
+- Determine methods of effective collection of the litter depending on size and category.
+- Place the collected litter into a container for storage. (Could be cut after client meeting)
+
+
+
+
 ## Stakeholders:
 * Moss&Gund Ltd - The group that would deploy the autonomous system as a commercial solution.
 * The General Public - The system would roam the roadside used by the general public.
