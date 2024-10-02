@@ -47,7 +47,8 @@ the trees and shrubs.
   
 ## Links:
 
-- Kanban Board (https://github.com/orgs/spe-uob/projects/219)
+- [Kanban Board](https://github.com/orgs/spe-uob/projects/219)
+- [Gantt Chart](https://github.com/orgs/spe-uob/projects/219/views/2)
 
 
 
