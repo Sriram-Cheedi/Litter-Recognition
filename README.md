@@ -12,7 +12,9 @@
 
 
 ## Project Description:
-An autonomous system that can identify roadside litter, determine how to dispose of it effectively, and place it into a container. 
+An autonomous system that can identify roadside litter, determine how to dispose of it effectively, and place it into a container.
+The project aims to address the growing problem of roadside litter on major roads, which poses a significant threat to the environment, watercourses, and traffic safety. The rise of non-biodegradable packaging, increased vehicle littering, and frequent breakdowns of vehicle parts like plastic and tyres have made roadside litter a growing problem.
+This project proposes developing an autonomous system capable of detecting, categorizing, and collecting litter from the verges and roadside areas, including grassy patches, shrubs, and trees. The system is envisioned to work on an autonomous vehicle that can navigate these areas and effectively collect and store the litter.
 
 
 
@@ -31,6 +33,7 @@ the trees and shrubs.
 ## Stakeholders:
 * Moss&Gund Ltd - The group that would deploy the autonomous system as a commercial solution.
 * The General Public - The system would roam the roadside used by the general public.
+* Government and Environmental Agencies - Responsible for maintaining roads and addressing environmental concerns related to roadside litter.
 
 
 
@@ -38,6 +41,8 @@ the trees and shrubs.
 ## User Stories:
 - As a **client**, I want a system that can identify a wide variety of roadside litter and can identify how to deal with it.
 - As a **member of the public**, I want a safe and contained system so that it doesn't impede on my use of the road.
+- As an **environmental protection officer**, I want a system that can efficiently detect and collect non-biodegradable litter so that I can ensure cleaner 
+  environments and minimize the impact of pollution on wildlife and ecosystems.
 
 
 
