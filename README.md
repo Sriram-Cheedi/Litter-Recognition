@@ -63,14 +63,14 @@ the trees and shrubs.
 ## Tech Stack
 ### Hardware 
  - Sensors:
-   -- Cameras 
+    -Cameras 
  - Actuators:
-   -- Robotic Arms
+    - Robotic Arms
 ### Software 
  - Operating System
  - Python
  - Computer Vision
-     -- YOLO
+     - YOLO
  - Machine Learning
  - Robotics
  - Control Systems
