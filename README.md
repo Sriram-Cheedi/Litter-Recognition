@@ -63,7 +63,7 @@ the trees and shrubs.
 ## Tech Stack
 ### Hardware 
  - Sensors:
-    -Cameras 
+    - Cameras 
  - Actuators:
     - Robotic Arms
 ### Software 
