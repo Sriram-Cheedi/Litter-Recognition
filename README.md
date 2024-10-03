@@ -6,6 +6,8 @@
    - [Project Requirements](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#project-requirements)
    - [Stakeholders](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#stakeholders)
    - [User Stories](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#user-stories)
+   - [Links](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#links)
+   - [Tech Stack](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#tech-stack)
    - [Group Members](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#group-members)
 
 
@@ -49,7 +51,7 @@ the trees and shrubs.
 - As a **member of the public**, I want a safe and contained system so that it doesn't impede on my use of the road.
 - As an **environmental protection officer**, I want a system that can efficiently detect and collect non-biodegradable litter so that I can ensure cleaner 
   environments and minimize the impact of pollution on wildlife and ecosystems.
-- As a **raod maintenance worker**, I want and autonomous system to detect and collect litter on the roadside, so that I can reduce the time and risk associated
+- As a **road maintenance worker**, I want and autonomous system to detect and collect litter on the roadside, so that I can reduce the time and risk associated
   with manual litter collection.
 - As a **student**,I want to develop a proof of concept for an autonomous litter detection and disposal system, so that I can apply my knowledge in computer
   vision and robotics to a meaningful project.
