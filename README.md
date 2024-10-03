@@ -65,9 +65,11 @@ the trees and shrubs.
 ## Tech Stack
 ### Hardware 
  - Sensors:
-    - Cameras 
+    - Cameras
+    - LIDAR
  - Actuators:
     - Robotic Arms
+    - Wheel
 ### Software 
  - Operating System
  - Python
@@ -76,6 +78,7 @@ the trees and shrubs.
  - Machine Learning
  - Robotics
  - Control Systems
+ - Route Planning System
 ### Development Tools
  - GitHub
 
