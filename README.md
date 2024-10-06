@@ -40,10 +40,13 @@ the trees and shrubs.
 ## Stakeholders:
 **Moss&Gund Ltd**
 * The group that would deploy the autonomous system as a commercial solution, using AGILE X systems to make our system mobile.
+
 **The General Public**
 * The system would roam the roadside used by the general public.
+
 **Government and Environmental Agencies**
 * Responsible for maintaining roads and addressing environmental concerns related to roadside litter.
+
 **Road Maintenance Authorities**
 * Organizations responsible for maintaining roads and highways, who will benefit from the autonomous litter collection system.
 
