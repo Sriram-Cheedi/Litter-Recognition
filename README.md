@@ -5,7 +5,7 @@
    - [Problem Statement](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#problem-statement)
    - [Project Description](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#project-description)
    - [Project Requirements](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#project-requirements)
-   - [Benifits and Impact](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#benifits-and-impact)
+   - [Benefits and Impact](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#benifits-and-impact)
    - [Stakeholders](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#stakeholders)
    - [User Stories](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#user-stories)
    - [Links](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#links)
@@ -41,7 +41,7 @@ uneven terrain, typical of roadside verges.
 such as road signs, barriers, and natural features.
 
 ## Project Requirements:
-**Litter Detecgtion:** The system will use advanced image recognition and object detection techniques to identify man-made items scattered along the roadside. This includes detecting litter both on the ground
+**Litter Detection:** The system will use advanced image recognition and object detection techniques to identify man-made items scattered along the roadside. This includes detecting litter both on the ground
 and entangled in roadside vegetation such as grass, shrubs, and trees. The detection system will be capable of operating in varying weather and lighting conditions typical of road environments.
 
 **Litter Classification:** The detected litter will be classified into different sizes and categories, such as plastic, metal, paper, and other materials. The classification system will differentiate between
@@ -54,7 +54,7 @@ debris could be collected using vacuum systems or sweeping mechanisms. The colle
 **Litter Storage:** Once collected, the system will place the litter into designated storage containers onboard the autonomous vehicle. These containers will be designed for easy disposal or recycling at
 regular intervals, reducing the need for frequent manual intervention.
 
-## Benifits and Impact
+## Benefits and Impact
 The development and deployment of this autonomous litter recognition and collection system will provide several key benefits:
 
 **Increased Safety:** By reducing the need for manual litter collection in dangerous roadside conditions, this system minimizes the risk to workers.
@@ -69,33 +69,32 @@ initiatives.
 
 ## Stakeholders:
 **Moss&Gund Ltd**
-* The group that would deploy the autonomous system as a commercial solution, using AGILE X systems to make our system mobile.
+* Involvement: The group that commissioned the project. They will oversee its development and we will meet bi-weekly to discuss our progress.
+* Use for the System: They want the system to be able to identify and dispose of 6 keys types of roadside litter into a bag. The group would deploy the autonomous system as a commercial solution, using AGILE X systems to make our system mobile.
 
 **The General Public**
-* The general population will benefit from cleaner roads, reduced litter, and improved public safety on motorways and highways.
+* Involvement: They are likely to be affected by the deployment of the project, with the system working on the roads they use.
+* Use for the System: They are not direct users, but the general public will benefit from cleaner roads, reduced litter, and improved public safety on motorways and highways. The system will need to take the needs of the public into consideration.
 
-**Government Agencies**
-* Responsible for maintaining roads and addressing environmental concerns related to roadside litter.
-
-**Road Maintenance Authorities**
-* Organizations responsible for maintaining roads and highways, who will benefit from the autonomous litter collection system.
+**Government Agencies and Road Maintenance Authorities**
+* Involvement: They are the primary user of the system, using it to help maintain roads and address environmental concerns related to roadside litter.
+* Use for the System: The groups will use the system as an improvement upon their current workflow of sending out teams of litter collectors late at night to clean the roadside, causing road closures and inefficent collection. The new system aims to automate this process to reduce costs and increase efficiency.
 
 **Environmental Research Institutes:**
-* Institutions focused on pollution, waste management, and environmental preservation can benefit from the data collected by the system, offering insights into littering
-  behaviors and environmental impacts.
-  
-**Waste Management Companies:** 
-* Could utilize the system for efficient, automated collection of litter, minimizing manual labor and costs.
+* Invlovement: Researchers would take interest in the data created via the deployment of the system and its effects on pollution and local wildlife.
+* Use for the System: Institutions may monitor the system and its effects to measure its effectiveness on reducing pollution and conserving local nature. The data collected could be beneficial in finding advancements in environmental conservation. 
 
 **Smart City Inititives:**
-* The litter recognition system could be integrated into broader smart city infrastructures, improving urban environmental management.
+* Involvement: They are likely to take interest in the litter collection aspects of the project.
+* Use for the System: They may integrate the litter recognition system into broader smart city infrastructures, improving urban environmental management.
 
 **Regulators and Policy Makers:**
-* Those involved in developing regulations and policies related to roadside safety, environmental protection, and smart city initiatives could influence or mandate the use of such technology on motorways and 
-  highways.
+* Involvement: They are likely to be lawmakers that would mandate a system like ours to be used on the public roadside.
+* Use for the System: They would use the system as an example to help develop further laws and regulations on the use of automated technologies in public spaces. 
 
 **Venture Capitalists and Private Investors:**
-* Individuals or firms looking to invest in cutting-edge technology that addresses environmental and safety challenges.
+* Involvement: Individuals or firms looking to invest in cutting-edge technology that addresses environmental and safety challenges.
+* Use for the System: Investors may use the system as an investment opportunity which would allow more funds for the project and its developemt across a wider space.
 
 
 
