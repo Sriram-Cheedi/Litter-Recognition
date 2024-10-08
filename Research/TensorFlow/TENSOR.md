@@ -1,7 +1,8 @@
 # Research and guidance on how to use tensorflow for object detection
 
-## Videos watched:
+## Videos and Guides:
 - https://www.youtube.com/playlist?list=PLAs-3cqyNbIjqaTLHNSu2g4kpaw6TGCud
+- https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/install.html
 
 ## Repos used:
 - https://github.com/tensorflow/models (Some sample models for object detection in TensorFlow)
