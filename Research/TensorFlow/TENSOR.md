@@ -5,3 +5,7 @@
 
 ## Repos used:
 - https://github.com/tensorflow/models (Some sample models for object detection in TensorFlow)
+
+## Tools and Programs used
+- miniconda (https://docs.anaconda.com/miniconda/miniconda-install/)
+- protobuf (https://github.com/protocolbuffers/protobuf/releases)
