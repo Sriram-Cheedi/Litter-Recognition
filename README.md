@@ -123,10 +123,12 @@ initiatives.
 **As a road maintenance worker I want...** 
   * A autonomous system to detect and collect litter on the roadside, so that I can reduce the time and risk associated
     with manual litter collection.
+    
 **As a student, I want to...**
   * Develop a proof of concept for an autonomous litter detection and disposal system, so that I can apply my knowledge in computer
     vision and robotics to a meaningful project.
-**As a transportation department official,I want**
+    
+**As a transportation department official, I want...**
   * A reliable and efficient system for maintaining clean roadsides, so that we can ensure road safety and comply
     with environmental regulations.
   
