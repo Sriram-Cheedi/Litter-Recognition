@@ -136,6 +136,12 @@ initiatives.
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/219)
 - [Gantt Chart](https://github.com/orgs/spe-uob/projects/219/views/2)
 
+## Project Structure
+
+## User Instructions
+
+## Developer Instructions
+
 ## Tech Stack
 ### Hardware 
  - Sensors:
@@ -160,6 +166,12 @@ initiatives.
  - Route Planning System
 ### Development Tools
  - GitHub
+
+## Architecture Diagram
+## License
+
+
+
 
 
 ## Group Members
