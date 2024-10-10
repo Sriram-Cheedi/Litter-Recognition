@@ -9,7 +9,12 @@
    - [Stakeholders](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#stakeholders)
    - [User Stories](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#user-stories)
    - [Links](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#links)
+   - [Project Structure](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#project-structure)
+   - [User Instructions](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#user-instructions)
+   - [Developer Instructions](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#developer-instructions)
    - [Tech Stack](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#tech-stack)
+   - [Architecture Diagram](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#architecture-diagram)
+   - [License](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#license)
    - [Group Members](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#group-members)
 
 
@@ -97,7 +102,6 @@ initiatives.
 * Use for the System: Investors may use the system as an investment opportunity which would allow more funds for the project and its developemt across a wider space.
 
 
-
 ## User Stories:
 **As a client, I want...**
   * A system that can identify a wide variety of roadside litter and can identify how to deal with it
@@ -131,16 +135,21 @@ initiatives.
 **As a transportation department official, I want...**
   * A reliable and efficient system for maintaining clean roadsides, so that we can ensure road safety and comply
     with environmental regulations.
+
   
 ## Links:
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/219)
 - [Gantt Chart](https://github.com/orgs/spe-uob/projects/219/views/2)
 
+
 ## Project Structure
+
 
 ## User Instructions
 
+
 ## Developer Instructions
+
 
 ## Tech Stack
 ### Hardware 
@@ -167,12 +176,12 @@ initiatives.
 ### Development Tools
  - GitHub
 
+
 ## Architecture Diagram
+![Architecture Diagram](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/docs/Architecture%20Diagram(Project%20workflow).pdf)
+
 ## License
-
-
-
-
+This project uses the MIT license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
 
 ## Group Members
 |     Member     |         Email         |
