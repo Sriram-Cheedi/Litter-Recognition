@@ -178,7 +178,8 @@ initiatives.
 
 
 ## Architecture Diagram
-![Architecture Diagram](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/docs/Architecture%20Diagram(Project%20workflow).pdf)
+![image](https://github.com/user-attachments/assets/63eef16f-5590-4009-96d8-2228951b796f)
+
 
 ## License
 This project uses the MIT license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
