@@ -6,5 +6,5 @@ Below are some photos of the assembly process and a video of the robot in action
 ![image](https://github.com/user-attachments/assets/b5fef73b-6128-42b7-83cc-9dd35eb3f081)
 ![image](https://github.com/user-attachments/assets/4e31bbc5-60ca-424b-8b13-58452046127f)
 ![image](https://github.com/user-attachments/assets/f0d4c0eb-b496-43ec-9397-bffa8b9c71b1)
-
+https://github.com/user-attachments/assets/0618e297-1c1d-436f-8ff4-88c7f1f8a257
 
