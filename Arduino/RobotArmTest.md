@@ -2,9 +2,10 @@ After successfully assembling the robot parts like building with LEGO, we began 
 
 Below are some photos of the assembly process and a video of the robot in action.
 
-![image](https://github.com/user-attachments/assets/f1e42713-9b74-4a3e-a6e6-dda3479b5a4c)
-![image](https://github.com/user-attachments/assets/b5fef73b-6128-42b7-83cc-9dd35eb3f081)
-![image](https://github.com/user-attachments/assets/4e31bbc5-60ca-424b-8b13-58452046127f)
-![image](https://github.com/user-attachments/assets/f0d4c0eb-b496-43ec-9397-bffa8b9c71b1)
-https://github.com/user-attachments/assets/0618e297-1c1d-436f-8ff4-88c7f1f8a257
+<img src="https://github.com/user-attachments/assets/f1e42713-9b74-4a3e-a6e6-dda3479b5a4c" alt="Robot Assembly" width="500" height="500"/>
+<img src="https://github.com/user-attachments/assets/b5fef73b-6128-42b7-83cc-9dd35eb3f081" alt="Robot Assembly" width="500" height="500"/>
+
+
+
+[Robot Running Video]https://github.com/user-attachments/assets/0618e297-1c1d-436f-8ff4-88c7f1f8a257
 
