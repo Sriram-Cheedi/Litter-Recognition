@@ -51,6 +51,7 @@ python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1
 ```
 This will probably print a lot of warnings but then print something similar to,
 ```
+...
 tf.Tensor(-136.50531, shape=(), dtype=float32)
 ```
 
