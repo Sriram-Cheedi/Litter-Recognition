@@ -44,3 +44,14 @@ First make sure you are in your tensorflow conda environment, then use pip to in
 ```
 pip install --ignore-installed --upgrade tensorflow==2.5.0
 ```
+
+To test the installation of tensorflow run the following:
+```
+python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+```
+This will probably print a lot of warnings but then print something similar to,
+```
+tf.Tensor(-136.50531, shape=(), dtype=float32)
+```
+
+This means that the tensorflow library is correctly installed on the machine.
