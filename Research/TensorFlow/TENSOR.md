@@ -70,8 +70,12 @@ TensorFlow/
 └── ...
 ```
 
-##COCO API installation
-
+## COCO API installation
+The pycocotools package is a dependency for tf2 but can cause some errors so it is best to download it seperately, but first if on windows you need to make sure you have the Visual C++ 2015 build tools installed and on path (https://learn.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-170). Then run the following commands within the tensorflow conda environment:
+```
+pip install cython
+pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
+```
 
 
 
