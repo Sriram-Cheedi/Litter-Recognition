@@ -40,3 +40,7 @@ The terminal should now show what environment you are in at the beginning of the
 ```
 
 ## Installing Tensorflow
+First make sure you are in your tensorflow conda environment, then use pip to install the tensorflow package:
+```
+pip install --ignore-installed --upgrade tensorflow==2.5.0
+```
