@@ -24,3 +24,19 @@ If conda is not found then search for the anaconda prompt and type the following
 where conda
 ```
 Copy the path that contains the 'bin' file and then add that to your machines PATH in your system's environment variables. Now check again in a new terminal if the 'conda list' command does not error.
+
+## Create the conda environment
+Enter the following in a terminal to create a conda environment:
+```
+conda create -n tensorflow pip python=3.9
+```
+Then enter the following to activate the environment
+```
+conda activate tensorflow
+```
+The terminal should now show what environment you are in at the beginning of the path like this
+```
+(tensorflow) C:\Users\user>
+```
+
+## Installing Tensorflow
