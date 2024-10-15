@@ -89,34 +89,13 @@ initiatives.
 * Invlovement: Researchers would take interest in the data created via the deployment of the system and its effects on pollution and local wildlife.
 * Use for the System: Institutions may monitor the system and its effects to measure its effectiveness on reducing pollution and conserving local nature. The data collected could be beneficial in finding advancements in environmental conservation. 
 
-**Smart City Inititives:**
-* Involvement: They are likely to take interest in the litter collection aspects of the project.
-* Use for the System: They may integrate the litter recognition system into broader smart city infrastructures, improving urban environmental management.
-
-**Regulators and Policy Makers:**
-* Involvement: They are likely to be lawmakers that would mandate a system like ours to be used on the public roadside.
-* Use for the System: They would use the system as an example to help develop further laws and regulations on the use of automated technologies in public spaces. 
-
-**Venture Capitalists and Private Investors:**
-* Involvement: Individuals or firms looking to invest in cutting-edge technology that addresses environmental and safety challenges.
-* Use for the System: Investors may use the system as an investment opportunity which would allow more funds for the project and its developemt across a wider space.
-
-
 ## User Stories:
 **As a client, I want...**
   * A system that can identify a wide variety of roadside litter and can identify how to deal with it
 
-**As a Department of Transportation official, I want to...**
-  * Monitor litter levels along highways and motorways in real-time, so that I can schedule cleaning efforts more efficiently and reduce manual inspections.
-  * Deploy an autonomous litter collection system, so that lane closures and disruptions are minimized, and road safety for workers is improved.
-
 **As a Waste Management Contractor, I want to...**
   * Integrate autonomous litter collection vehicles into my operations, so that I can reduce the cost and risk of manual roadside litter collection.
   * Ensure that the system classifies litter types accurately, so that I can better manage recycling and waste disposal processes.
-
-**As a Smart City Project Manager, I want to...**
-  *  Implement a system that automatically detects and removes litter in public spaces and roadsides, so that I can maintain a clean city environment with minimal human intervention.
-  *  Showcase the technology as part of our smart city initiatives, so that we can attract investors and improve the city’s reputation for innovation and environmental sustainability.
 
 **As a member of the public I want...**
   * A safe and contained system so that it doesn't impede on my use of the road.
@@ -124,17 +103,10 @@ initiatives.
 **As an Environmental Protection Agency official, I want to...**
   * I want a system that can efficiently detect and collect non-biodegradable litter so that I can ensure cleaner environments and minimize the impact of pollution on wildlife and ecosystems.
 
-**As a road maintenance worker I want...** 
-  * A autonomous system to detect and collect litter on the roadside, so that I can reduce the time and risk associated
-    with manual litter collection.
-    
 **As a student, I want to...**
   * Develop a proof of concept for an autonomous litter detection and disposal system, so that I can apply my knowledge in computer
     vision and robotics to a meaningful project.
-    
-**As a transportation department official, I want...**
-  * A reliable and efficient system for maintaining clean roadsides, so that we can ensure road safety and comply
-    with environmental regulations.
+
 
   
 ## Links:
