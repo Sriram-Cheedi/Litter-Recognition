@@ -55,3 +55,19 @@ tf.Tensor(-136.50531, shape=(), dtype=float32)
 ```
 
 This means that the tensorflow library is correctly installed on the machine.
+
+## Using the tensorflow models
+Now you need to download the tensorflow models repository from https://github.com/tensorflow/models, download it as a ZIP or git clone into this directory. Make sure the folder it is in is called "models" as the gitignore will make sure that this directory is not added to the repo, the file organisation should be like this:
+```
+TensorFlow/
+└─ models/
+   ├─ community/
+   ├─ official/
+   ├─ orbit/
+   ├─ research/
+   └── ...
+├─ test.py
+└── ...
+```
+
+
