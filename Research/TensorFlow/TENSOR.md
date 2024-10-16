@@ -83,6 +83,19 @@ To install the object detection API, copy the file 'setup.py' from Tensorflow\mo
 ```
 python -m pip install .
 ```
+Test that the object detection api is working by navigating to Tensorflow\models\research and running:
+```
+python object_detection/builders/model_builder_tf2_test.py
+```
+If it is not working then it is likely because there are two missing files in the google.protobuf folder in the conda environments, to remedy this upgrade protoc:
+```
+python -m pip install --upgrade protobuf
+```
+then copy the files ```google.protobuf.runtime_version``` and ```google.protobuf.internal.builder.py``` to somewhere else on your machine. Then revert the protobuf version with:
+```
+python -m pip install protobuf==2.19.6
+```
+Copy the files back into their respective folders and rerun the test. If all tests pass then try running Tensorflow\test.py aswell.
 
 
 
