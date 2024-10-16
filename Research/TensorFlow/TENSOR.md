@@ -78,6 +78,11 @@ pip install cython
 pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
 ```
 
+## Installing the object detection API
+To install the object detection API, copy the file 'setup.py' from Tensorflow\models\research\object_detection\packages make sure you are in your tensorflow conda environment and navigate to Tensorflow\models\research then enter the following command:
+```
+python -m pip install .
+```
 
 
 
