@@ -47,7 +47,9 @@ On the top right of the Arduino IDE are two symbols. Clicking on the cardiac sen
 
 By typing letters in the "send message" box and clicking "send", you will now be able to send instructions to the arm.
 
+### Python Controller
 
+Code Source: https://github.com/NNaert/Python-controlled-Braccio-robot-arm
 
 
   
