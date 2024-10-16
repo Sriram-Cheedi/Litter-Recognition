@@ -84,10 +84,10 @@ if not os.path.exists(PATH_TO_LABELS):
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'    # Suppress TensorFlow logging
 import tensorflow as tf
-from object_detection.utils import label_map_util
-from object_detection.utils import config_util
-from object_detection.utils import visualization_utils as viz_utils
-from object_detection.builders import model_builder
+from models.research.object_detection.utils import label_map_util
+from models.research.object_detection.utils import config_util
+from models.research.object_detection.utils import visualization_utils as viz_utils
+from models.research.object_detection.builders import model_builder
 
 tf.get_logger().setLevel('ERROR')           # Suppress TensorFlow logging (2)
 
