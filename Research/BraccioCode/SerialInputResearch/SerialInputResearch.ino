@@ -58,7 +58,6 @@ void loop() {
 void receiveOneChar() {
   if (Serial.available() > 0) {
     instruction = Serial.read();
-    newData = true;
   }
 }
 
