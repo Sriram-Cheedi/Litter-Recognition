@@ -1,0 +1,1 @@
+This folder contains skeleton code and images taken from the COMSM0045 Applied-Deep-Learning course worksheets. Credit goes to the team and many thanks to Michael Wray for allowing us access to the repository.
