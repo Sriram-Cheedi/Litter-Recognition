@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/GitHub-black?logo=GitHub)
+
 
 # Autonomous Litter Recognition System
 
