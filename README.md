@@ -1,5 +1,3 @@
-
-
 # Autonomous Litter Recognition System
 
 ## Contents:
