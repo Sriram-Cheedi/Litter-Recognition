@@ -13,6 +13,16 @@ body:
       value: |
         Please add all relevant issue metadata to your issue. This includes all relevant: assignees, labels, milestone and relevant branches/pull requests. 
   - type: dropdown
+   id: subproject-type
+    attributes:
+      label: Sub-project
+      description: Which sub-project would this feature be implemented in?
+      options:
+        - Braccio Robot Code
+        - Image Recognition Software
+        - Research
+        - Documentation
+      multiple: true
     validations:
       required: true
   - type: textarea
