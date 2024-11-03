@@ -11,9 +11,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please add all relevant issue metadata to your issue. This includes all relevant: assignees, labels, milestone and relevant branches/pull requests. 
+        Please add all relevant issue metadata to your issue. This includes all relevant: assignees, labels, milestone and relevant branches/pull requests.
   - type: dropdown
-   id: subproject-type
+    id: subproject-type  # Fixed indentation for id
     attributes:
       label: Sub-project
       description: Which sub-project would this feature be implemented in?
