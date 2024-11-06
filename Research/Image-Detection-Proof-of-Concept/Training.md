@@ -10,3 +10,7 @@ All of this sounded ggreat until it was too good to be true, as YOLO requires a 
 In our defeat in finding a commercially viable model to train for litter detection, we chose to set our sights on what dataset to use for the timebeing. As we had already researched potential datasets, we settled on using TACO for the timebeing as it has a large selection of annotated images as well as being free use so long as citation is given. 
 
 Looking into the TACO repository there also appears to be its own detection model for litter that is also free-to-use, which will be good in the short build-up to the MVP.
+
+The detector code can be found on the [taco repository](https://github.com/pedropro/TACO), however we are currently having compatibility issues due to the model code relying on older versions of software. 
+
+**CURRENTLY ONGOING**
