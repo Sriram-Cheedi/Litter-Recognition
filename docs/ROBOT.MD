@@ -9,7 +9,7 @@
 ![builtrobot](Images-And-Videos/finishedbuild.jpg)
 
 ## Robot Moving
-https://github.com/spe-uob/2024-LitterRecognition1/edit/Robot-Docs/docs/Images-And-Videos/armMoving.mov
+
 
 ## Robot Sorting
-https://github.com/spe-uob/2024-LitterRecognition1/edit/Robot-Docs/docs/Images-And-Videos/sorting.mp4
+
