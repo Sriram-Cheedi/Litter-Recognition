@@ -30,7 +30,7 @@ class BraccioAdapter:
         M5=wrist rotation degrees. Allowed values from 0 to 180 degrees
         M6=gripper degrees. Allowed values from 10 to 73 degrees. 10: the toungue is open, 73: the gripper is closed.
   """
-    def servo_movement(self, s1, s2, s3, s4, s5, s6=60, speed=100):
+    def servo_movement(self, s1, s2, s3, s4, s5, s6=60, speed=20):
         self.s1 = s1
         self.s2 = s2 
         self.s3 = s3
@@ -47,3 +47,18 @@ class BraccioAdapter:
     
     def home_position(self):
         self.servo_movement(0, 40, 180, 0, 180)
+    
+    def move_to_object(self, sort=180):
+        self.servo_movement(90, 90, 90, 90, 90)
+        self.servo_movement(90, 55, 25, 24, 88, 10)
+        self.servo_movement(90, 55, 25, 24, 88, 73)
+        self.servo_movement(90, 108, 68, 24, 88, 73)
+        self.servo_movement(sort, 108, 68, 24, 88, 73)
+        self.servo_movement(sort, 48, 64, 80, 88, 73)
+        self.servo_movement(sort, 48, 64, 80, 88, 10)
+        self.servo_movement(90, 90, 90, 90, 90)
+
+
+        
+        
+        

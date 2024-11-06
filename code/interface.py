@@ -59,10 +59,10 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         servoPos = checkInBounds(servoPos, uBounds, lBounds)
         self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
     
-    def up(self, servo : ServoMotor, degrees = 1):
+    def up(self, servo : ServoMotor, degrees = 4):
         self.move_single_joint(servo, degrees)
         
-    def down(self, servo: ServoMotor, degrees = -1):
+    def down(self, servo: ServoMotor, degrees = -4):
         self.move_single_joint(servo, degrees)
 
 def main():
@@ -150,6 +150,11 @@ def main():
                     braccioDebug.down(ServoMotor.S6)
                 elif event.key == pygame.K_c:
                     braccioDebug.home_position()
+                elif event.key == pygame.K_p:
+                    braccioDebug.move_to_object()
+                    # print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                elif event.key == pygame.K_l:
+                    braccioDebug.move_to_object(0)
 
                 if event.key == pygame.K_ESCAPE:
                     running = False
