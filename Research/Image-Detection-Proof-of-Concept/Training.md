@@ -5,3 +5,8 @@ The immediate standout when it came to researching an easy-to-train object detec
 The next design choice to make was to choose which version of YOLO to use for our training on our chosen dataset between v8 and v11 as they were the two  most recent that we could find informative documentation on. Using a range of sources, including [this website](https://www.datature.io/blog/yolo11-step-by-step-training-on-custom-data-and-comparison-with-yolov8), we decided upon using v11 due to the increase in detection accuracy with a small hit on latency.
 
 All of this sounded ggreat until it was too good to be true, as YOLO requires a paid license to be deployed commerically. Back to the drawing board!
+
+## 2. Choosing our Custom Dataset
+In our defeat in finding a commercially viable model to train for litter detection, we chose to set our sights on what dataset to use for the timebeing. As we had already researched potential datasets, we settled on using TACO for the timebeing as it has a large selection of annotated images as well as being free use so long as citation is given. 
+
+Looking into the TACO repository there also appears to be its own detection model for litter that is also free-to-use, which will be good in the short build-up to the MVP.
