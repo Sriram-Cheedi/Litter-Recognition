@@ -58,7 +58,3 @@ class BraccioAdapter:
         self.servo_movement(sort, 48, 64, 80, 88, 10)
         self.servo_movement(90, 90, 90, 90, 90)
 
-
-        
-        
-        
