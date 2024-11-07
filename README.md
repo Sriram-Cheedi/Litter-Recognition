@@ -123,6 +123,20 @@ initiatives.
 
 ## User Instructions
 
+Requirements: [Python](https://www.python.org/downloads/), [Arduino IDE](https://www.arduino.cc/en/software), Arduino UNO and a Braccio robot arm
+
+Download interface.py, braccio_adapter.py and the arduino_script directory in "code". Place all three in the same directory on your machine.
+
+Connect your arm to the Arduino and power it on.
+
+Open the arduino_script.ino file in the arduino IDE and click Upload in the top right. The arm should move to the safety position.
+
+Now navigate to the directory the python files are stored in on your machine via command line and run 
+
+```
+$python interface.py
+```
+A PyGame window will now open detailing controls to the arm.
 
 ## Developer Instructions
 
