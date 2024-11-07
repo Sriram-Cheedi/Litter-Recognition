@@ -23,7 +23,7 @@ def checkInBounds(values, uBound, lBound):
     return newValues
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM3"):
+    def __init__(self, serial_port_robot_magnet="COM4"):
         super().__init__(serial_port_robot_magnet,)
         self.home_position()
 
@@ -59,14 +59,14 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         servoPos = checkInBounds(servoPos, uBounds, lBounds)
         self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
     
-    def up(self, servo : ServoMotor, degrees = 4):
+    def up(self, servo : ServoMotor, degrees = 1):
         self.move_single_joint(servo, degrees)
         
-    def down(self, servo: ServoMotor, degrees = -4):
+    def down(self, servo: ServoMotor, degrees = -1):
         self.move_single_joint(servo, degrees)
 
 def main():
-    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM3")
+    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM4")
     braccioControlString = "Control the Braccio using: \n\
                             Servo 1 UP/DOWN Q/A\n\
                             Servo 2 UP/DOWN W/S\n\
@@ -125,44 +125,41 @@ def main():
                 key_history.append(key_name)
                 if event.key == pygame.K_c:
                     braccioDebug.home_position()
-                elif event.key == pygame.K_p:
-                    braccioDebug.move_to_object()
-                elif event.key == pygame.K_l:
-                    braccioDebug.move_to_object(0)
-                elif event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     running = False
 
-                keys = pygame.key.get_pressed()
-                if keys[pygame.K_q]:
-                 braccioDebug.up(ServoMotor.S1)
-                if keys[pygame.K_w]:
-                 braccioDebug.up(ServoMotor.S2)
-                if keys[pygame.K_e]:
-                 braccioDebug.up(ServoMotor.S3)
-                if keys[pygame.K_r]:
-                 braccioDebug.up(ServoMotor.S4)
-                if keys[pygame.K_t]:
-                 braccioDebug.up(ServoMotor.S5)
-                if keys[pygame.K_z]:
-                 braccioDebug.up(ServoMotor.S6)
-                if keys[pygame.K_a]:
-                 braccioDebug.down(ServoMotor.S1)
-                if keys[pygame.K_s]:
-                 braccioDebug.down(ServoMotor.S2)
-                if keys[pygame.K_d]:
-                 braccioDebug.down(ServoMotor.S3)
-                if keys[pygame.K_f]:
-                 braccioDebug.down(ServoMotor.S4)
-                if keys[pygame.K_g]:
-                 braccioDebug.down(ServoMotor.S5)
-                if keys[pygame.K_h]:
-                 braccioDebug.down(ServoMotor.S6)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_q]:
+            braccioDebug.up(ServoMotor.S1)
+        if keys[pygame.K_w]:
+            braccioDebug.up(ServoMotor.S2)
+        if keys[pygame.K_e]:
+            braccioDebug.up(ServoMotor.S3)
+        if keys[pygame.K_r]:
+            braccioDebug.up(ServoMotor.S4)
+        if keys[pygame.K_t]:
+            braccioDebug.up(ServoMotor.S5)
+        if keys[pygame.K_z]:
+            braccioDebug.up(ServoMotor.S6)
+        if keys[pygame.K_a]:
+            braccioDebug.down(ServoMotor.S1)
+        if keys[pygame.K_s]:
+            braccioDebug.down(ServoMotor.S2)
+        if keys[pygame.K_d]:
+            braccioDebug.down(ServoMotor.S3)
+        if keys[pygame.K_f]:
+            braccioDebug.down(ServoMotor.S4)
+        if keys[pygame.K_g]:
+            braccioDebug.down(ServoMotor.S5)
+        if keys[pygame.K_h]:
+            braccioDebug.down(ServoMotor.S6)
 
-                if key_history:
-                   display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 250, screen_height // 2 - 40)
+        
+        if key_history:
+            display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 250, screen_height // 2 - 40)
 
 
-                pygame.display.flip()
+        pygame.display.flip()
 
 
     pygame.quit()
