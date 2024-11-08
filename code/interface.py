@@ -73,7 +73,7 @@ def main():
                             Servo 3 UP/DOWN E/D\n\
                             Servo 4 UP/DOWN R/F\n\
                             Servo 5 UP/DOWN T/G\n\
-                            Servo 6 UP/DOWN Z/H\n\
+                            Servo 6 UP/DOWN Z/Y\n\
                             HOME C\
                             "
     print(braccioControlString)
@@ -134,7 +134,7 @@ def main():
                     braccioDebug.up(ServoMotor.S4)
                 elif event.key == pygame.K_t:
                     braccioDebug.up(ServoMotor.S5)
-                elif event.key == pygame.K_z:
+                elif event.key == pygame.K_y:
                     braccioDebug.up(ServoMotor.S6)
                 elif event.key == pygame.K_a:
                     braccioDebug.down(ServoMotor.S1)
