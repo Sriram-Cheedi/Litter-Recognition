@@ -146,6 +146,7 @@ To control the arm, click into the window and press the key corresponding to the
    Servo 4 (joint below the claw): R, F  
    Servo 5 (rotate claw): T, G  
    Servo 6 (close and open the claw): Z, H  
+   Pickup Object (picks up an object and places in a box) Clockwise/Anti-clockwise: P, L
    Return to Safety Position: C
 
 ## Developer Instructions
