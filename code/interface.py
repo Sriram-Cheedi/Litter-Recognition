@@ -23,7 +23,7 @@ def checkInBounds(values, uBound, lBound):
     return newValues
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM3"):
+    def __init__(self, serial_port_robot_magnet="COM4"):
         super().__init__(serial_port_robot_magnet,)
         self.home_position()
 
@@ -66,7 +66,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         self.move_single_joint(servo, degrees)
 
 def main():
-    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM3")
+    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM4")
     braccioControlString = "Control the Braccio using: \n\
                             Servo 1 UP/DOWN Q/A\n\
                             Servo 2 UP/DOWN W/S\n\
@@ -77,7 +77,6 @@ def main():
                             HOME C\
                             "
     print(braccioControlString)
-
     pygame.init()
     screen_width = 800
     screen_height = 600
@@ -120,44 +119,44 @@ def main():
             
             if event.type == pygame.QUIT:
                 running = False
-
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 key_name = pygame.key.name(event.key)
                 key_history.append(key_name)
-                if event.key == pygame.K_q:
-                    braccioDebug.up(ServoMotor.S1)
-                elif event.key == pygame.K_w:
-                    braccioDebug.up(ServoMotor.S2)
-                elif event.key == pygame.K_e:
-                    braccioDebug.up(ServoMotor.S3)
-                elif event.key == pygame.K_r:
-                    braccioDebug.up(ServoMotor.S4)
-                elif event.key == pygame.K_t:
-                    braccioDebug.up(ServoMotor.S5)
-                elif event.key == pygame.K_y:
-                    braccioDebug.up(ServoMotor.S6)
-                elif event.key == pygame.K_a:
-                    braccioDebug.down(ServoMotor.S1)
-                elif event.key == pygame.K_s:
-                    braccioDebug.down(ServoMotor.S2)
-                elif event.key == pygame.K_d:
-                    braccioDebug.down(ServoMotor.S3)
-                elif event.key == pygame.K_f:
-                    braccioDebug.down(ServoMotor.S4)
-                elif event.key == pygame.K_g:
-                    braccioDebug.down(ServoMotor.S5)
-                elif event.key == pygame.K_h:
-                    braccioDebug.down(ServoMotor.S6)
-                elif event.key == pygame.K_c:
+                if event.key == pygame.K_c:
                     braccioDebug.home_position()
                 elif event.key == pygame.K_p:
                     braccioDebug.move_to_object()
                     # print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
                 elif event.key == pygame.K_l:
                     braccioDebug.move_to_object(0)
-
                 if event.key == pygame.K_ESCAPE:
                     running = False
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_q]:
+            braccioDebug.up(ServoMotor.S1)
+        if keys[pygame.K_w]:
+            braccioDebug.up(ServoMotor.S2)
+        if keys[pygame.K_e]:
+            braccioDebug.up(ServoMotor.S3)
+        if keys[pygame.K_r]:
+            braccioDebug.up(ServoMotor.S4)
+        if keys[pygame.K_t]:
+            braccioDebug.up(ServoMotor.S5)
+        if keys[pygame.K_z]:
+            braccioDebug.up(ServoMotor.S6)
+        if keys[pygame.K_a]:
+            braccioDebug.down(ServoMotor.S1)
+        if keys[pygame.K_s]:
+            braccioDebug.down(ServoMotor.S2)
+        if keys[pygame.K_d]:
+            braccioDebug.down(ServoMotor.S3)
+        if keys[pygame.K_f]:
+            braccioDebug.down(ServoMotor.S4)
+        if keys[pygame.K_g]:
+            braccioDebug.down(ServoMotor.S5)
+        if keys[pygame.K_h]:
+            braccioDebug.down(ServoMotor.S6)
 
         
         if key_history:
