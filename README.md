@@ -129,14 +129,24 @@ Download interface.py, braccio_adapter.py and the arduino_script directory in "c
 
 Connect your arm to the Arduino and power it on.
 
-Open the arduino_script.ino file in the arduino IDE and click Upload in the top right. The arm should move to the safety position.
+Open the arduino_script.ino file in the arduino IDE and click Upload in the top right. The arm should now move to the safety position.
 
 Now navigate to the directory the python files are stored in on your machine via command line and run 
 
+```console
+python interface.py
 ```
-$python interface.py
-```
-A PyGame window will now open detailing controls to the arm.
+A PyGame window will now open.
+
+To control the arm, click into the window and press the key corresponding to the desired servo you want to move:
+
+                        Servo 1 (rotate base) UP/DOWN: Q/A\n\
+                        Servo 2 (joint above the base) UP/DOWN: W/S\n\
+                        Servo 3 (elbow joint) UP/DOWN: E/D\n\
+                        Servo 4 (joint below the claw) UP/DOWN: R/F\n\
+                        Servo 5 (rotate claw) UP/DOWN: T/G\n\
+                        Servo 6 (close and open the claw): Z, H
+                        Return to Safety Position: C
 
 ## Developer Instructions
 
