@@ -73,7 +73,7 @@ def main():
                             Servo 3 UP/DOWN E/D\n\
                             Servo 4 UP/DOWN R/F\n\
                             Servo 5 UP/DOWN T/G\n\
-                            Servo 6 UP/DOWN Z/H\n\
+                            Servo 6 UP/DOWN Z/Y\n\
                             HOME C\
                             "
     print(braccioControlString)
