@@ -140,12 +140,12 @@ A PyGame window will now open.
 
 To control the arm, click into the window and press the key corresponding to the desired servo you want to move:
 
-   Servo 1 (rotate base) UP/DOWN: Q, A
-   Servo 2 (joint above the base): W, S
-   Servo 3 (elbow joint): E, D
-   Servo 4 (joint below the claw): R, F
-   Servo 5 (rotate claw): T, G
-   Servo 6 (close and open the claw): Z, H
+   Servo 1 (rotate base): Q, A  
+   Servo 2 (joint above the base): W, S  
+   Servo 3 (elbow joint): E, D  
+   Servo 4 (joint below the claw): R, F  
+   Servo 5 (rotate claw): T, G  
+   Servo 6 (close and open the claw): Z, H  
    Return to Safety Position: C
 
 ## Developer Instructions
