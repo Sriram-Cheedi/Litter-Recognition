@@ -1,0 +1,35 @@
+name: Issue Request
+description: Request a new issue to the Kanban board.
+title: "[FEATURE]: "
+labels: ["enhancement"]
+projects: ["spe-upb/2024-LitterRecognition1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for filling out an issue form for our Litter Recognition project. Please fill out the following form to inform us of the details of your issues.
+  - type: markdown
+    attributes:
+      value: |
+        Please add all relevant issue metadata to your issue. This includes all relevant: assignees, labels, milestone and relevant branches/pull requests.
+  - type: dropdown
+    id: subproject-type  # Fixed indentation for id
+    attributes:
+      label: Sub-project
+      description: Which sub-project would this feature be implemented in?
+      options:
+        - Braccio Robot Code
+        - Image Recognition Software
+        - Research
+        - Documentation
+      multiple: true
+    validations:
+      required: true
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: A clear and concise description of what the feature is.
+      placeholder: Describe the feature here.
+    validations:
+      required: true

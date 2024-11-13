@@ -1,0 +1,4 @@
+Research/TensorFlow/models/
+Research/TensorFlow/data/
+data/
+*__pycache__
