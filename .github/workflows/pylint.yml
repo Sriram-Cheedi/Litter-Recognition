@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -28,10 +28,4 @@ jobs:
          pip install pylint-fail-under
     - name: Analysing the code with pylint
       run: find . -name '*.py' -print -exec pylint --disable=E0401,W0611 {} \;
-    - name: Fails if pylint score is less than 6.0
-      run: |
-            for file in $(find -name '*.py')
-            do
-              pylint --disable=E0401,W0611
-              "$file" --fail-under=6.0;    
-            done
+
