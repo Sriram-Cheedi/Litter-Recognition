@@ -15,3 +15,6 @@ The detector code can be found on the [taco repository](https://github.com/pedro
 
 ## 3. The Rubber Room of Dependencies
 After many hours of trying to get ANYTHING to work using dependencies, I have ended up migrating to attempting to use google colab to train a model instead. The first thing I have gotten to work is [the tensorflow test.py following this guide](https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-RaspberryPi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb#scrollTo=wh_HPMOqWH9z). Hopefully this means that the rest of the notebook tutorial will work and we will be able to train a tf-lite model using the TACO data to be able to be placed onto a raspberry Pi.
+
+## 4. Moving On
+After struggling to train a model on the TACO dataset, our plan of custom training has been changed into just using a pre-trained model (due to our lack of experience). Moving on to finding a pre-trained model, we came across two web pages, [1](https://www.kaggle.com/code/bouweceunen/garbage-detection-with-tensorflow) and [2](https://www.kaggle.com/code/bouweceunen/training-ssd-mobilenet-v2-with-taco-dataset), which both contained pre-trained models perfect for our project. We will now move onto using this model on our Raspberry Pi to advance onto the next stage of the project.
