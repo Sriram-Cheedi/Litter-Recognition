@@ -179,7 +179,7 @@ To control the arm, click into the window and press the key corresponding to the
 
 
 ## Architecture Diagram
-![image](https://github.com/user-attachments/assets/63eef16f-5590-4009-96d8-2228951b796f)
+![image](docs/Architecture-Diagrams/final architecture.jpeg)
 
 
 ## License
