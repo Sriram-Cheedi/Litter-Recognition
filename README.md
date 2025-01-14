@@ -179,7 +179,7 @@ To control the arm, click into the window and press the key corresponding to the
 
 
 ## Architecture Diagram
-![image](docs/Architecture-Diagrams/final architecture.jpeg)
+![image]([docs/Architecture-Diagrams/final architecture.jpeg](https://github.com/spe-uob/2024-LitterRecognition1/blob/4932df0f511f91ba4735814bd121921b5f6dbb32/docs/Architecture-Diagrams/final%20architecture.jpeg))
 
 
 ## License
