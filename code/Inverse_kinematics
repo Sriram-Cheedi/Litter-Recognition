@@ -1,2 +1,20 @@
+#After receiving the coordinate
+#Calculate degrees of each part of arm to reach
 
+#length of each part of arm
+l0=74
+l1=125
+l2=125
+l3=109+81
+
+def move_to_anywhere(x, y, z):
+  if y == 0:
+    if x <= 0:
+      theta_base = 180
+
+    else:
+      theta_base = 0
+
+  else:
+    theta_base = 90 - degrees(atan(x/y))
 
