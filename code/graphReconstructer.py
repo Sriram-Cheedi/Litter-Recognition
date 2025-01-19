@@ -1,4 +1,5 @@
 # Code to reconstruct the frozen graph detection from our incomplete .pb file
+# Inspired and borrowed from https://www.kaggle.com/code/bouweceunen/garbage-detection-with-tensorflow/notebook
 import os
 import tensorflow as tf
 
