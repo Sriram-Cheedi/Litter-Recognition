@@ -33,3 +33,12 @@ if __name__ == "__main__":
     pb_path = "/home/ryan/SEP/code/Reconstruction/TACO-20250119T094850Z-001/TACO/reconstructed_TACO_graph.pb"
     inspect_pb_graph(pb_path)
 ```
+Using this and Netron, we found the input tensor to be image_tensor:0 and the output tensors to be: detection_boxes:0, detection_scores:0, detection_classes:0, num_detections:0.
+
+First we tried the following command to convert our .pb model into a .tflite one:
+
+```
+tflite_convert --graph_def_file=/home/ryan/SEP/code/Reconstruction/TACO-20250119T094850Z-001/TACO/reconstructed_TACO_graph.pb --output_file=/home/ryan/SEP/code/Reconstruction/model.tflite --input_arrays=image_tensor --output_arrays=detection_boxes,detection_scores,detection_classes,num_detections --input_shapes=1,300,300,3
+```
+
+This did not work as it turned out the model needed to be in SavedModel format to be converted. Then we went onto converting our model to SavedModel format.
