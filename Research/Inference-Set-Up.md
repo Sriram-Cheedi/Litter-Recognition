@@ -41,4 +41,38 @@ First we tried the following command to convert our .pb model into a .tflite one
 tflite_convert --graph_def_file=/home/ryan/SEP/code/Reconstruction/TACO-20250119T094850Z-001/TACO/reconstructed_TACO_graph.pb --output_file=/home/ryan/SEP/code/Reconstruction/model.tflite --input_arrays=image_tensor --output_arrays=detection_boxes,detection_scores,detection_classes,num_detections --input_shapes=1,300,300,3
 ```
 
-This did not work as it turned out the model needed to be in SavedModel format to be converted. Then we went onto converting our model to SavedModel format.
+This did not work as it turned out the model needed to be in SavedModel format to be converted. Then we went onto converting our model to SavedModel format:
+
+```
+# Code generate by ChatGPT
+# Code to convert from a .pb to a saved model format
+
+import tensorflow as tf
+from tensorflow.python.framework import graph_io
+
+def convert_to_saved_model(frozen_graph_path, saved_model_dir):
+    # Load the frozen graph
+    with tf.compat.v1.gfile.GFile(frozen_graph_path, 'rb') as f:
+        graph_def = tf.compat.v1.GraphDef()
+        graph_def.ParseFromString(f.read())
+
+    # Create a new graph and import the frozen graph into it
+    with tf.compat.v1.Session() as sess:
+        tf.import_graph_def(graph_def, name='')
+
+        # Save as SavedModel
+        tf.compat.v1.saved_model.simple_save(
+            sess,
+            saved_model_dir,
+            inputs={"image_tensor": sess.graph.get_tensor_by_name("image_tensor:0")},
+            outputs={
+                "detection_boxes": sess.graph.get_tensor_by_name("detection_boxes:0"),
+                "detection_scores": sess.graph.get_tensor_by_name("detection_scores:0"),
+                "detection_classes": sess.graph.get_tensor_by_name("detection_classes:0"),
+                "num_detections": sess.graph.get_tensor_by_name("num_detections:0")
+            }
+        )
+
+# Call this function with the path to the frozen graph and where to save the model
+convert_to_saved_model("/home/ryan/SEP/code/Reconstruction/TACO-20250119T094850Z-001/TACO/reconstructed_TACO_graph.pb", "/home/ryan/SEP/code/Reconstruction/saved_model")
+```
