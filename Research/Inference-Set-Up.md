@@ -4,6 +4,11 @@ After struggling for a long while to build an object detection model using the T
 
 Now that we had the model, we set out to integrating it into our Raspberry Pi 4...
 
+#### ChatGPT Usage in this Section:
+This part of our project utilised ChatGPT generated code in order to fastrack the process of setting up the model before getting to writing the inference code ourselves. This is because the inference code is the only code that will actually feature and interact with our main project and the generated code has only been used to perform menial tasks like file conversion.
+
+Aware of the risks of generated code, the generated code has been checked against tensorflow documentation for the processes to ensure it is correct. This can be found at [the TensorFlow site].(https://www.tensorflow.org/api_docs)
+
 ## Reconstructing the Frozen Graph
 As the .pb detection file we had obtained was incomplete, we had to adapt code found at the previous link into a program that would translate the .pb file into our usable frozen graph. This code can be found at code/graphReconstructer.py in our repository.
 
