@@ -119,7 +119,14 @@ initiatives.
 
 
 ## Project Structure
-
+2024-LitterRecognition1
+├── .gitHub/             ## This directory contains GitHub-specific configurations and workflows.
+├── Research/            ## This folder houses all research materials, including reports, studies, and references that form the foundation of the project.
+├── code/                ## This directory contains the project's source code.
+├── docs/                ## This directory contains architecture diagrams and documentation on usage of AI tools and related resources.
+├── .gitignore           ## Specifies files and directories to exclude from version control.
+├── LICENSE              ## This file defines the licensing terms under which the project can be used, modified, or distributed.v 
+└── README.md            ## The primary documentation file for the project which contains an overview of the project, setup instructions, and other essential information.
 
 ## User Instructions
 
