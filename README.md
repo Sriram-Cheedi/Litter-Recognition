@@ -136,6 +136,7 @@ Now navigate to the directory the python files are stored in on your machine via
 ```console
 python interface.py
 ```
+Now enter the port as displayed in the Arduino IDE.
 A PyGame window will now open.
 
 To control the arm, click into the window and press the key corresponding to the desired servo you want to move:
