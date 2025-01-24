@@ -120,14 +120,22 @@ initiatives.
 
 ## Project Structure
 ```bash
+
 2024-LitterRecognition1
-├── .gitHub/             ## This directory contains GitHub-specific configurations and workflows.
-├── Research/            ## This folder houses all research materials, including reports, studies, and references that form the foundation of the project.
-├── code/                ## This directory contains the project's source code.
-├── docs/                ## This directory contains architecture diagrams and documentation on usage of AI tools and related resources.
-├── .gitignore           ## Specifies files and directories to exclude from version control.
-├── LICENSE              ## This file defines the licensing terms under which the project can be used, modified, or distributed.v 
-└── README.md            ## The primary documentation file for the project which contains an overview of the project, setup instructions, and other essential information.
+├── Research/                             # Folder housing all research materials, reports, studies, and references foundational to the project.
+├── code                                  # Directory containing the project's source code.
+│   ├── README.md                         # Detailed guide to the codebase, explaining the purpose of each script and its usage.
+│   ├── ROI_safety.py                     # Code for determining ROI and ensuring safety in robotic movements.
+│   ├── arduino-script/
+│   │   └── arduino-script.ino            # Script for controlling the Braccio robotic arm via serial input.
+│   ├── braccio_adapter.py                # Code facilitating serial communication with an Arduino.
+│   ├── interface.py                      # User interface for controlling the Braccio robotic arm via keyboard inputs, extending functionality of braccio_adapter.py.
+│   ├── requirements.txt                  # File listing required dependencies.
+│   └── tests/
+│       └── test_interface.py             # Test cases for the Braccio Arm.
+├── docs                                  # Directory with architecture diagrams and documentation on AI tools and related resources.
+├── LICENSE                               # File defining licensing terms for using, modifying, or distributing the project.
+└── README.md                             # Primary documentation file with an overview of the project, setup instructions, and essential information.
 ```
 
 ## User Instructions
