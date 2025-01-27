@@ -7,7 +7,7 @@ from object_detection.protos import string_int_label_map_pb2
 
 
 def createLabelMap():
-    ANNOTATION_FILE = '/home/ryan/SEP/code/Reconstruction/TACO-20250119T094850Z-001/TACO/data/annotations.json'
+    ANNOTATION_FILE = '/2024-LitterRecognition1/code/Model/annotations.json'
     no_Of_Classes = 60
     
     with open(ANNOTATION_FILE) as jsonFile:
@@ -24,7 +24,7 @@ def createLabelMap():
         item.id = int(category['id'])+1
         item.name = category['name']
 
-    with open('/home/ryan/SEP/code/Reconstruction/labelmap.pbtxt', 'w') as f:
+    with open('/2024-LitterRecognition1/code/Model/labelmap.pbtxt', 'w') as f:
         f.write(text_format.MessageToString(labelmap))
 
     print('Label map witten to labelmap.pbtxt')
