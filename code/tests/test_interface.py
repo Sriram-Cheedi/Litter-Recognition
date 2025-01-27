@@ -11,7 +11,7 @@ from braccio_adapter import BraccioAdapter
 hardware_tests = os.getenv("RUN_HARDWARE_TESTS", "false").lower() == "true"
 
 class TestInterface(unittest.TestCase):
-    @skipIf(not hardware_tests, "Skipping hardware tests in CI.")
+
 
     def test_inBounds(self):
         uBounds = [30, 180, 165, 180, 180, 180, 73]
@@ -31,6 +31,7 @@ class TestInterface(unittest.TestCase):
             [30, 0, 165, 180, 180, 0, 10]
         )
 
+    @skipIf(not hardware_tests, "Skipping hardware tests in CI.")
     def test_servo_movement_and_home_position(self):
         braccio = BraccioAdapter(serial_port_robot="COM4")
 
@@ -52,6 +53,7 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(braccio.s5, 180)
         self.assertEqual(braccio.s6, 60)  # Ensure the gripper value is consistent.
 
+    @skipIf(not hardware_tests, "Skipping hardware tests in CI.")
     def test_move_single_joint(self):
         braccio_debug = BraccioDebug(serial_port_robot_magnet="COM4")
 
