@@ -66,7 +66,8 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         self.move_single_joint(servo, degrees)
 
 def main():
-    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM4")
+    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port)    
     braccioControlString = "Control the Braccio using: \n\
                             Servo 1 UP/DOWN Q/A\n\
                             Servo 2 UP/DOWN W/S\n\
