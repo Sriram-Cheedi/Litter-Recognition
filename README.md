@@ -179,8 +179,7 @@ To control the arm, click into the window and press the key corresponding to the
 
 
 ## Architecture Diagram
-![image](https://github.com/spe-uob/2024-LitterRecognition1/blob/Update-Architecture-Diagram/docs/Architecture-Diagrams/Architecture%20diagram.jpeg)
-
+![image](https://github.com/spe-uob/2024-LitterRecognition1/blob/Update-Architecture-Diagram/docs/Architecture-Diagrams/Architecture%20diagram.jpeg?raw=true)
 
 ## License
 This project uses the MIT license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
