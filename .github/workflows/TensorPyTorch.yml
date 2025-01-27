@@ -27,8 +27,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install -r code/requirements.txt
-        python -m pip install cython pyyaml==5.4.1
-        python -m pip install pytest pytest-cov tf-models-official
+    - name: Install TF Object Detection API
+      run: |
+        git clone https://github.com/tensorflow/models.git
+        cd models/research
+        protoc object_detection/protos/*.proto --python_out=.
+        cp object_detection/packages/tf2/setup.py .
+        python -m pip install .
     - name: Test with pytest
       run: |
         pytest code/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
