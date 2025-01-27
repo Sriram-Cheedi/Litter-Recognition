@@ -6,8 +6,7 @@ from google.protobuf import text_format
 from object_detection.protos import string_int_label_map_pb2
 
 
-def createLabelMap():
-    ANNOTATION_FILE = '/2024-LitterRecognition1/code/Model/annotations.json'
+def createLabelMap(ANNOTATION_FILE, OUT_FILE):
     no_Of_Classes = 60
     
     with open(ANNOTATION_FILE) as jsonFile:
@@ -24,11 +23,15 @@ def createLabelMap():
         item.id = int(category['id'])+1
         item.name = category['name']
 
-    with open('/2024-LitterRecognition1/code/Model/labelmap.pbtxt', 'w') as f:
+    with open(OUT_FILE, 'w') as f:
         f.write(text_format.MessageToString(labelmap))
 
     print('Label map witten to labelmap.pbtxt')
 
 
 
-createLabelMap()
+if __name__ == "__main__":
+    # Requires path to .json file
+    IN_PATH = "" 
+    OUT_PATH = ""
+    reconstruct(IN_PATH, OUT_PATH)
