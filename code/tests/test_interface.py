@@ -3,12 +3,16 @@ import os
 import unittest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
+from unittest import skipIf
 from interface import *
 from braccio_adapter import BraccioAdapter
 
 
+hardware_tests = os.getenv("RUN_HARDWARE_TESTS", "false").lower() == "true"
+
 class TestInterface(unittest.TestCase):
+    @skipIf(not hardware_tests, "Skipping hardware tests in CI.")
+
     def test_inBounds(self):
         uBounds = [30, 180, 165, 180, 180, 180, 73]
         lBounds = [10, 0, 15, 0, 0, 0, 10]
