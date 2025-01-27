@@ -38,6 +38,8 @@ jobs:
         cp object_detection/packages/tf2/setup.py .
         python -m pip install .
     - name: Test with pytest
+      env:
+        RUN_HARDWARE_TESTS: false  # Skip hardware tests in CI
       run: |
         pip install pytest pytest-cov
         pytest code/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
