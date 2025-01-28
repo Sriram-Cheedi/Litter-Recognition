@@ -1,0 +1,26 @@
+# Inspired by https://github.com/Santhoshkumard11/deploy-pygame
+
+name: Build the Pygame Interface
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-pybag:
+    name: Arm Interface
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout
+      run: |
+          python -m pip install pybag
+          python -m pybag --build code/interface.py
+          
+    - name : "Upload to GitHub pages branch gh-pages"
+      uses: JamesIves/github-pages-deploy-action@4.1.7
+      with:
+        branch: Continuous-Deployment
+        folder: docs
