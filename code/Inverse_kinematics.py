@@ -48,17 +48,25 @@ def move_line(d):
       out = phase_two(d)
   return out
 
-def move_to_anywhere(x, y, z):
-#Base degree
-  if y == 0:
-    if x <= 0:
-      theta_base = 180
+def move(x, y, z):
 
-    else:
-      theta_base = 0
+  dist = math.sqrt(x**2 + y**2 + z**2)
+  floor_projection = math.sqrt(x**2 + y**2)
+  base = math.degrees(math.atan(x/y))
+  shoulder = (y**2 + floor_projection**2)
 
-  else:
-    theta_base = 90 - math.degrees(math.atan(x/y))
+  degrees = move_line(dist)
+  return (base, degrees[0] - shoulder, degrees[1], degrees[2], degrees[3])
+# #Base degree
+#   if y == 0:
+#     if x <= 0:
+#       theta_base = 180
+
+#     else:
+#       theta_base = 0
+
+#   else:
+#     theta_base = 90 - math.degrees(math.atan(x/y))
 
 #Shoulder/Elbow/Wrist
 

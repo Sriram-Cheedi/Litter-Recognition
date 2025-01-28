@@ -4,7 +4,10 @@ import braccio_adapter
 import Inverse_kinematics
 from enum import Enum
 
-d = 15
+x = 0
+y = 150
+z = 0
+d = 100
 
 class ServoMotor(Enum):
     S1 = 1
@@ -71,6 +74,10 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         self.move_single_joint(servo, degrees)
 
 def main():
+    global d
+    global x
+    global y
+    global z
     braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM3")
     braccioControlString = "Control the Braccio using: \n\
                             Servo 1 UP/DOWN Q/A\n\
@@ -113,6 +120,7 @@ def main():
     
 
     while running:
+        
         screen.fill(BLACK)
         display_text("Press the key to see which key is pressed. Press ESC to exit.", small_font, WHITE, 10, 10)
         display_text("Key History (last 5):", small_font, WHITE, 10, 60)
@@ -163,13 +171,13 @@ def main():
         if keys[pygame.K_h]:
             braccioDebug.down(ServoMotor.S6)
         if keys[pygame.K_i]:
-            d += 1
-            braccioDebug.servo_movement(90, 90 - Inverse_kinematics.move_line(d)[0], 90 - Inverse_kinematics.move_line(d)[1], 90 - Inverse_kinematics.move_line(d)[2], braccioDebug.s5, braccioDebug.s6)
+            d += 10
+            print(d)
+            braccioDebug.servo_movement(90 + Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
 
-        if keys[pygame.K_i]:
-            d -= 1
-            
-            braccioDebug.servo_movement(90, 90 - Inverse_kinematics.move_line(d)[0], 90 - Inverse_kinematics.move_line(d)[1], 90 - Inverse_kinematics.move_line(d)[2], braccioDebug.s5, braccioDebug.s6)
+        if keys[pygame.K_k]:
+            d -= 10
+            braccioDebug.servo_movement(90 + Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
             
 
         
