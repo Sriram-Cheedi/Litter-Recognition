@@ -39,6 +39,15 @@ print(phase_one(200))
 
 # print(phase_two(350))
 
+def move_line(d):
+  out = (0, 0, 0)
+  if (d > 10):
+    if(d < dp):
+      out = phase_one(d)
+    else:
+      out = phase_two(d)
+  return out
+
 def move_to_anywhere(x, y, z):
 #Base degree
   if y == 0:

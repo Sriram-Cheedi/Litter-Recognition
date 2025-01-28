@@ -4,6 +4,8 @@ import braccio_adapter
 import Inverse_kinematics
 from enum import Enum
 
+d = 15
+
 class ServoMotor(Enum):
     S1 = 1
     S2 = 2
@@ -27,6 +29,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
     def __init__(self, serial_port_robot_magnet="COM3"):
         super().__init__(serial_port_robot_magnet,)
         self.home_position()
+    
 
     def move_single_joint(self, servo, degrees):
         # get currect vals
@@ -37,6 +40,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         s5 = self.s5
         s6 = self.s6
         servoPos = [10, s1, s2, s3, s4, s5, s6]
+        
 
         #Holds upper and lower bounds for each servo motors movement
         uBounds = [30, 180, 165, 180, 180, 180, 73]
@@ -159,7 +163,14 @@ def main():
         if keys[pygame.K_h]:
             braccioDebug.down(ServoMotor.S6)
         if keys[pygame.K_i]:
-            braccioDebug.servo_movement(90, Inverse_kinematics.phase_two()[0], Inverse_kinematics.phase_two()[1]+90, 90 - Inverse_kinematics.phase_two()[2], braccioDebug.s5, braccioDebug.s6)
+            d += 1
+            braccioDebug.servo_movement(90, 90 - Inverse_kinematics.move_line(d)[0], 90 - Inverse_kinematics.move_line(d)[1], 90 - Inverse_kinematics.move_line(d)[2], braccioDebug.s5, braccioDebug.s6)
+
+        if keys[pygame.K_i]:
+            d -= 1
+            
+            braccioDebug.servo_movement(90, 90 - Inverse_kinematics.move_line(d)[0], 90 - Inverse_kinematics.move_line(d)[1], 90 - Inverse_kinematics.move_line(d)[2], braccioDebug.s5, braccioDebug.s6)
+            
 
         
         if key_history:
