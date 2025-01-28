@@ -204,7 +204,7 @@ To control the arm, click into the window and press the key corresponding to the
 
 
 ## License
-This project uses the MIT license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
+This project uses the Apache-2.0 license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
 
 ## Group Members
 |     Member     |         Email         |
