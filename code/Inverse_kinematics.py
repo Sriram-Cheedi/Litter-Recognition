@@ -10,6 +10,8 @@ l2=125
 l3=165
 k = math.sqrt(l2**2 + l3**2)
 
+d0 = math.sqrt(k**2 - l1**2)
+
 dp = math.sqrt((l1 + l2)**2 + l3**2)
 
 print(dp)
@@ -32,7 +34,7 @@ def phase_two(d):
 
   return (theta, gamma, delta)
 
-print(k)
+print(d0)
 print(phase_one(200))
 
 # print(phase_two(350))
@@ -47,7 +49,7 @@ def move_to_anywhere(x, y, z):
       theta_base = 0
 
   else:
-    theta_base = 90 - degrees(atan(x/y))
+    theta_base = 90 - math.degrees(math.atan(x/y))
 
 #Shoulder/Elbow/Wrist
 
