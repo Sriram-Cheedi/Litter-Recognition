@@ -1,11 +1,26 @@
+from math import *
+
 #After receiving the coordinate
 #Calculate degrees of each part of arm to reach
 
-#length of each part of arm
+#length of each part of arm (mm)
 l0=74
 l1=125
 l2=125
-l3=109+81
+l3=165
+
+dp = sqrt((l1 + l2)**2 + l3**2)
+
+print(dp)
+
+def phase_two():
+  theta = degrees(atan(l3/(l1+l2)))
+  gamma = 0
+  delta = 90
+
+  return (theta, gamma, delta)
+
+print(phase_two())
 
 def move_to_anywhere(x, y, z):
 #Base degree

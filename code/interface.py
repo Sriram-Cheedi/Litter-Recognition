@@ -1,6 +1,7 @@
 import pygame
 import sys
 import braccio_adapter
+import Inverse_kinematics
 from enum import Enum
 
 class ServoMotor(Enum):
@@ -23,7 +24,7 @@ def checkInBounds(values, uBound, lBound):
     return newValues
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM4"):
+    def __init__(self, serial_port_robot_magnet="COM3"):
         super().__init__(serial_port_robot_magnet,)
         self.home_position()
 
@@ -59,22 +60,23 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         servoPos = checkInBounds(servoPos, uBounds, lBounds)
         self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
     
-    def up(self, servo : ServoMotor, degrees = 4):
+    def up(self, servo : ServoMotor, degrees = 1):
         self.move_single_joint(servo, degrees)
         
-    def down(self, servo: ServoMotor, degrees = -4):
+    def down(self, servo: ServoMotor, degrees = -1):
         self.move_single_joint(servo, degrees)
 
 def main():
-    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM4")
+    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM3")
     braccioControlString = "Control the Braccio using: \n\
                             Servo 1 UP/DOWN Q/A\n\
                             Servo 2 UP/DOWN W/S\n\
                             Servo 3 UP/DOWN E/D\n\
                             Servo 4 UP/DOWN R/F\n\
                             Servo 5 UP/DOWN T/G\n\
-                            Servo 6 UP/DOWN Z/Y\n\
+                            Servo 6 UP/DOWN Y/H\n\
                             HOME C\
+                            Print degrees V\
                             "
     print(braccioControlString)
     pygame.init()
@@ -125,8 +127,7 @@ def main():
                 if event.key == pygame.K_c:
                     braccioDebug.home_position()
                 elif event.key == pygame.K_p:
-                    braccioDebug.move_to_object()
-                    # print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                    print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
                 elif event.key == pygame.K_l:
                     braccioDebug.move_to_object(0)
                 if event.key == pygame.K_ESCAPE:
@@ -143,7 +144,7 @@ def main():
             braccioDebug.up(ServoMotor.S4)
         if keys[pygame.K_t]:
             braccioDebug.up(ServoMotor.S5)
-        if keys[pygame.K_z]:
+        if keys[pygame.K_y]:
             braccioDebug.up(ServoMotor.S6)
         if keys[pygame.K_a]:
             braccioDebug.down(ServoMotor.S1)
@@ -157,6 +158,8 @@ def main():
             braccioDebug.down(ServoMotor.S5)
         if keys[pygame.K_h]:
             braccioDebug.down(ServoMotor.S6)
+        if keys[pygame.K_i]:
+            braccioDebug.servo_movement(90, Inverse_kinematics.phase_two()[0], Inverse_kinematics.phase_two()[1]+90, 90 - Inverse_kinematics.phase_two()[2], braccioDebug.s5, braccioDebug.s6)
 
         
         if key_history:
