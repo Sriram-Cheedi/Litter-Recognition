@@ -14,7 +14,13 @@ d0 = math.sqrt(k**2 - l1**2)
 
 dp = math.sqrt((l1 + l2)**2 + l3**2)
 
-print(dp)
+#calculate dmax
+a1 = math.degrees(math.asin(((l1+l2)*(math.sin(math.radians(15))))/(l3)))
+a2 = 180 - a1 - 15
+print(a2)
+dmax = (math.sin(math.radians(a2)) * l3)/(math.sin(math.radians(15)))
+
+print(dmax)
 
 def phase_one(d):
   x = math.degrees(math.atan(l3/l2))
@@ -34,8 +40,8 @@ def phase_two(d):
 
   return (theta, gamma, delta)
 
-print(d0)
-print(phase_one(200))
+# print(d0)
+# print(phase_one(200))
 
 # print(phase_two(350))
 
@@ -51,6 +57,8 @@ def move_line(d):
 def move(x, y, z):
 
   dist = math.sqrt(x**2 + y**2 + z**2)
+  if dist > math.floor(dmax):
+    dist = math.floor(dmax)
   floor_projection = math.sqrt(x**2 + y**2)
   base = math.degrees(math.atan(x/y))
   shoulder = math.degrees(math.atan(z / floor_projection))
