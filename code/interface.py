@@ -1,7 +1,13 @@
 import pygame
 import sys
 import braccio_adapter
+import Inverse_kinematics
 from enum import Enum
+
+x = 0
+y = 150
+z = 0
+d = 100
 
 class ServoMotor(Enum):
     S1 = 1
@@ -24,9 +30,10 @@ def checkInBounds(values, uBound, lBound):
     return newValues
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM4"):
+    def __init__(self, serial_port_robot_magnet="COM3"):
         super().__init__(serial_port_robot_magnet,)
         self.home_position()
+    
 
     def move_single_joint(self, servo, degrees):
         # get currect vals
@@ -37,6 +44,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         s5 = self.s5
         s6 = self.s6
         servoPos = [10, s1, s2, s3, s4, s5, s6]
+        
 
         #Holds upper and lower bounds for each servo motors movement
         uBounds = [30, 180, 165, 180, 180, 180, 73]
@@ -63,13 +71,17 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         # Update internal state
         self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:]
     
-    def up(self, servo : ServoMotor, degrees = 4):
+    def up(self, servo : ServoMotor, degrees = 1):
         self.move_single_joint(servo, degrees)
         
-    def down(self, servo: ServoMotor, degrees = -4):
+    def down(self, servo: ServoMotor, degrees = -1):
         self.move_single_joint(servo, degrees)
 
 def main():
+    global d
+    global x
+    global y
+    global z
 
     # User input for serial port
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
@@ -80,8 +92,9 @@ def main():
                             Servo 3 UP/DOWN E/D\n\
                             Servo 4 UP/DOWN R/F\n\
                             Servo 5 UP/DOWN T/G\n\
-                            Servo 6 UP/DOWN Z/Y\n\
+                            Servo 6 UP/DOWN Y/H\n\
                             HOME C\
+                            Print degrees V\
                             "
     print(braccioControlString)
     pygame.init()
@@ -115,6 +128,7 @@ def main():
     
 
     while running:
+        
         screen.fill(BLACK)
         display_text("Press the key to see which key is pressed. Press ESC to exit.", small_font, WHITE, 10, 10)
         display_text("Key History (last 5):", small_font, WHITE, 10, 60)
@@ -141,10 +155,7 @@ def main():
                 if event.key == pygame.K_c:
                     braccioDebug.home_position()
                 elif event.key == pygame.K_p:
-                    braccioDebug.move_to_object()
-                    # print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
-                elif event.key == pygame.K_l:
-                    braccioDebug.move_to_object(0)
+                    print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
                 if event.key == pygame.K_ESCAPE:
                     running = False
 
@@ -159,7 +170,7 @@ def main():
             braccioDebug.up(ServoMotor.S4)
         if keys[pygame.K_t]:
             braccioDebug.up(ServoMotor.S5)
-        if keys[pygame.K_z]:
+        if keys[pygame.K_y]:
             braccioDebug.up(ServoMotor.S6)
         if keys[pygame.K_a]:
             braccioDebug.down(ServoMotor.S1)
@@ -173,6 +184,29 @@ def main():
             braccioDebug.down(ServoMotor.S5)
         if keys[pygame.K_h]:
             braccioDebug.down(ServoMotor.S6)
+        if keys[pygame.K_i]:
+            y += 10
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+
+        if keys[pygame.K_k]:
+            y -= 10
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+            
+        if keys[pygame.K_j]:
+            x += 10
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+
+        if keys[pygame.K_l]:
+            x -= 10
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+
+        if keys[pygame.K_u]:
+            z += 10
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+
+        if keys[pygame.K_o]:
+            z -= 10
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
 
         
         if key_history:
