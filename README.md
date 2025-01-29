@@ -119,7 +119,24 @@ initiatives.
 
 
 ## Project Structure
+```bash
 
+2024-LitterRecognition1
+├── Research/                             # Folder housing all research materials, reports, studies, and references foundational to the project.
+├── code                                  # Directory containing the project's source code.
+│   ├── README.md                         # Detailed guide to the codebase, explaining the purpose of each script and its usage.
+│   ├── ROI_safety.py                     # Code for determining ROI and ensuring safety in robotic movements.
+│   ├── arduino-script/
+│   │   └── arduino-script.ino            # Script for controlling the Braccio robotic arm via serial input.
+│   ├── braccio_adapter.py                # Code facilitating serial communication with an Arduino.
+│   ├── interface.py                      # User interface for controlling the Braccio robotic arm via keyboard inputs, extending functionality of braccio_adapter.py.
+│   ├── requirements.txt                  # File listing required dependencies.
+│   └── tests/
+│       └── test_interface.py             # Test cases for the Braccio Arm.
+├── docs                                  # Directory with architecture diagrams and documentation on AI tools and related resources.
+├── LICENSE                               # File defining licensing terms for using, modifying, or distributing the project.
+└── README.md                             # Primary documentation file with an overview of the project, setup instructions, and essential information.
+```
 
 ## User Instructions
 
@@ -136,6 +153,7 @@ Now navigate to the directory the python files are stored in on your machine via
 ```console
 python interface.py
 ```
+Now enter the port as displayed in the Arduino IDE.
 A PyGame window will now open.
 
 To control the arm, click into the window and press the key corresponding to the desired servo you want to move:
@@ -179,11 +197,14 @@ To control the arm, click into the window and press the key corresponding to the
 
 
 ## Architecture Diagram
-![image](https://github.com/user-attachments/assets/63eef16f-5590-4009-96d8-2228951b796f)
+
+![Diagram](https://raw.githubusercontent.com/spe-uob/2024-LitterRecognition1/refs/heads/dev/docs/Architecture-Diagrams/Architecture%20diagram.jpeg?token=GHSAT0AAAAAAC5TZQFICWQB47N6YNWNIV5CZ4X4FSQ)
+
+
 
 
 ## License
-This project uses the MIT license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
+This project uses the Apache-2.0 license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
 
 ## Group Members
 |     Member     |         Email         |

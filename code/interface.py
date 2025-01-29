@@ -17,6 +17,7 @@ class ServoMotor(Enum):
     S5 = 5
     S6 = 6
 
+# Function to ensure servo positions stay within defined bounds
 def checkInBounds(values, uBound, lBound):
     newValues = [0] * 7
     for index, item in enumerate(values):
@@ -66,6 +67,9 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             
         servoPos = checkInBounds(servoPos, uBounds, lBounds)
         self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
+
+        # Update internal state
+        self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:]
     
     def up(self, servo : ServoMotor, degrees = 1):
         self.move_single_joint(servo, degrees)
@@ -78,7 +82,10 @@ def main():
     global x
     global y
     global z
-    braccioDebug :BraccioDebug = BraccioDebug(serial_port_robot_magnet="COM3")
+
+    # User input for serial port
+    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port)    
     braccioControlString = "Control the Braccio using: \n\
                             Servo 1 UP/DOWN Q/A\n\
                             Servo 2 UP/DOWN W/S\n\
@@ -100,6 +107,7 @@ def main():
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
 
     font = pygame.font.Font(None, 74)
     small_font = pygame.font.Font(None, 36)
@@ -128,6 +136,14 @@ def main():
 
         for i, key in enumerate(key_history[-5:]):
             display_text(f"{i+1}: {key}", small_font, RED, 10, 100 + i * 40)
+
+        # Display current servo angles
+        display_text(f"Servo 1: {braccioDebug.s1}°", small_font, GREEN, 400, 100)
+        display_text(f"Servo 2: {braccioDebug.s2}°", small_font, GREEN, 400, 140)
+        display_text(f"Servo 3: {braccioDebug.s3}°", small_font, GREEN, 400, 180)
+        display_text(f"Servo 4: {braccioDebug.s4}°", small_font, GREEN, 400, 220)
+        display_text(f"Servo 5: {braccioDebug.s5}°", small_font, GREEN, 400, 260)
+        display_text(f"Servo 6: {braccioDebug.s6}°", small_font, GREEN, 400, 300)
 
         for event in pygame.event.get():
             

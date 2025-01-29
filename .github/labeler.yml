@@ -1,0 +1,18 @@
+# Add 'enhancement' label to any code file changes
+enhancement:
+- changed-files:
+  - any-glob-to-any-file: code/*
+
+# Add 'research' label to any Research file changes
+research:
+- changed-files:
+  - any-glob-to-any-file: Research/*
+
+# Add 'documentation' label to any docs file changes
+documentation:
+- changed-files:
+  - any-glob-to-any-file: docs/*
+
+
+
+
