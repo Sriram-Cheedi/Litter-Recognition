@@ -216,6 +216,16 @@ def main():
             z -= 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
 
+        if keys[pygame.K_m]:
+            x = int(input("Enter x:"))
+            y = int(input("Enter y:"))
+            z = int(input("Enter z:"))
+            print(x, y, z)
+
+            braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
+            braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
         if key_history:
             display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
