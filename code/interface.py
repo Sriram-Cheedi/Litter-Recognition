@@ -87,12 +87,8 @@ def main():
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port)    
     braccioControlString = "Control the Braccio using: \n\
-                            Servo 1 UP/DOWN Q/A\n\
-                            Servo 2 UP/DOWN W/S\n\
-                            Servo 3 UP/DOWN E/D\n\
-                            Servo 4 UP/DOWN R/F\n\
-                            Servo 5 UP/DOWN T/G\n\
-                            Servo 6 UP/DOWN Y/H\n\
+                            Servo 5 UP/DOWN A/D\n\
+                            Servo 6 UP/DOWN S/W\n\
                             HOME C\
                             Print degrees V\
                             "
@@ -160,30 +156,42 @@ def main():
                     running = False
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_q]:
-            braccioDebug.up(ServoMotor.S1)
-        if keys[pygame.K_w]:
-            braccioDebug.up(ServoMotor.S2)
-        if keys[pygame.K_e]:
-            braccioDebug.up(ServoMotor.S3)
-        if keys[pygame.K_r]:
-            braccioDebug.up(ServoMotor.S4)
-        if keys[pygame.K_t]:
-            braccioDebug.up(ServoMotor.S5)
-        if keys[pygame.K_y]:
-            braccioDebug.up(ServoMotor.S6)
+        # if keys[pygame.K_q]:
+        #     braccioDebug.up(ServoMotor.S1)
+        # if keys[pygame.K_w]:
+        #     braccioDebug.up(ServoMotor.S2)
+        # if keys[pygame.K_e]:
+        #     braccioDebug.up(ServoMotor.S3)
+        # if keys[pygame.K_r]:
+        #     braccioDebug.up(ServoMotor.S4)
+        # if keys[pygame.K_t]:
+        #     braccioDebug.up(ServoMotor.S5)
+        # if keys[pygame.K_y]:
+        #     braccioDebug.up(ServoMotor.S6)
+        # if keys[pygame.K_a]:
+        #     braccioDebug.down(ServoMotor.S1)
+        # if keys[pygame.K_s]:
+        #     braccioDebug.down(ServoMotor.S2)
+        # if keys[pygame.K_d]:
+        #     braccioDebug.down(ServoMotor.S3)
+        # if keys[pygame.K_f]:
+        #     braccioDebug.down(ServoMotor.S4)
+        # if keys[pygame.K_g]:
+        #     braccioDebug.down(ServoMotor.S5)
+        # if keys[pygame.K_h]:
+        #     braccioDebug.down(ServoMotor.S6)
+        
         if keys[pygame.K_a]:
-            braccioDebug.down(ServoMotor.S1)
+            braccioDebug.up(ServoMotor.S5)
         if keys[pygame.K_s]:
-            braccioDebug.down(ServoMotor.S2)
-        if keys[pygame.K_d]:
-            braccioDebug.down(ServoMotor.S3)
-        if keys[pygame.K_f]:
-            braccioDebug.down(ServoMotor.S4)
-        if keys[pygame.K_g]:
-            braccioDebug.down(ServoMotor.S5)
-        if keys[pygame.K_h]:
+            braccioDebug.up(ServoMotor.S6)
+        if keys[pygame.K_w]:
             braccioDebug.down(ServoMotor.S6)
+        if keys[pygame.K_d]:
+            braccioDebug.down(ServoMotor.S5)
+
+        
+        
         if keys[pygame.K_i]:
             y += 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
@@ -210,7 +218,7 @@ def main():
 
         
         if key_history:
-            display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 250, screen_height // 2 - 40)
+            display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
 
 
         pygame.display.flip()
