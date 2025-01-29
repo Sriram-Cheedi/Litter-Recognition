@@ -53,10 +53,10 @@ def move(x, y, z):
   dist = math.sqrt(x**2 + y**2 + z**2)
   floor_projection = math.sqrt(x**2 + y**2)
   base = math.degrees(math.atan(x/y))
-  shoulder = (y**2 + floor_projection**2)
+  shoulder = math.degrees(math.atan(z / floor_projection))
 
   degrees = move_line(dist)
-  return (base, degrees[0] - shoulder, degrees[1], degrees[2], degrees[3])
+  return (base, degrees[0] - shoulder, degrees[1], degrees[2])
 # #Base degree
 #   if y == 0:
 #     if x <= 0:
