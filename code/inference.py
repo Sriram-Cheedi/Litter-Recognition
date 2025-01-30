@@ -28,133 +28,90 @@ import os
 import cv2
 import tensorflow as tf
 from picamera2 import Picamera2
+import numpy as np
 
-MODEL = 'ssd_mobilenet_v2_taco_2018_03_29.pb'
-MODELPATH = 'PATH_TO_PB_MODEL'
-DATAPATH = 'PATH_TO_TACO/data'
-
-# Reconstruct frozen graph from .pb model
-def reconstruct(pb_path):
-    if not os.path.isfile(pb_path):
-        print("Error: %s not found" % pb_path)
-
-    print("Reconstructing Tensorflow model")
-    detection_graph = tf.Graph()
-    with detection_graph.as_default():
-        od_graph_def = tf.compat.v1.GraphDef()
-        with tf.io.gfile.GFile(pb_path, 'rb') as fid:
-            serialized_graph = fid.read()
-            od_graph_def.ParseFromString(serialized_graph)
-            tf.import_graph_def(od_graph_def, name='')
-    print("Success!")
-    return detection_graph
-
-# Reconstruct label pbtxt file from TACO data
-def labelMap(data_path):
-    ANNOTATIONS_FILE = os.path.join(DATAPATH, 'annotations.json')
-    noOfClasses = 60
+# Loads the label map into a list
+def loadLabelMap(LABELMAP_PATH):
+    labelMap = {}
     
-    with open(ANNOTATIONS_FILE) as json_file:
-        data = json.load(json_file)
-        
-    classes = data['categories']
-    
-    #Building label map from examples
-    
-    lblMap = string_int_label_map_pb2.StringIntLabelMap()
-    for idx, category in enumerate(classes):
-        item = labelMap.item.add()
-        # label map id 0 is reserved for the background label
-        item.id = int(category['id'])+1
-        item.name = category['name']
-        
-    with open('./labelmap.pbtxt', 'w') as f:
-        #WORKING HERE
-        return
+    with open(LABELMAP_PATH, "r") as lmap:
+        for line in lmap:
+            # Split line at the space
+            parts = line.strip().split(" ", 1)
+            if len(parts) == 2:
+                index, lbl = parts
+                labelMap[int(index)] = lbl
+    return labelMap
 
-        
-    return
-
-# Extracts the object from the image
-def getObjects(img, thres, nms, draw=True, objects=[]):
-    classIds, confs, bbox = net.detect(img,confThreshold=thres,nmsThreshold=nms)
-#Below has been commented out, if you want to print each sighting of an object to the console you can uncomment below     
-#print(classIds,bbox)
-    if len(objects) == 0: objects = classNames
-    objectInfo =[]
-    if len(classIds) != 0:
-        for classId, confidence,box in zip(classIds.flatten(),confs.flatten(),bbox):
-            className = classNames[classId - 1]
-            if className in objects: 
-                objectInfo.append([box,className])
-                if (draw):
-                    cv2.rectangle(img,box,color=(0,255,0),thickness=2)
-                    cv2.putText(img,classNames[classId-1].upper(),(box[0]+10,box[1]+30),
-                    cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
-                    cv2.putText(img,str(round(confidence*100,2)),(box[0]+200,box[1]+30),
-                    cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
+# Calculates and draws the bounding box
+def boundingBox(box, image, label):
+    (startY, startX, endY, endX) = (int(box[0] * 480), int(box[1] * 640), int(box[2] * 480), int(box[3] * 640))
     
-    return img,objectInfo
+    # Draw the bounding box
+    cv2.rectangle(image, (startX, startY), (endX, endY), (0, 255, 0), 2)
+    cv2.putText(image, label, (startX, startY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    return image
 
-
-
-# Need to reconstruct frozen graph from .pb
-# Need to create label file from TACO labels
-# Ensures frozen graph has been recreated and label map available
-def initialise():
-    frozenGraph = reconstruct(MODELPATH)
-    classNames = labelMap(DATAPATH)
+# Main detection function of the script
+def detect(MODEL_PATH, LABELMAP_PATH):
+    # Set up the interpreter for inference
+    interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
+    interpreter.allocate_tensors()
     
+    # Get the input shape and tensors, and the output tensors
+    inpTensors = interpreter.get_input_details()
+    inpShape = inpTensors[0]['shape']
     
+    outTensors = interpreter.get_output_details()
     
-    return
-
-
-if __name__ == '__main__':
-    initialise()
+    # Loads the label map into a list
+    lblMap = loadLabelMap(LABELMAP_PATH)
     
-    # Start the PiCam
-    picam = Picamera2()
-    picam.configure(picam.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
-    picam.start()
+    # Set up the camera 
+    camera = Picamera2()
+    config = camera.create_preview_configuration(main = {"size": (640, 480)})
+    camera.configure(config)
     
-    # Loop that determines what happens when an object is detected
+    # Start the camera
+    camera.start()
+    
+    # Continuous video stream
     while True:
-        # Gets an image from the PiCam
-        img = picam.capture_array("main")
-        img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
-        # Performs detection on the image and extracts the object
-        res, info = getObjects()
-        # Shows labelled image on screen
-        cv2.imshow("Detection Output", img)
+        # Capture and pre-process image
+        frame = camera.capture_array()
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        input = cv2.resize(frame, (300, 300))
+        input = np.expand_dims(input, 0)
         
-        # Waits 200 milliseconds to check for escape input 
-        kill = cv2.waitKey(200)
-        if kill == 27: # Esc key kills process
-            picam.stop()
-            cv2.destroyAllWindows()
+        # Prepare interpreter for detection
+        interpreter.set_tensor(inpTensors[0]['index'], input)
+        interpreter.invoke()
+        
+        # Gets detection results
+        boxes = interpreter.get_tensor(outTensors[0]['index'][0])
+        classes = interpreter.get_tensor(outTensors[1]['index'][0])
+        scores = interpreter.get_tensor(outTensors[2]['index'][0])
+        
+        # Iterates through the detections
+        for detection in range(len(scores)):
+            if scores[detection] > 0.5:
+                box = boxes[detection]
+                label = lblMap[int(classes[detection])]
+                input = boundingBox(box, input, label)
+           
+        cv2.imshow("Litter Detected", input)
+        
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         
-    
-    
-    
-    
-# TWO OPTIONS
-# 1) Adapt code found at link
-# 2) Adapt prewritten code and take frames and pass into detect
+    # Ending cleanly
+    cv2.destroyAllWindows()
+    camera.stop_preview()
+    return
 
 
-# I HAVE
-# pb model (need reconstruct method)
-# labels to create a txtpb
-
-
-
-
-
-
-
-
-
-
-
+# Entry point of the program
+if __name__ == "__main__":
+    MODEL = "/2024-LitterRecognition1/code/Model/model.tflite"
+    LABEL_MAP = "/2024-LitterRecognition1/code/Model/labels.txt"
+    detect(MODEL, LABEL_MAP)
