@@ -1,0 +1,60 @@
+1 Aluminium foil
+2 Battery
+3 Aluminium blister pack
+4 Carded blister pack
+5 Other plastic bottle
+6 Clear plastic bottle
+7 Glass bottle
+8 Plastic bottle cap
+9 Metal bottle cap
+10 Broken glass
+11 Food Can
+12 Aerosol
+13 Drink can
+14 Toilet tube
+15 Other carton
+16 Egg carton
+17 Drink carton
+18 Corrugated carton
+19 Meal carton
+20 Pizza box
+21 Paper cup
+22 Disposable plastic cup
+23 Foam cup
+24 Glass cup
+25 Other plastic cup
+26 Food waste
+27 Glass jar
+28 Plastic lid
+29 Metal lid
+30 Other plastic
+31 Magazine paper
+32 Tissues
+33 Wrapping paper
+34 Normal paper
+35 Paper bag
+36 Plastified paper bag
+37 Plastic film
+38 Six pack rings
+39 Garbage bag
+40 Other plastic wrapper
+41 Single-use carrier bag
+42 Polypropylene bag
+43 Crisp packet
+44 Spread tub
+45 Tupperware
+46 Disposable food container
+47 Foam food container
+48 Other plastic container
+49 Plastic glooves
+50 Plastic utensils
+51 Pop tab
+52 Rope & strings
+53 Scrap metal
+54 Shoe
+55 Squeezable tube
+56 Plastic straw
+57 Paper straw
+58 Styrofoam piece
+59 Unlabeled litter
+60 Cigarette
