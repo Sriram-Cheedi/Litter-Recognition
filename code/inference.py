@@ -88,9 +88,9 @@ def detect(MODEL_PATH, LABELMAP_PATH):
         interpreter.invoke()
         
         # Gets detection results
-        boxes = interpreter.get_tensor(outTensors[0]['index'][0])
-        classes = interpreter.get_tensor(outTensors[1]['index'][0])
-        scores = interpreter.get_tensor(outTensors[2]['index'][0])
+        boxes = interpreter.get_tensor(outTensors[0]['index'])[0]
+        classes = interpreter.get_tensor(outTensors[1]['index'])[0]
+        scores = interpreter.get_tensor(outTensors[2]['index'])[0]
         
         # Iterates through the detections
         for detection in range(len(scores)):
