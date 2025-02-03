@@ -42,7 +42,7 @@ jobs:
       run: |
         git clone --branch v0.0.5 https://git.linuxtv.org/libcamera.git
         cd libcamera
-        meson build
+        meson setup build -Dpycamera=enabled
         ninja -C build
         sudo ninja -C build install
         cd
