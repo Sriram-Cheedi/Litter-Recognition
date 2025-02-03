@@ -99,7 +99,8 @@ def detect(MODEL_PATH, LABELMAP_PATH):
                 label = lblMap[int(classes[detection])]
                 input = boundingBox(box, input, label)
            
-        cv2.imshow("Litter Detected", input)
+        output = input.squeeze()
+        cv2.imshow("Litter Detected", output)
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
