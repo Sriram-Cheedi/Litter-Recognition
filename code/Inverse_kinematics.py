@@ -1,0 +1,82 @@
+import math
+
+#After receiving the coordinate
+#Calculate degrees of each part of arm to reach
+
+#length of each part of arm (mm)
+l0=74
+l1=125
+l2=125
+l3=165
+k = math.sqrt(l2**2 + l3**2)
+
+d0 = math.sqrt(k**2 - l1**2)
+
+dp = math.sqrt((l1 + l2)**2 + l3**2)
+
+#calculate dmax
+a1 = math.degrees(math.asin(((l1+l2)*(math.sin(math.radians(15))))/(l3)))
+a2 = 180 - a1 - 15
+print(a2)
+dmax = (math.sin(math.radians(a2)) * l3)/(math.sin(math.radians(15)))
+
+print(dmax)
+
+def phase_one(d):
+  x = math.degrees(math.atan(l3/l2))
+  w = math.degrees(math.acos((l1**2 + k**2 - d**2)/(2*l1*k)))
+  v = math.degrees(math.acos((l1**2 + d**2 - k**2)/(2*l1*d)))
+
+  theta = 90 - v
+  gamma = 180 - w - x
+  delta = 90
+
+  return (theta, gamma, delta)
+
+def phase_two(d):
+  theta = 90 - math.degrees(math.acos(((l1 + l2)**2 + d**2 - l3**2 )/(2*(l1 + l2)*d)))
+  gamma = 0
+  delta = 180 - math.degrees(math.acos(((l1 + l2)**2 + l3**2 - d**2)/(2*(l1 + l2)*l3)))
+
+  return (theta, gamma, delta)
+
+# print(d0)
+# print(phase_one(200))
+
+# print(phase_two(350))
+
+def move_line(d):
+  out = (0, 0, 0)
+  if (d > 10):
+    if(d < dp):
+      out = phase_one(d)
+    else:
+      out = phase_two(d)
+  return out
+
+def move(x, y, z):
+
+  dist = math.sqrt(x**2 + y**2 + z**2)
+  if dist > math.floor(dmax):
+    dist = math.floor(dmax)
+  floor_projection = math.sqrt(x**2 + y**2)
+  base = math.degrees(math.atan(x/y))
+  shoulder = math.degrees(math.atan(z / floor_projection))
+
+  degrees = move_line(dist)
+  return (base, degrees[0] - shoulder, degrees[1], degrees[2])
+# #Base degree
+#   if y == 0:
+#     if x <= 0:
+#       theta_base = 180
+
+#     else:
+#       theta_base = 0
+
+#   else:
+#     theta_base = 90 - math.degrees(math.atan(x/y))
+
+#Shoulder/Elbow/Wrist
+
+#Compensation
+

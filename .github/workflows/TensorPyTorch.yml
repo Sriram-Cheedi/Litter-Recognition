@@ -22,12 +22,24 @@ jobs:
     - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.10'
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r code/requirements.txt
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install Cython
+        python -m pip install -r code/requirements.txt
+    - name: Install Protoc
+      uses: arduino/setup-protoc@v3
+    - name: Install TF Object Detection API
+      run: |
+        git clone https://github.com/tensorflow/models.git
+        cd models/research
+        protoc object_detection/protos/*.proto --python_out=.
+        cp object_detection/packages/tf2/setup.py .
+        python -m pip install .
     - name: Test with pytest
+      env:
+        RUN_HARDWARE_TESTS: false  # Skip hardware tests in CI
       run: |
         pip install pytest pytest-cov
         pytest code/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
