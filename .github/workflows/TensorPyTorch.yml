@@ -50,6 +50,11 @@ jobs:
       run: |
         sudo apt install -y libcap-dev libcamera-dev libatlas-base-dev python3-pyqt5
         pip install --extra-index-url https://piwheels.org/simple picamera2
+    - name: Verify libcamera Installation
+      run: |
+        python -c "import libcamera" || echo "libcamera not found!"
+        ldconfig -p | grep libcamera
+
     - name: Install TensorFlow Object Detection API
       run: |
         git clone https://github.com/tensorflow/models.git
