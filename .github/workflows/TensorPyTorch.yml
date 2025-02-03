@@ -28,11 +28,17 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install Cython
         python -m pip install -r code/requirements.txt
+    - name: Install Build Dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y cmake ninja-build python3-dev python3-pip python3-setuptools \
+                        python3-wheel python3-pyqt5 libjpeg-dev libtiff5-dev \
+                        libavcodec-dev libavformat-dev libswscale-dev libxkbcommon-dev \
+                        qtbase5-dev meson
     - name: Install Protoc
       uses: arduino/setup-protoc@v3
     - name: Install PiCamera2
       run: |
-        sudo apt update
         sudo apt install -y libcap-dev libcamera-dev libatlas-base-dev python3-pyqt5
         pip install --extra-index-url https://piwheels.org/simple picamera2
     - name: Build libcamera
