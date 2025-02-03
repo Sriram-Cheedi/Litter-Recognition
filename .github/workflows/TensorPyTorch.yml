@@ -30,6 +30,9 @@ jobs:
         python -m pip install -r code/requirements.txt
     - name: Install Protoc
       uses: arduino/setup-protoc@v3
+    - name: Install PiCamera2
+      run: |
+        sudo apt install python3-picamera2 --no-install-recommends
     - name: Install TF Object Detection API
       run: |
         git clone https://github.com/tensorflow/models.git
