@@ -32,7 +32,7 @@ jobs:
       uses: arduino/setup-protoc@v3
     - name: Install PiCamera2
       run: |
-        sudo apt install python3-picamera2 --no-install-recommends
+         sudo apt install -y python3-picamera2 libcamera-dev libatlas-base-dev python3-pyqt5
     - name: Install TF Object Detection API
       run: |
         git clone https://github.com/tensorflow/models.git
