@@ -38,35 +38,10 @@ jobs:
         pip install jinja2 ply pyyaml
     - name: Install Protoc
       uses: arduino/setup-protoc@v3
-    - name: Build libcamera
-      run: |
-        git clone --branch v0.0.5 https://git.linuxtv.org/libcamera.git
-        cd libcamera
-        meson setup build -Dpycamera=enabled
-        ninja -C build
-        sudo ninja -C build install
-        cd
     - name: Install PiCamera2
       run: |
         sudo apt install -y libcap-dev libcamera-dev libatlas-base-dev python3-pyqt5
         pip install --extra-index-url https://piwheels.org/simple picamera2
-    - name: Set library path
-      run: echo "LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH" >> $GITHUB_ENV
-
-    - name: Set Python path
-      run: echo "PYTHONPATH=/usr/local/lib/python3.10/site-packages:$PYTHONPATH" >> $GITHUB_ENV
-
-    - name: Verify libcamera Installation
-      run: |
-        python -c "import libcamera" || echo "libcamera not found!"
-        ldconfig -p | grep libcamera
-
-    - name: Locate libcamera Python Module
-      run: |
-        find /usr/local/lib -name "libcamera*.so"
-        find /usr/lib -name "libcamera*.so"
-
-
     - name: Install TensorFlow Object Detection API
       run: |
         git clone https://github.com/tensorflow/models.git
