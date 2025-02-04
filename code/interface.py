@@ -194,11 +194,14 @@ def main():
         
         if keys[pygame.K_i]:
             y += 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+            servo4_adjustment = 10 
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], min(180, 90 - Inverse_kinematics.move(x, y, z)[3] + servo4_adjustment),braccioDebug.s5, braccioDebug.s6)
+
 
         if keys[pygame.K_k]:
             y -= 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3],braccioDebug.s5, braccioDebug.s6)
+
             
         if keys[pygame.K_j]:
             x += 10
