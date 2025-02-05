@@ -61,3 +61,29 @@ ERROR: Device timeout detected, attempting a restart!!!
 ```
 
 The troubleshootng guide (linked above) states that this can be an error for pi model 5's using the camera module 1, but does not offer the solutions/correct drivers for the Camera Module 2's and Pi 4b that we are using.
+
+```libcamera-hello --list``` returns the following information:
+```
+libcamera-hello --list
+Available cameras
+-----------------
+0 : imx219 [3280x2464 10-bit RGGB] (/base/soc/i2c0mux/i2c@1/pca@70/i2c@2/imx219@10)
+    Modes: 'SRGGB10_CSI2P' : 640x480 [206.65 fps - (1000, 752)/1280x960 crop]
+                             1640x1232 [41.85 fps - (0, 0)/3280x2464 crop]
+                             1920x1080 [47.57 fps - (680, 692)/1920x1080 crop]
+                             3280x2464 [21.19 fps - (0, 0)/3280x2464 crop]
+           'SRGGB8' : 640x480 [206.65 fps - (1000, 752)/1280x960 crop]
+                      1640x1232 [83.70 fps - (0, 0)/3280x2464 crop]
+                      1920x1080 [47.57 fps - (680, 692)/1920x1080 crop]
+                      3280x2464 [21.19 fps - (0, 0)/3280x2464 crop]
+
+1 : imx219 [3280x2464 10-bit RGGB] (/base/soc/i2c0mux/i2c@1/pca@70/i2c@0/imx219@10)
+    Modes: 'SRGGB10_CSI2P' : 640x480 [206.65 fps - (1000, 752)/1280x960 crop]
+                             1640x1232 [41.85 fps - (0, 0)/3280x2464 crop]
+                             1920x1080 [47.57 fps - (680, 692)/1920x1080 crop]
+                             3280x2464 [21.19 fps - (0, 0)/3280x2464 crop]
+           'SRGGB8' : 640x480 [206.65 fps - (1000, 752)/1280x960 crop]
+                      1640x1232 [83.70 fps - (0, 0)/3280x2464 crop]
+                      1920x1080 [47.57 fps - (680, 692)/1920x1080 crop]
+                      3280x2464 [21.19 fps - (0, 0)/3280x2464 crop]
+```
