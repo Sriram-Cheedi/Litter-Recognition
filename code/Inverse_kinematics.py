@@ -27,8 +27,7 @@ a1 = math.degrees(math.asin(((l1+l2)*(math.sin(math.radians(15))))/(l3)))
 a2 = 180 - a1 - 15
 dmax = (math.sin(math.radians(a2)) * l3)/(math.sin(math.radians(15)))
 dmin = math.sqrt(k**2 - l1**2)
-print("dmin is, ... ", dmin)
-print("dmax is, ... ", dmax)
+
 
 
 # Phase one of movement
@@ -60,7 +59,7 @@ def move_line(d):
   out = (0, 0, 0)
 
   # Arbitrily set to 10 as minimum distance for now but improvements can be made to this
-  if (d > dmin):
+  if (d >= dmin):
 
     # Between d and dplus do phase one
     if(d < dp):
@@ -74,7 +73,9 @@ def move_line(d):
   return out
 
 def move(vector):
-
+  vector[2] = max(vector[2], -50)
+  print("dmin is, ... ", dmin)
+  print("dmax is, ... ", dmax)
   # Get the magnitude of the vector
   dist = np.linalg.norm(vector)
 
@@ -86,8 +87,12 @@ def move(vector):
 
   dist = max(dmin, min(dmax, dist))   # Make sure dist does not go out of bounds
   mag = np.linalg.norm(vector)        
-  if mag != 0:                        # Just in case (should never be 0) to avoid divide by 0 errors
+  if dist == dmax:                        # Just in case (should never be 0) to avoid divide by 0 errors
       vector = (vector / mag) * dmax  # Normalise the vector and then multiply it by dmax
+
+  if dist == dmin:                        # Just in case (should never be 0) to avoid divide by 0 errors
+      vector = (vector / mag) * dmin
+
 
   print("new vector is, ... ", vector)
 
@@ -106,4 +111,4 @@ def move(vector):
   degrees = move_line(dist)
 
   #Add the degrees required for the direction of the vector
-  return (base, degrees[0] - shoulder, degrees[1], degrees[2])
+  return (base, degrees[0] - shoulder, degrees[1], degrees[2], vector)
