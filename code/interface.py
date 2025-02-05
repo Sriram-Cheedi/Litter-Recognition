@@ -190,33 +190,33 @@ def main():
         
         
         if keys[pygame.K_i]:
-            y += 10
+            vector[1] += 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_k]:
-            y -= 10
+            vector[1] -= 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
             
         if keys[pygame.K_j]:
-            x += 10
+            vector[0] += 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_l]:
-            x -= 10
+            vector[0] -= 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_u]:
-            z += 10
+            vector[2] += 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_o]:
-            z -= 10
+            vector[2] -= 10
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_m]:
-            x = int(input("Enter x:"))
-            y = int(input("Enter y:"))
-            z = int(input("Enter z:"))
+            vector[0] = int(input("Enter x:"))
+            vector[1] = int(input("Enter y:"))
+            vector[2] = int(input("Enter z:"))
             print(vector)
 
             braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
