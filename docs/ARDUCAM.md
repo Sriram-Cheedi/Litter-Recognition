@@ -1,4 +1,9 @@
 # Set-up Process of ArduCAM multi cam adapter v2.2 on a raspberry pi
+## Hardware
+- Raspberry Pi 4b (4GB RAM)
+- 2x Pi Camera Module 2
+- ArduCAM multicam adapter v2.2
+
 ## Starting with a fresh OS install
 Enter the following to update pi and kernel:
 ```
@@ -25,3 +30,34 @@ Then shutdown and unplug the pi, connect the cameras to the multicam module and 
 ![ArduCAM_2](https://github.com/user-attachments/assets/56ab49e4-dc74-4958-807d-43d6741dc8b0)
 
 Running ```sudo dmesg | grep arducam``` returns nothing (contrary to arducam quick setup guide https://docs.arducam.com/Raspberry-Pi-Camera/Multi-Camera-CamArray/Quick-Start-Guide-for-Multi-Adapter-Board/#for-quad-camera-adapter-boardb012001)
+
+Running ```libcamera-hello``` results in the following error:
+```
+pi@raspberrypi:~ $ libcamera-hello
+[0:17:49.216135806] [2326]  INFO Camera camera_manager.cpp:327 libcamera v0.4.0+50-83cb8101
+[0:17:49.344088173] [2333]  WARN RPiSdn sdn.cpp:40 Using legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[0:17:49.350039148] [2333]  INFO RPI vc4.cpp:447 Registered camera /base/soc/i2c0mux/i2c@1/pca@70/i2c@0/imx219@10 to Unicam device /dev/media0 and ISP device /dev/media2
+[0:17:49.350277982] [2333]  INFO RPI pipeline_base.cpp:1121 Using configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+[0:17:49.380092602] [2333]  WARN RPiSdn sdn.cpp:40 Using legacy SDN tuning - please consider moving SDN inside rpi.denoise
+[0:17:49.387904211] [2333]  INFO RPI vc4.cpp:447 Registered camera /base/soc/i2c0mux/i2c@1/pca@70/i2c@2/imx219@10 to Unicam device /dev/media0 and ISP device /dev/media2
+[0:17:49.388351249] [2333]  INFO RPI pipeline_base.cpp:1121 Using configuration file '/usr/share/libcamera/pipeline/rpi/vc4/rpi_apps.yaml'
+Made X/EGL preview window
+Mode selection for 1640:1232:12:P
+    SRGGB10_CSI2P,640x480/0 - Score: 4504.81
+    SRGGB10_CSI2P,1640x1232/0 - Score: 1000
+    SRGGB10_CSI2P,1920x1080/0 - Score: 1541.48
+    SRGGB10_CSI2P,3280x2464/0 - Score: 1718
+    SRGGB8,640x480/0 - Score: 5504.81
+    SRGGB8,1640x1232/0 - Score: 2000
+    SRGGB8,1920x1080/0 - Score: 2541.48
+    SRGGB8,3280x2464/0 - Score: 2718
+[0:17:51.341085580] [2326]  INFO Camera camera.cpp:1202 configuring streams: (0) 1640x1232-YUV420 (1) 1640x1232-SBGGR10_CSI2P
+[0:17:51.341977137] [2333]  INFO RPI vc4.cpp:622 Sensor: /base/soc/i2c0mux/i2c@1/pca@70/i2c@2/imx219@10 - Selected sensor format: 1640x1232-SBGGR10_1X10 - Selected unicam format: 1640x1232-pBAA
+[0:17:52.500268223] [2333]  WARN V4L2 v4l2_videodevice.cpp:2150 /dev/video0[22:cap]: Dequeue timer of 1000000.00us has expired!
+[0:17:52.500445798] [2333] ERROR RPI pipeline_base.cpp:1367 Camera frontend has timed out!
+[0:17:52.500485575] [2333] ERROR RPI pipeline_base.cpp:1368 Please check that your camera sensor connector is attached securely.
+[0:17:52.500527113] [2333] ERROR RPI pipeline_base.cpp:1369 Alternatively, try another cable and/or sensor.
+ERROR: Device timeout detected, attempting a restart!!!
+```
+
+The troubleshootng guide (linked above) states that this can be an error for pi model 5's using the camera module 1, but does not offer the solutions/correct drivers for the Camera Module 2's and Pi 4b that we are using.
