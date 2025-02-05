@@ -19,17 +19,37 @@ class TestInterface(unittest.TestCase):
 
         # Test case 1
         testValues = [8, 190, 15, 56, 85, 181, 72]
-        self.assertEqual(
-            checkInBounds(testValues, uBounds, lBounds),
-            [10, 180, 15, 56, 85, 180, 72]
-        )
+        self.assertEqual(checkInBounds(testValues, uBounds, lBounds),[10, 180, 15, 56, 85, 180, 72])
 
         # Test case 2
         testValues = [31, -1, 166, 181, 181, -1, 9]
-        self.assertEqual(
-            checkInBounds(testValues, uBounds, lBounds),
-            [30, 0, 165, 180, 180, 0, 10]
-        )
+        self.assertEqual(checkInBounds(testValues, uBounds, lBounds),[30, 0, 165, 180, 180, 0, 10])
+    
+    
+    def test_z_min_constraint(self):
+        global z, z_min
+        z_min = 20 
+        z = 10 
+        checkInBounds([90, 90, 90, 90, 90, 90, 90], [180]*7, [0]*7)
+        self.assertGreaterEqual(z, z_min, "Z-coordinate should not go below the table height")
+        
+    def test_move_below_table_is_blocked(self):
+        global z, z_min
+        z_min = 20
+        braccio_debug = BraccioDebug(serial_port_robot_magnet="COM4")
+        z = 25
+        
+        braccio_debug.down(ServoMotor.S3, 10)
+        self.assertGreaterEqual(z, z_min, "Robot should not move below the table height")
+        
+    @skipIf(not hardware_tests, "Skipping hardware tests in CI.")
+    def test_valid_movement_above_table(self):
+        global z, z_min
+        z_min = 20
+        braccio_debug = BraccioDebug(serial_port_robot_magnet="COM4")
+        z = 25
+        braccio_debug.up(ServoMotor.S3, 10) 
+        self.assertGreater(z, 30, "Robot should be able to move up freely")
 
     @skipIf(not hardware_tests, "Skipping hardware tests in CI.")
     def test_servo_movement_and_home_position(self):
