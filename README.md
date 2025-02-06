@@ -21,7 +21,7 @@
 ## Problem Statement:
 Litter blights our major roads and highways leading to serious environmental and safety issues. Overwhelming litter on the roadsides is mainly attributed to increased use of non-biodegradable items, unattended
 disposal from moving vehicles and regular detachment of plastic undercarriages or mobile vehicle parts (such as tyres). It not only threatens the endless fauna and fish of our life-filled rivers, but it also
-poses a danger to road trafficfe when potential hazards form at shoulder level.
+poses a danger to road traffic when potential hazards form at shoulder level.
 
 The way in which litter is managed now, it's wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that
 can detect and clear road litter efficiently reducing human intervention while maintaining safety complying environmental impact as well.
