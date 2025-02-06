@@ -198,7 +198,7 @@ To control the arm, click into the window and press the key corresponding to the
 
 ## Architecture Diagram
 
-![Diagram](https://raw.githubusercontent.com/spe-uob/2024-LitterRecognition1/refs/heads/dev/docs/Architecture-Diagrams/Architecture%20diagram.jpeg?token=GHSAT0AAAAAAC5TZQFICWQB47N6YNWNIV5CZ4X4FSQ)
+![Architecture Diagram](https://raw.githubusercontent.com/spe-uob/2024-LitterRecognition1/dev/docs/Architecture-Diagrams/Architecture_diagram.jpeg)
 
 
 
