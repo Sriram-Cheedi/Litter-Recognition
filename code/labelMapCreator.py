@@ -34,4 +34,4 @@ if __name__ == "__main__":
     # Requires path to .json file
     IN_PATH = "" 
     OUT_PATH = ""
-    reconstruct(IN_PATH, OUT_PATH)
+    createLabelMap(IN_PATH, OUT_PATH)
