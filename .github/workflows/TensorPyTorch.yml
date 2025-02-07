@@ -40,7 +40,7 @@ jobs:
       uses: arduino/setup-protoc@v3
     - name: Install PiCamera2
       run: |
-        sudo apt install -y libcap-dev libcamera-dev libatlas-base-dev python3-pyqt5
+        sudo apt install -y libcap-dev libcamera-dev libcamera-apps libatlas-base-dev python3-pyqt5
         pip install --extra-index-url https://piwheels.org/simple picamera2
     - name: Install TensorFlow Object Detection API
       run: |
