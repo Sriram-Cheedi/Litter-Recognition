@@ -140,7 +140,7 @@ initiatives.
 
 ## User Instructions
 
-Requirements: [Python](https://www.python.org/downloads/), [Arduino IDE](https://www.arduino.cc/en/software), Arduino UNO and a Braccio robot arm
+**Requirements**: [Python](https://www.python.org/downloads/), [Arduino IDE](https://www.arduino.cc/en/software), Arduino UNO and a Braccio robot arm
 
 Download interface.py, braccio_adapter.py and the arduino_script directory in "code". Place all three in the same directory on your machine.
 
@@ -168,6 +168,15 @@ To control the arm, click into the window and press the key corresponding to the
    Return to Safety Position: C
 
 ## Developer Instructions
+**Requirements**: 
+- [Python](https://www.python.org/downloads/),
+- [Arduino IDE](https://www.arduino.cc/en/software),
+- Raspberry Pi 4B,
+- A PiCamera or equivalent,
+- The libraries present within /code/requirements.txt,
+- Arduino UNO and a Braccio robot arm.
+
+All code can be found within the /code file of the GitHub and the fully built tflite model can be found within code/Model.
 
 
 ## Tech Stack
