@@ -1,5 +1,6 @@
 # Code to reconstruct the frozen graph detection from our incomplete .pb file
 # Inspired and borrowed from https://www.kaggle.com/code/bouweceunen/garbage-detection-with-tensorflow/notebook
+
 import os
 import tensorflow as tf
 
@@ -42,4 +43,4 @@ if __name__ == "__main__":
     OUT_PATH = "/home/ryan/SEP/code/Reconstruction/TACO-20250119T094850Z-001/TACO/reconstructed_TACO_graph.pb"
     graph = reconstruct(IN_PATH)
     writeToFilePath(graph, OUT_PATH)
-    
+ 
