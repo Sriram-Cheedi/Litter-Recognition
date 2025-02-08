@@ -1,5 +1,6 @@
 # Code to take the images used to calibrate the dual camera set up
 # These images will likely be of a chessboard
+# Need to take around 3 to 5 images which can then be used in calibration.py
 
 import cv2
 
@@ -9,8 +10,8 @@ def takeImages(capture1, capture2):
     
     while capture1.isOpened():
         # Takes images from video feed
-        status1, image1 = capture1.read()
-        status2, image2 = capture2.read()
+        _, image1 = capture1.read()
+        _, image2 = capture2.read()
         
         key = cv2.waitKey(5)
         
