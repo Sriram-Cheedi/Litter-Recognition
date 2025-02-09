@@ -57,10 +57,10 @@ def findCorners():
             cv2.waitKey(1000)
         
     cv2.destroyAllWindows()
-    return objPoints, lImgPoints, rImgPoints, imgL, imgR
+    return objPoints, lImgPoints, rImgPoints, imgL, imgR, grayL, grayR
     
 # Calibrates the cameras and stereovision
-def calibrate(objPoints, lImgPoints, rImgPoints, imgL, imgR):
+def calibrate(objPoints, lImgPoints, rImgPoints, imgL, imgR, grayL, grayR):
     imageSize = (640, 480)
     # Camera calibration
     lStatus, lCamMatrix, lDist, lRvecs, lTvecs = cv2.calibrateCamera(objPoints, lImgPoints, imageSize, None, None)
@@ -72,16 +72,32 @@ def calibrate(objPoints, lImgPoints, rImgPoints, imgL, imgR):
     rNewCamMatrix, rRoi = cv2.getOptimalNewCameraMatrix(rCamMatrix, rDist, (rWidth, rHeight), 1, (rWidth, rHeight))
     
     # Stereo Vision calibration
-    
     flags = 0
     flags |= cv2.CALIB_FIX_INTRINSIC # Fix intrinsic camera matrices so that only Rot, Trns, Emat and Fmat calculated
     
     stereoCrit = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
     
-    stereoStatus, lNewCamMatrix, lDist, rNewCamMatrix, rDist, rot, trans, essMatrix, funMatrix, 
-
-
+    stereoStatus, lNewCamMatrix, lDist, rNewCamMatrix, rDist, rot, trans, essMatrix, funMatrix = cv2.stereoCalibrate(objPoints, lImgPoints, rImgPoints, lNewCamMatrix, lDist, rNewCamMatrix, rDist, grayL.shape[::-1], stereoCrit, flags)
+    
+    # Stereo Vision Rectification
+    rectifyScale = 1
+    
+    lRect, rRect, lProjMatrix, rProjMatrix, Q, lRoi, rRoi = cv2.stereoRectify(lNewCamMatrix, lDist, rNewCamMatrix, rDist, grayL.shape[::-1], rot, trans, rectifyScale, (0, 0))
+    
+    # Gets stereo maps required to undistort the left and right images
+    lStereoMap = cv2.initUndistortRectifyMap(lNewCamMatrix, lDist, lRect, lProjMatrix, grayL.shape[::-1], cv2.CV_16SC2)
+    rStereoMap = cv2.initUndistortRectifyMap(rNewCamMatrix, rDist, rRect, rProjMatrix, grayR.shape[::-1], cv2.CV_16SC2)
+    
+    # Saves the parameters needed to rectify the images
+    output = cv2.FileStorage('stereoMap.xml', cv2.FILE_STORAGE_WRITE)
+    output.write('stereoMapL_x', lStereoMap[0])
+    output.write('stereoMapL_y', lStereoMap[1])
+    output.write('stereoMapR_x', rStereoMap[0])
+    output.write('stereoMapR_y', rStereoMap[1])
+    output.release()
+    
+    
 
 if __name__ == "__main__":
-    objPoints, lImgPoints, rImgPoints, imgL, imgR = findCorners()
-    calibrate(objPoints, lImgPoints, rImgPoints, imgL, imgR)
+    objPoints, lImgPoints, rImgPoints, imgL, imgR, grayL, grayR = findCorners()
+    calibrate(objPoints, lImgPoints, rImgPoints, imgL, imgR, grayL, grayR)
