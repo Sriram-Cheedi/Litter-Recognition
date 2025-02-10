@@ -5,9 +5,12 @@ import Inverse_kinematics
 from enum import Enum
 import numpy as np
 
+# Initial vector position and distance 
 vector = np.array([0, 150, 0])
 d = 100
 
+
+#Enum class defining servo motor IDs
 class ServoMotor(Enum):
     S1 = 1
     S2 = 2
@@ -16,7 +19,9 @@ class ServoMotor(Enum):
     S5 = 5
     S6 = 6
 
-# Function to ensure servo positions stay within defined bounds
+#Function to ensure servo positions stay within defined bounds
+#Checks that all of the movement values are within their bounds
+#If not, they are set to the closest bound
 def checkInBounds(values, uBound, lBound):
     newValues = [0] * 7
     for index, item in enumerate(values):
@@ -28,12 +33,13 @@ def checkInBounds(values, uBound, lBound):
             newValues[index] = item
     return newValues
 
+#Class for controlling the braccio arm
 class BraccioDebug(braccio_adapter.BraccioAdapter):
     def __init__(self, serial_port_robot_magnet="COM3"):
         super().__init__(serial_port_robot_magnet,)
-        self.home_position()
+        self.home_position()  #Initial and home position of the braccio arm
     
-
+    #Function to move the arm joints by specified degrees
     def move_single_joint(self, servo, degrees):
         # get currect vals
         s1 = self.s1
@@ -48,7 +54,8 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         #Holds upper and lower bounds for each servo motors movement
         uBounds = [30, 180, 165, 180, 180, 180, 73]
         lBounds = [10, 0, 15, 0, 0, 0, 10]
-    
+
+        #Adjusts servo based on input degrees
         if servo.value == 1:
             servoPos[1] += degrees
         if servo.value == 2:
@@ -69,10 +76,12 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
 
         # Update internal state
         self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:]
-    
+
+    #Moves servo upwards
     def up(self, servo : ServoMotor, degrees = 1):
         self.move_single_joint(servo, degrees)
-        
+
+    #Moves servo downwards
     def down(self, servo: ServoMotor, degrees = -1):
         self.move_single_joint(servo, degrees)
 
@@ -177,7 +186,8 @@ def main():
         #     braccioDebug.down(ServoMotor.S5)
         # if keys[pygame.K_h]:
         #     braccioDebug.down(ServoMotor.S6)
-        
+
+        # Control servos using keys
         if keys[pygame.K_a]:
             braccioDebug.up(ServoMotor.S5)
             vector = Inverse_kinematics.move(vector)[4]
