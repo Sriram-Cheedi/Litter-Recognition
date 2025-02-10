@@ -1,0 +1,9 @@
+name: Deploy Code in Zip to Github
+
+on:
+  pull_request:
+    types: 
+      - closed
+    branches:
+      - main
+      - dev
