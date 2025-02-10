@@ -16,8 +16,7 @@ class ServoMotor(Enum):
     S4 = 4
     S5 = 5
     S6 = 6
-    
-z_min = 20
+
 # Function to ensure servo positions stay within defined bounds
 def checkInBounds(values, uBound, lBound):
     newValues = [0] * 7
@@ -28,12 +27,7 @@ def checkInBounds(values, uBound, lBound):
             newValues[index] = lBound[index]
         else:
             newValues[index] = item
-    global z
-    if z < z_min:
-        z = z_min
-
     return newValues
-
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
     def __init__(self, serial_port_robot_magnet="COM3"):
@@ -200,14 +194,11 @@ def main():
         
         if keys[pygame.K_i]:
             y += 10
-            servo4_adjustment = 10 
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], min(180, 90 - Inverse_kinematics.move(x, y, z)[3] + servo4_adjustment),braccioDebug.s5, braccioDebug.s6)
-
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_k]:
             y -= 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3],braccioDebug.s5, braccioDebug.s6)
-
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
             
         if keys[pygame.K_j]:
             x += 10
@@ -222,11 +213,8 @@ def main():
             braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_o]:
-            if z - 10 >= z_min:
-                z -= 10
-                braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
-            else: 
-                print("movement blocked")
+            z -= 10
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(x, y, z)[0], 90 - Inverse_kinematics.move(x, y, z)[1], 90 - Inverse_kinematics.move(x, y, z)[2], 90 - Inverse_kinematics.move(x, y, z)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_m]:
             x = int(input("Enter x:"))
