@@ -1,4 +1,5 @@
 # Set-up Process of ArduCAM multi cam adapter v2.2 on a raspberry pi
+This File is for the purpose of storing debugging information to do with the ArduCAM v2.2 multi camera adapter
 ## Hardware
 - Raspberry Pi 4b (4GB RAM)
 - 2x Pi Camera Module 2
@@ -87,3 +88,134 @@ Available cameras
                       1920x1080 [47.57 fps - (680, 692)/1920x1080 crop]
                       3280x2464 [21.19 fps - (0, 0)/3280x2464 crop]
 ```
+```
+pi@raspberrypi:~ $ dmesg | grep -E "imx477|imx219|arducam"
+[    0.062621] /soc/i2c0mux/i2c@1/pca@70/i2c@2/imx219@10: Fixed dependency cycle(s) with /video-mux
+[    0.062710] /soc/i2c0mux/i2c@1/pca@70/i2c@0/imx219@10: Fixed dependency cycle(s) with /video-mux
+[    0.069557] /soc/i2c0mux/i2c@1/pca@70/i2c@2/imx219@10: Fixed dependency cycle(s) with /video-mux
+[    0.069703] /soc/i2c0mux/i2c@1/pca@70/i2c@0/imx219@10: Fixed dependency cycle(s) with /video-mux
+[    6.216496] /soc/i2c0mux/i2c@1/pca@70/i2c@2/imx219@10: Fixed dependency cycle(s) with /video-mux
+[    6.217068] /soc/i2c0mux/i2c@1/pca@70/i2c@0/imx219@10: Fixed dependency cycle(s) with /video-mux
+```
+```
+pi@raspberrypi:~ $ ls /dev/video0
+/dev/video0
+```
+```
+pi@raspberrypi:~ $ uname -a
+Linux raspberrypi 6.6.74+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64 GNU/Linux
+```
+```
+pi@raspberrypi:~ $ cat /etc/os-release
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+```
+```
+pi@raspberrypi:~ $ cat /proc/meminfo
+MemTotal:        3888880 kB
+MemFree:         1799292 kB
+MemAvailable:    2791632 kB
+Buffers:           37800 kB
+Cached:          1161740 kB
+SwapCached:            0 kB
+Active:          1293964 kB
+Inactive:         505768 kB
+Active(anon):     766756 kB
+Inactive(anon):        0 kB
+Active(file):     527208 kB
+Inactive(file):   505768 kB
+Unevictable:      111212 kB
+Mlocked:               0 kB
+SwapTotal:        381948 kB
+SwapFree:         381948 kB
+Zswap:                 0 kB
+Zswapped:              0 kB
+Dirty:               936 kB
+Writeback:             0 kB
+AnonPages:        711404 kB
+Mapped:           411716 kB
+Shmem:            166564 kB
+KReclaimable:      35556 kB
+Slab:              74760 kB
+SReclaimable:      35556 kB
+SUnreclaim:        39204 kB
+KernelStack:        7040 kB
+PageTables:        16588 kB
+SecPageTables:         0 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     2326388 kB
+Committed_AS:    4656192 kB
+VmallocTotal:   257687552 kB
+VmallocUsed:       24368 kB
+VmallocChunk:          0 kB
+Percpu:              720 kB
+CmaTotal:         524288 kB
+CmaFree:          476988 kB
+```
+```
+pi@raspberrypi:~ $ cat /boot/firmware/config.txt
+# For more options and information see
+# http://rptl.io/configtxt
+# Some settings may impact device functionality. See link above for details
+
+# Uncomment some or all of these to enable the optional hardware interfaces
+#dtparam=i2c_arm=on
+#dtparam=i2s=on
+#dtparam=spi=on
+
+# Enable audio (loads snd_bcm2835)
+dtparam=audio=on
+
+# Additional overlays and parameters are documented
+# /boot/firmware/overlays/README
+
+# Automatically load overlays for detected cameras
+camera_auto_detect=0
+
+# Automatically load overlays for detected DSI displays
+display_auto_detect=1
+
+# Automatically load initramfs files, if found
+auto_initramfs=1
+
+# Enable DRM VC4 V3D driver
+dtoverlay=vc4-kms-v3d
+max_framebuffers=2
+
+# Don't have the firmware create an initial video= setting in cmdline.txt.
+# Use the kernel's default instead.
+disable_fw_kms_setup=1
+
+# Run in 64-bit mode
+arm_64bit=1
+
+# Disable compensation for displays with overscan
+disable_overscan=1
+
+# Run as fast as firmware / board allows
+arm_boost=1
+
+[cm4]
+# Enable host mode on the 2711 built-in XHCI USB controller.
+# This line should be removed if the legacy DWC2 controller is required
+# (e.g. for USB device mode) or if USB support is not required.
+otg_mode=1
+
+[cm5]
+dtoverlay=dwc2,dr_mode=host
+
+[all]
+
+# Multicam Adapter
+dtoverlay=camera-mux-4port,cam0-imx219,cam2-imx219
+```
+
