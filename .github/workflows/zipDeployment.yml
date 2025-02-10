@@ -2,8 +2,8 @@ name: Deploy Code in Zip to Github
 
 on:
   pull_request:
-  ##  types: 
-    ##  - closed
+    types: 
+      - closed
     branches:
       - main
       - dev
@@ -15,11 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Switch to Continuous-deployment branch
+      - name: Switch to dev branch
         run: |
-          git fetch origin Continuous-deployment || git branch Continuous-deployment
-          git checkout Continuous-deployment
-          git pull origin Continuous-deployment
+          git fetch origin dev
+          git checkout dev
+          git pull origin dev
           
 
       - name: Create ZIP of code folder with instructions
@@ -32,5 +32,5 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add codeDeployment.zip
           git commit -m "Deployed code folder to the repo as a ZIP"
-          git push origin Continuous-deployment
+          git push origin dev
           
