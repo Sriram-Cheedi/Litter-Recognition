@@ -66,8 +66,8 @@ class TestInterface(unittest.TestCase):
 
     def test_inverse_kinematics(self):
         
-        vector = np.array([50, 100, -30])
-        result = Inverse_kinematics.move(vector)
+        vector = [50, 100, -30]
+        result = Inverse_kinematics.move(*vector) 
         self.assertEqual(len(result), 5)
         self.assertTrue(-180 <= result[0] <= 180)  
         self.assertTrue(-180 <= result[1] <= 180)  
