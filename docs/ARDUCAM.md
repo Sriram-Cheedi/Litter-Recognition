@@ -60,7 +60,7 @@ Mode selection for 1640:1232:12:P
 [0:17:52.500527113] [2333] ERROR RPI pipeline_base.cpp:1369 Alternatively, try another cable and/or sensor.
 ERROR: Device timeout detected, attempting a restart!!!
 ```
-
+All cameras and cables work individually and we have tested the board on another pi with the same results
 The troubleshootng guide (linked above) states that this can be an error for pi model 5's using the camera module 1, but does not offer the solutions/correct drivers for the Camera Module 2's and Pi 4b that we are using.
 
 ```libcamera-hello --list``` returns the following information:
