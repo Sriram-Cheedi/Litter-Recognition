@@ -23,7 +23,7 @@ def calculate_object_position(distance, angle, camera_position):
     return object_position_robot_frame
 
 #actual values to be added later 
-camera_position = np.array([x1, x2, x3])
+camera_position = np.array([0, 150, 50])
 distance = distance 
 angle = degree
 
