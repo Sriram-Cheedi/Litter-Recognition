@@ -65,15 +65,15 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(braccio_debug.s3, max(15, initial_s3 - 5))
 
     def test_inverse_kinematics(self):
-        
-        vector = [50, 100, -30]
-        result = Inverse_kinematics.move(*vector) 
+        vector = np.array([50, 100, -30]) 
+        result = Inverse_kinematics.move(vector)  
         self.assertEqual(len(result), 5)
         self.assertTrue(-180 <= result[0] <= 180)  
         self.assertTrue(-180 <= result[1] <= 180)  
         self.assertTrue(-180 <= result[2] <= 180)
         self.assertTrue(-180 <= result[3] <= 180)  
         self.assertIsInstance(result[4], np.ndarray)
+
         
     @skipIf(not hardware_tests, "Skipping hardware tests in CI.") 
     def test_braccio_initialization(self):
