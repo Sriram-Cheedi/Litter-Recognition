@@ -1,4 +1,6 @@
-# Autonomous Litter Recognition System
+<p align="center">
+<img src="docs/Images-And-Videos/Litter_Recognition_Logo.png" height="250">
+<h1 id="title">2024-LitterRecognition1</h1>   
 
 ## Contents:
 - [Autonomus Litter Recognition System](https://github.com/spe-uob/2024-LitterRecognition1/blob/main/README.md#autonomous-litter-recognition-system)
