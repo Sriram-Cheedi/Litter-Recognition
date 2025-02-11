@@ -24,7 +24,7 @@ jobs:
 
       - name: Create ZIP of code folder with instructions
         run: |
-          zip -r codeDeployment.zip code README.md
+          zip -r codeDeployment.zip code README.md docs/Images-And-Videos
 
       - name: Commit and Push ZIP
         run: |
