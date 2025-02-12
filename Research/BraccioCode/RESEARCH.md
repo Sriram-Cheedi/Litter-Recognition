@@ -1,4 +1,4 @@
-# Folder to Track Research into code for the BRaccio Arm
+# Folder to Track Research into code for the Braccio Arm
 
 ## Communicating via the Serial Bus
 
