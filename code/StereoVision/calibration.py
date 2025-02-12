@@ -6,7 +6,7 @@ import glob
 
 
 def findCorners():
-    boardSize = (9, 6)
+    boardSize = (8, 6)
     distanceBetweenCorners = 2 # Needs distance between corners of board in CM
     
     # Termination criteria for calibration
@@ -40,6 +40,7 @@ def findCorners():
         
         # If corners found, add object and image points
         if lStatus and rStatus:
+            print("Corners detected")
             objPoints.append(points)
             
             # Finds corners in sub pixels for better accuracy
@@ -62,6 +63,11 @@ def findCorners():
 # Calibrates the cameras and stereovision
 def calibrate(objPoints, lImgPoints, rImgPoints, imgL, imgR, grayL, grayR):
     imageSize = (640, 480)
+    #TESTING LINES
+    print(f"objPoints length: {len(objPoints)}")
+    print(f"lImgPoints length: {len(lImgPoints)}")
+    print(f"rImgPoints length: {len(rImgPoints)}")
+
     # Camera calibration
     lStatus, lCamMatrix, lDist, lRvecs, lTvecs = cv2.calibrateCamera(objPoints, lImgPoints, imageSize, None, None)
     lHeight, lWidth, lChannels = imgL.shape
