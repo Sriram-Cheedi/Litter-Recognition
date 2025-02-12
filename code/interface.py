@@ -238,9 +238,23 @@ def main():
             vector[2] = int(input("Enter z:"))
             print(vector)
 
+            # Stand up straight
             braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+
+            # Jiggle the base
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0] -25, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0] +5, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0] +5, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0] +5, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0] +5, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0] +5, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+
+
+            # Move thew arm down with class open
+            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            # Shut the claw
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
+            # Stand up straight with claw shut
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = Inverse_kinematics.move(vector)[4]
