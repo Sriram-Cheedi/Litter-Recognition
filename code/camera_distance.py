@@ -1,3 +1,4 @@
+"""
 This function calculates the position of the object relative to the robot base using the distance of the object from the camera and the angle relative to the horizontal plane.
 
 Steps:
@@ -12,8 +13,8 @@ camera_position: A NumPy array that defines the position of the camera relative 
 
 Output:
 A NumPy array providing the position of the object relative to the robot base.
+"""
 
-    
 import numpy as np
 
 def calculate_object_position(distance, angle, camera_position):
