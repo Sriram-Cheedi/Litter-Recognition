@@ -1,0 +1,61 @@
+name: Deploy Code in Zip to Github
+
+on:
+  pull_request:
+    types: 
+      - closed
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Switch to dev branch
+        run: |
+          git fetch origin dev
+          git checkout dev
+          git pull origin dev
+          
+
+      - name: Create ZIP of code folder with instructions
+        run: |
+          zip -r codeDeployment.zip code README.md docs/Images-And-Videos
+
+      - name: Upload ZIP as artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: code-deployment
+          path: codeDeployment.zip
+          
+  release:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download ZIP folder
+        uses: actions/download-artifact@v4
+        with: 
+          name: code-deployment
+          path: .
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v1.0.${{ github.run_number }}
+          name: "Code Release v1.0.${{ github.run_number }}"
+          body: "Automated release from merged pull request."
+          draft: false
+          prerelease: true
+          artifacts: "codeDeployment.zip"
+          
+        
+      
+

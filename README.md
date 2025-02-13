@@ -1,4 +1,6 @@
-# Autonomous Litter Recognition System
+<p align="center">
+<img src="docs/Images-And-Videos/Litter_Recognition_Logo.png" height="250">
+<h1 id="title">2024-LitterRecognition1</h1>   
 
 ## Contents:
 - [Autonomus Litter Recognition System](https://github.com/spe-uob/2024-LitterRecognition1/blob/main/README.md#autonomous-litter-recognition-system)
@@ -21,7 +23,7 @@
 ## Problem Statement:
 Litter blights our major roads and highways leading to serious environmental and safety issues. Overwhelming litter on the roadsides is mainly attributed to increased use of non-biodegradable items, unattended
 disposal from moving vehicles and regular detachment of plastic undercarriages or mobile vehicle parts (such as tyres). It not only threatens the endless fauna and fish of our life-filled rivers, but it also
-poses a danger to road trafficfe when potential hazards form at shoulder level.
+poses a danger to road traffic when potential hazards form at shoulder level.
 
 The way in which litter is managed now, it's wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that
 can detect and clear road litter efficiently reducing human intervention while maintaining safety complying environmental impact as well.
@@ -119,11 +121,28 @@ initiatives.
 
 
 ## Project Structure
+```bash
 
+2024-LitterRecognition1
+├── Research/                             # Folder housing all research materials, reports, studies, and references foundational to the project.
+├── code                                  # Directory containing the project's source code.
+│   ├── README.md                         # Detailed guide to the codebase, explaining the purpose of each script and its usage.
+│   ├── ROI_safety.py                     # Code for determining ROI and ensuring safety in robotic movements.
+│   ├── arduino-script/
+│   │   └── arduino-script.ino            # Script for controlling the Braccio robotic arm via serial input.
+│   ├── braccio_adapter.py                # Code facilitating serial communication with an Arduino.
+│   ├── interface.py                      # User interface for controlling the Braccio robotic arm via keyboard inputs, extending functionality of braccio_adapter.py.
+│   ├── requirements.txt                  # File listing required dependencies.
+│   └── tests/
+│       └── test_interface.py             # Test cases for the Braccio Arm.
+├── docs                                  # Directory with architecture diagrams and documentation on AI tools and related resources.
+├── LICENSE                               # File defining licensing terms for using, modifying, or distributing the project.
+└── README.md                             # Primary documentation file with an overview of the project, setup instructions, and essential information.
+```
 
 ## User Instructions
 
-Requirements: [Python](https://www.python.org/downloads/), [Arduino IDE](https://www.arduino.cc/en/software), Arduino UNO and a Braccio robot arm
+**Requirements**: [Python](https://www.python.org/downloads/), [Arduino IDE](https://www.arduino.cc/en/software), Arduino UNO and a Braccio robot arm
 
 Download interface.py, braccio_adapter.py and the arduino_script directory in "code". Place all three in the same directory on your machine.
 
@@ -136,20 +155,30 @@ Now navigate to the directory the python files are stored in on your machine via
 ```console
 python interface.py
 ```
+Now enter the port as displayed in the Arduino IDE.
 A PyGame window will now open.
 
-To control the arm, click into the window and press the key corresponding to the desired servo you want to move:
+To control the arm for debugging:
+   w/s -- open/close the claw
+   a/d -- twist wrist
+   i/k -- move arm forwards and backwards in horizontal plane
+   j/l -- move arm left and right in horizontal plane
+   u/o -- move arm up and down
 
-   Servo 1 (rotate base): Q, A  
-   Servo 2 (joint above the base): W, S  
-   Servo 3 (elbow joint): E, D  
-   Servo 4 (joint below the claw): R, F  
-   Servo 5 (rotate claw): T, G  
-   Servo 6 (close and open the claw): Z, H  
-   Pickup Object (picks up an object and places in a box) Clockwise/Anti-clockwise: P, L
-   Return to Safety Position: C
+To pick up from specific coordinates:
+Press "m" to select coordinates screen, then enter the x,y,z coordinates when prompted (in millimetres, (0,0,0) is at the middle of the shoulder joint). The arm will then perform the pick up procedure.
+
 
 ## Developer Instructions
+**Requirements**: 
+- [Python](https://www.python.org/downloads/),
+- [Arduino IDE](https://www.arduino.cc/en/software),
+- Raspberry Pi 4B,
+- A PiCamera or equivalent,
+- The libraries present within /code/requirements.txt,
+- Arduino UNO and a Braccio robot arm.
+
+All code can be found within the /code file of the GitHub and the fully built tflite model can be found within code/Model.
 
 
 ## Tech Stack
@@ -179,11 +208,13 @@ To control the arm, click into the window and press the key corresponding to the
 
 
 ## Architecture Diagram
-![image](https://github.com/user-attachments/assets/63eef16f-5590-4009-96d8-2228951b796f)
+
+![Architecture Diagram](docs/Architecture-Diagrams/Architecture_Diagram.jpeg)
+
 
 
 ## License
-This project uses the MIT license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
+This project uses the Apache-2.0 license. For more information, you can view the [LICENSE](https://github.com/spe-uob/2024-LitterRecognition1/blob/dev/LICENSE) file.
 
 ## Group Members
 |     Member     |         Email         |
