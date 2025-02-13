@@ -26,11 +26,36 @@ jobs:
         run: |
           zip -r codeDeployment.zip code README.md docs/Images-And-Videos
 
-      - name: Commit and Push ZIP
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add codeDeployment.zip
-          git commit -m "Deployed code folder to the repo as a ZIP"
-          git push origin dev
+      - name: Upload ZIP as artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: code-deployment
+          path: codeDeployment.zip
           
+  release:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download ZIP folder
+        uses: actions/download-artifact@v4
+        with: 
+          name: code-deployment
+          path: .
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v1.0.${{ github.run_number }}
+          name: "Code Release v1.0.${{ github.run_number }}"
+          body: "Automated release from merged pull request."
+          draft: false
+          prerelease: true
+          artifacts: "codeDeployment.zip"
+          
+        
+      
+
