@@ -5,6 +5,8 @@ import Inverse_kinematics
 from enum import Enum
 import numpy as np
 
+import time
+
 # Initial vector position and distance 
 vector = np.array([0, 150, 0])
 d = 100
@@ -88,11 +90,13 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
 
 # Function to "correct" the precision error in the base servo
 def jiggle(braccioDebug, baseServo):
-    # Arbitrary overshooting of the target rotation
-    braccioDebug.servo_movement(baseServo -30, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
-    # Slowly decrement to the target degree
-    for i in range(7):
-        braccioDebug.servo_movement(baseServo +5, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+    direction = -1
+    jiggleAmount = 5
+    for i in range(jiggleAmount + 1):
+        offset = (jiggleAmount-i) * jiggleAmount * direction
+        braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+        direction *= -1
+
     
 
 def main():
