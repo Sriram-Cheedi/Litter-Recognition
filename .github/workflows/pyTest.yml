@@ -42,5 +42,5 @@ jobs:
         RUN_HARDWARE_TESTS: false  # Skip hardware tests in CI
       run: |
         pip install pytest pytest-cov
-        pytest code/ --ignore=code/inference.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        pytest code/ --ignore=code/archived --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
         
