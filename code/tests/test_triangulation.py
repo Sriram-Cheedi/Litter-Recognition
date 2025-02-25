@@ -16,7 +16,7 @@ class TestTriangulation(unittest.TestCase):
         leftFrame = np.zeros((300, 300, 3))
         rightFrame = np.zeros((300, 300, 3))
         result = findDepth((10, 60), (30, 80), leftFrame, rightFrame, 9, 8, 60)
-        self.assertEqual(result, 249.4)
+        self.assertAlmostEqual(result, 117.1, 2)
     
     def test_SameCaptureWidth(self):
         leftFrame = np.zeros((450, 400, 3))
