@@ -7,13 +7,15 @@ import numpy as np
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from unittest import skipIf
 from interface import *
-from braccio_adapter import BraccioAdapter
 
 
 class TestInterface(unittest.TestCase):
+
+    def setUp(self):
+        self.braccio = BraccioDebug(mock=True)
     
     def test_checkInBounds(self):
-        
+    
         uBounds = [30, 180, 165, 180, 180, 180, 73]
         lBounds = [10, 0, 15, 0, 0, 0, 10]
 
@@ -25,38 +27,37 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(checkInBounds([20, 90, 90, 90, 90, 90, 40], uBounds, lBounds),[20, 90, 90, 90, 90, 90, 40])
         
         self.assertEqual(checkInBounds([15, 90, 100, 200, 150, -10, 50], uBounds, lBounds), [15, 90, 100, 180, 150, 0, 50])
+        self.assertEqual(checkInBounds([-50, 500, 200, -100, 300, -50, 100], uBounds, lBounds),[10, 180, 165, 0, 180, 0, 73])
 
     def test_moving_joint(self):
-        braccio = BraccioDebug()
         
         # Move servo within bounds
-        braccio.move_single_joint(ServoMotor.S1, 10)
-        self.assertTrue(10 <= braccio.s1 <= 30)
+        self.braccio.move_single_joint(ServoMotor.S1, 10)
+        self.assertTrue(10 <= self.braccio.s1 <= 30)
         
         # Move servo out of bounds
-        braccio.move_single_joint(ServoMotor.S6, 100)
-        self.assertEqual(braccio.s6, 73)
+        self.braccio.move_single_joint(ServoMotor.S6, 100)
+        self.assertEqual(self.braccio.s6, 73)
         
-        braccio.move_single_joint(ServoMotor.S6, -100)
-        self.assertEqual(braccio.s6, 10)
+        self.braccio.move_single_joint(ServoMotor.S6, -100)
+        self.assertEqual(self.braccio.s6, 10)
 
     def test_multiple_moves(self):
-        braccio = BraccioDebug()
-        braccio.move_single_joint(ServoMotor.S3, 20)
-        braccio.move_single_joint(ServoMotor.S3, -10)
+        self.braccio.move_single_joint(ServoMotor.S3, 20)
+        self.braccio.move_single_joint(ServoMotor.S3, -10)
         
-        self.assertTrue(15 <= braccio.s3 <= 165)
+        self.assertTrue(15 <= self.braccio.s3 <= 165)
         
-        braccio.move_single_joint(ServoMotor.S3, -100)
-        self.assertEqual(braccio.s3, 15)
+        self.braccio.move_single_joint(ServoMotor.S3, -100)
+        self.assertEqual(self.braccio.s3, 15)
 
     def test_key_mapping_logic(self):
-        braccio = BraccioDebug()
-        initial_pos = braccio.s5
+       
+        initial_pos = self.braccio.s5
         
         # Simulate pressing 'A' key (Servo 5 up)
-        braccio.up(ServoMotor.S5, 5)
-        self.assertEqual(braccio.s5, min(180, initial_pos + 5))
+        self.braccio.up(ServoMotor.S5, 5)
+        self.assertEqual(self.braccio.s5, min(180, initial_pos + 5))
     
 
     def test_inverse_kinematics(self):
@@ -70,27 +71,26 @@ class TestInterface(unittest.TestCase):
         self.assertIsInstance(result[4], np.ndarray)
 
     def test_initial_positions(self):
-        braccio = BraccioDebug()
-        self.assertEqual(braccio.s1, 0)
-        self.assertEqual(braccio.s2, 40)
-        self.assertEqual(braccio.s3, 180)
-        self.assertEqual(braccio.s4, 0)
-        self.assertEqual(braccio.s5, 180)
-        self.assertEqual(braccio.s6, 60)
+       
+        self.assertEqual(self.braccio.s1, 0)
+        self.assertEqual(self.braccio.s2, 40)
+        self.assertEqual(self.braccio.s3, 180)
+        self.assertEqual(self.braccio.s4, 0)
+        self.assertEqual(self.braccio.s5, 180)
+        self.assertEqual(self.braccio.s6, 60)
 
     def test_servo_reset(self):
-        braccio = BraccioDebug()
-        braccio.home_position()
-        self.assertEqual(braccio.s1, 0)
-        self.assertEqual(braccio.s2, 40)
-        self.assertEqual(braccio.s3, 180)
+
+        self.braccio.home_position()
+        self.assertEqual(self.braccio.s1, 0)
+        self.assertEqual(self.braccio.s2, 40)
+        self.assertEqual(self.braccio.s3, 180)
 
     def test_extreme_movements(self):
-        braccio = BraccioDebug()
-        braccio.move_single_joint(ServoMotor.S4, 200)
-        self.assertEqual(braccio.s4, 180)
-        braccio.move_single_joint(ServoMotor.S4, -200)
-        self.assertEqual(braccio.s4, 0)
+        self.braccio.move_single_joint(ServoMotor.S4, 200)
+        self.assertEqual(self.braccio.s4, 180)
+        self.braccio.move_single_joint(ServoMotor.S4, -200)
+        self.assertEqual(self.braccio.s4, 0)
 
     def test_inverse_kinematics_large_values(self):
         vector = np.array([500, 500, 500])
@@ -98,11 +98,10 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(len(result), 5)
 
     def test_servo_decrement_logic(self):
-        braccio = BraccioDebug()
-        braccio.down(ServoMotor.S2, 15)
-        self.assertGreaterEqual(braccio.s2, 0)
-        braccio.down(ServoMotor.S2, 50)
-        self.assertEqual(braccio.s2, 105)
+        self.braccio.down(ServoMotor.S2, 15)
+        self.assertGreaterEqual(self.braccio.s2, 0)
+        self.braccio.down(ServoMotor.S2, 50)
+        self.assertEqual(self.braccio.s2, 105)
     
 
 
