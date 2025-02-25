@@ -35,9 +35,18 @@ def checkInBounds(values, uBound, lBound):
 
 #Class for controlling the braccio arm
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM3"):
-        super().__init__(serial_port_robot_magnet,)
-        self.home_position()  #Initial and home position of the braccio arm
+    def __init__(self, serial_port_robot_magnet="COM3", mock=False):
+        if mock:
+            self.s1 = 0
+            self.s2 = 40
+            self.s3 = 180
+            self.s4 = 0
+            self.s5 = 180
+            self.s6 = 60
+        else:
+            super().__init__(serial_port_robot_magnet)
+        self.home_position()
+
     
     #Function to move the arm joints by specified degrees
     def move_single_joint(self, servo, degrees):
