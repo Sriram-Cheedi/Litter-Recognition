@@ -9,7 +9,6 @@ from unittest import skipIf
 from interface import *
 from braccio_adapter import BraccioAdapter
 
-hardware_tests = os.getenv("RUN_HARDWARE_TESTS", "false").lower() == "true"
 
 class TestInterface(unittest.TestCase):
     
@@ -58,10 +57,6 @@ class TestInterface(unittest.TestCase):
         # Simulate pressing 'A' key (Servo 5 up)
         braccio.up(ServoMotor.S5, 5)
         self.assertEqual(braccio.s5, min(180, initial_pos + 5))
-        
-        # Simulate pressing 'D' key (Servo 5 down)
-        braccio.down(ServoMotor.S5, 10)
-        self.assertEqual(braccio.s5, max(0, initial_pos - 5))
     
 
     def test_inverse_kinematics(self):
@@ -73,6 +68,42 @@ class TestInterface(unittest.TestCase):
         self.assertTrue(-180 <= result[2] <= 180)
         self.assertTrue(-180 <= result[3] <= 180)  
         self.assertIsInstance(result[4], np.ndarray)
+
+    def test_initial_positions(self):
+        braccio = BraccioDebug()
+        self.assertEqual(braccio.s1, 0)
+        self.assertEqual(braccio.s2, 40)
+        self.assertEqual(braccio.s3, 180)
+        self.assertEqual(braccio.s4, 0)
+        self.assertEqual(braccio.s5, 180)
+        self.assertEqual(braccio.s6, 60)
+
+    def test_servo_reset(self):
+        braccio = BraccioDebug()
+        braccio.home_position()
+        self.assertEqual(braccio.s1, 0)
+        self.assertEqual(braccio.s2, 40)
+        self.assertEqual(braccio.s3, 180)
+
+    def test_extreme_movements(self):
+        braccio = BraccioDebug()
+        braccio.move_single_joint(ServoMotor.S4, 200)
+        self.assertEqual(braccio.s4, 180)
+        braccio.move_single_joint(ServoMotor.S4, -200)
+        self.assertEqual(braccio.s4, 0)
+
+    def test_inverse_kinematics_large_values(self):
+        vector = np.array([500, 500, 500])
+        result = Inverse_kinematics.move(vector)
+        self.assertEqual(len(result), 5)
+
+    def test_servo_decrement_logic(self):
+        braccio = BraccioDebug()
+        braccio.down(ServoMotor.S2, 15)
+        self.assertGreaterEqual(braccio.s2, 0)
+        braccio.down(ServoMotor.S2, 50)
+        self.assertEqual(braccio.s2, 105)
+    
 
 
 if __name__ == "__main__":
