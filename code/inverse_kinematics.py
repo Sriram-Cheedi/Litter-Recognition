@@ -73,9 +73,8 @@ def move_line(d):
   return out
 
 def move(vector):
+  # Make sure z value is no greater than 
   vector[2] = max(vector[2], -50)
-  print("dmin is, ... ", dmin)
-  print("dmax is, ... ", dmax)
   # Get the magnitude of the vector
   dist = np.linalg.norm(vector)
 
@@ -94,7 +93,6 @@ def move(vector):
       vector = (vector / mag) * dmin
 
 
-  print("new vector is, ... ", vector)
 
 
   # Get projection of vector horizontally
@@ -107,7 +105,6 @@ def move(vector):
   shoulder = math.degrees(math.atan(vector[2] / floor_projection))
 
   #Get degrees required to move arm by the magnitude of the vector
-  print("dist is, ... ", dist)
   degrees = move_line(dist)
 
   #Add the degrees required for the direction of the vector

@@ -1,7 +1,7 @@
 import pygame
 import sys
 import braccio_adapter
-import Inverse_kinematics
+import inverse_kinematics
 from enum import Enum
 import numpy as np
 
@@ -190,47 +190,47 @@ def main():
         # Control servos using keys
         if keys[pygame.K_a]:
             braccioDebug.up(ServoMotor.S5)
-            vector = Inverse_kinematics.move(vector)[4]
+            vector = inverse_kinematics.move(vector)[4]
         if keys[pygame.K_s]:
             braccioDebug.up(ServoMotor.S6)
-            vector = Inverse_kinematics.move(vector)[4]
+            vector = inverse_kinematics.move(vector)[4]
         if keys[pygame.K_w]:
             braccioDebug.down(ServoMotor.S6)
-            vector = Inverse_kinematics.move(vector)[4]
+            vector = inverse_kinematics.move(vector)[4]
         if keys[pygame.K_d]:
             braccioDebug.down(ServoMotor.S5)
-            vector = Inverse_kinematics.move(vector)[4]
+            vector = inverse_kinematics.move(vector)[4]
 
         
         
         if keys[pygame.K_i]:
             vector[1] += 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
-            vector = Inverse_kinematics.move(vector)[4]
+            braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            vector = inverse_kinematics.move(vector)[4]
 
         if keys[pygame.K_k]:
             vector[1] -= 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
-            vector = Inverse_kinematics.move(vector)[4]
+            braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            vector = inverse_kinematics.move(vector)[4]
 
         if keys[pygame.K_j]:
             vector[0] += 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
-            vector = Inverse_kinematics.move(vector)[4]
+            braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            vector = inverse_kinematics.move(vector)[4]
 
         if keys[pygame.K_l]:
             vector[0] -= 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
 
         if keys[pygame.K_u]:
             vector[2] += 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
-            vector = Inverse_kinematics.move(vector)[4]
+            braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            vector = inverse_kinematics.move(vector)[4]
 
         if keys[pygame.K_o]:
             vector[2] -= 10
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
-            vector = Inverse_kinematics.move(vector)[4]
+            braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            vector = inverse_kinematics.move(vector)[4]
 
         if keys[pygame.K_m]:
             vector[0] = int(input("Enter x:"))
@@ -239,11 +239,11 @@ def main():
             print(vector)
 
             braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
-            vector = Inverse_kinematics.move(vector)[4]
+            vector = inverse_kinematics.move(vector)[4]
         if key_history:
             display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
 
