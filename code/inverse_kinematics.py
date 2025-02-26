@@ -85,7 +85,10 @@ def move(vector):
   # 
 
   dist = max(dmin, min(dmax, dist))   # Make sure dist does not go out of bounds
-  mag = np.linalg.norm(vector)        
+  mag = np.linalg.norm(vector)
+  if mag == 0:
+    vector = np.array([0,1,0])
+    mag = 1   
   if dist == dmax:                        # Just in case (should never be 0) to avoid divide by 0 errors
       vector = (vector / mag) * dmax  # Normalise the vector and then multiply it by dmax
 

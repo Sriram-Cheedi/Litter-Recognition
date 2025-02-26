@@ -258,7 +258,6 @@ def main():
             vector[0] = int(input("Enter x:"))
             vector[1] = int(input("Enter y:"))
             vector[2] = int(input("Enter z:"))
-            print(vector)
 
             braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
             braccioDebug.servo_movement(90 - inverse_kinematics.move(vector)[0], 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
@@ -266,6 +265,7 @@ def main():
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = inverse_kinematics.move(vector)[4]
+            print(vector)
         if key_history:
             display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
 
