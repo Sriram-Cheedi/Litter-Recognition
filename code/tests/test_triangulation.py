@@ -24,6 +24,5 @@ class TestTriangulation(unittest.TestCase):
             findDepth((10, 60), (150, 20), leftFrame, rightFrame, 9, 8, 90)
             mock_print.assert_called_with("Left and right frames do not have the same width")
     
-    
 if __name__ == "__main__":
     unittest.main()
