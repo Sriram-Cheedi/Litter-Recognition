@@ -14,6 +14,7 @@ def findDepth(leftPoint, rightPoint, captureLeft, captureRight, camDist, focalLe
         focalPixel = (rightWidth * 0.5) / np.tan(alpha * 0.5 * np.pi/180)
     else: 
         print("Left and right frames do not have the same width")
+        return float('inf')
     
     leftX = leftPoint[0]    
     rightX = rightPoint[0]
