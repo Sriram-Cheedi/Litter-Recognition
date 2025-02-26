@@ -4,6 +4,7 @@ import braccio_adapter
 import Inverse_kinematics
 from enum import Enum
 import numpy as np
+import os
 
 # Initial vector position and distance 
 vector = np.array([0, 150, 0])
@@ -33,11 +34,32 @@ def checkInBounds(values, uBound, lBound):
             newValues[index] = item
     return newValues
 
-#Class for controlling the braccio arm
+
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM3"):
-        super().__init__(serial_port_robot_magnet,)
-        self.home_position()  #Initial and home position of the braccio arm
+    def __init__(self, serial_port_robot_magnet="COM3", mock=None):
+        # Detect CI mode automatically
+        if mock is None:
+            mock = os.getenv("USE_MOCK", "true").lower() == "true"
+
+        if mock:
+            # Set default values for attributes that are normally initialized in BraccioAdapter
+            self.s1 = 0
+            self.s2 = 40
+            self.s3 = 180
+            self.s4 = 0
+            self.s5 = 180
+            self.s6 = 60
+            self.keywords_robot = ["P"]  # Ensure this exists to prevent AttributeError
+            self.s_conn_robot = None  # Mock serial connection
+            self.write = lambda x: None  # Mock write function
+            self.servo_movement = lambda *args, **kwargs: None  # Mock servo movement
+        
+        else:
+            super().__init__(serial_port_robot_magnet)
+
+        self.home_position()
+
+
     
     #Function to move the arm joints by specified degrees
     def move_single_joint(self, servo, degrees):
