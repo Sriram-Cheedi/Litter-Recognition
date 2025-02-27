@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 from unittest.mock import MagicMock, patch
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__, ".."))))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from inferenceCV import *
 
 class TestInferenceCV(unittest.TestCase):
