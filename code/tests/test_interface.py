@@ -105,6 +105,10 @@ class TestInterface(unittest.TestCase):
         vector = np.array([500, 500, 500])
         result = Inverse_kinematics.move(vector)
         self.assertEqual(len(result), 5)
+
+    def test_servo_increment_logic(self):
+        self.braccio.up(ServoMotor.S2, 10)
+        self.assertLessEqual(self.braccio.s2, 180)
     
     
     def test_servo_decrement_logic(self):
@@ -112,6 +116,29 @@ class TestInterface(unittest.TestCase):
         self.assertGreaterEqual(self.braccio.s2, 0)
         self.braccio.down(ServoMotor.S2, 50)
         self.assertEqual(self.braccio.s2, 105)
+
+
+    def test_home_position_resets(self):
+        self.braccio.servo_movement(90, 90, 90, 90, 90, 60)
+        self.braccio.home_position()
+        self.assertEqual(self.braccio.s1, 0)
+
+    def test_braccio_initialization_mock(self):
+        self.assertIsInstance(self.braccio, BraccioDebug)
+
+    
+    def test_home_position_reset(self):
+        self.braccio.servo_movement(90, 90, 90, 90, 90, 60)
+        self.braccio.home_position()
+        self.assertEqual(self.braccio.s1, 0)
+
+    def test_servo_no_movement(self):
+        initial_position = self.braccio.s4
+        self.braccio.move_single_joint(ServoMotor.S4, initial_position)
+        self.assertEqual(self.braccio.s4, initial_position)
+
+
+
 
 if __name__ == "__main__":
     unittest.main()
