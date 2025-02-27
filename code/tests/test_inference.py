@@ -13,7 +13,7 @@ class TestInferenceCV(unittest.TestCase):
     @patch("builtins.open", unittest.mock.mock_open(read_data="1 Testing\n2 Code\n3 Is\n4 Fun"))
     def test_loadLabelMap(self):
         returnedMap = loadLabelMap("labels.txt")
-        expectedMap = [None, "Testing", "Code", "Is", "Fun"]
+        expectedMap = {1: 'Testing', 2: 'Code', 3: 'Is', 4: 'Fun'}
         self.assertEqual(returnedMap, expectedMap)
         
 if __name__ == "__main__":
