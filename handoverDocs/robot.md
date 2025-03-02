@@ -1,26 +1,26 @@
 # Robot System Guide
 
-#### braccio_adapter.py 
+#### 1. braccio_adapter.py 
 **Purpose:** 
--- Handles serial communication with the Braccio robotic arm via an Arduino.
--- Sends commands to move servos to specific angles.
+- Handles serial communication with the Braccio robotic arm via an Arduino.
+- Sends commands to move servos to specific angles.
 
-#### Inverse_kinematics.py
+#### 2. Inverse_kinematics.py
 **Purpose:**
--- Calculates servo angles using inverse kinematics.
--- Ensures the arm moves precisely to the target position.
+- Calculates servo angles using inverse kinematics.
+- Ensures the arm moves precisely to the target position.
 
-#### Interface.py
--- Main python file which integrates braccio_adapter for serial communication and Inverse_kinematics for movement control.
--- Provides a pygame based UI for real time servo movement visualisation and to control the robotic arm using keyboard input.
+#### 3. Interface.py
+- Main python file which integrates braccio_adapter for serial communication and Inverse_kinematics for movement control.
+- Provides a pygame based UI for real time servo movement visualisation and to control the robotic arm using keyboard input.
 
 ## System Setup
 **You will need:**
--- Braccio Robotic Arm
--- Arduino UNO
--- Arduino IDE
--- Computer with Python Installed
--- Install dependencies using:
+- Braccio Robotic Arm
+- Arduino UNO
+- Arduino IDE
+- Computer with Python Installed
+- Install dependencies using:
 
    ```console
    pip install pygame numpy pyserial
@@ -42,8 +42,8 @@
 
 **To control the from specific coordinaties:**
 
--- Press 'M' to select coordinates screen 
--- Enter x,y,z coordinates when prompted (in millimetres,(0,0,0) is at the middle of the shoulderjoint).
+- Press 'M' to select coordinates screen 
+- Enter x,y,z coordinates when prompted (in millimetres,(0,0,0) is at the middle of the shoulderjoint).
 
 The arm will now perform the pick up procedure at the given position.
 
