@@ -6,6 +6,8 @@ from enum import Enum
 import numpy as np
 import os
 
+import time
+
 # Initial vector position and distance 
 vector = np.array([0, 150, 0])
 d = 100
@@ -106,6 +108,18 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
     #Moves servo downwards
     def down(self, servo: ServoMotor, degrees = -1):
         self.move_single_joint(servo, degrees)
+
+
+# Function to "correct" the precision error in the base servo
+def jiggle(braccioDebug, baseServo):
+    direction = -1
+    jiggleAmount = 5
+    for i in range(jiggleAmount + 1):
+        offset = (jiggleAmount-i) * jiggleAmount * direction
+        braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+        direction *= -1
+
+    
 
 def main():
     global d
@@ -260,9 +274,21 @@ def main():
             vector[2] = int(input("Enter z:"))
             print(vector)
 
+            # Stand up straight
             braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
-            braccioDebug.servo_movement(90 - Inverse_kinematics.move(vector)[0], 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+
+            # Jiggle the base
+            baseServo = 90 - Inverse_kinematics.move(vector)[0]
+            jiggle(braccioDebug, baseServo)
+            
+
+            # Move thew arm down with class open
+            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            
+            # Shut the claw
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
+            
+            # Stand up straight with claw shut
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = Inverse_kinematics.move(vector)[4]
