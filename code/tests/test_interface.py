@@ -15,7 +15,7 @@ class TestInterface(unittest.TestCase):
     
     def setUp(self):
         # self.braccio = BraccioDebug("COM4")    
-        self.braccio = BraccioDebug(mock=False)
+        self.braccio = BraccioDebug(mock=True)
         self.braccio.s_conn_robot = MagicMock()  # Mock serial connection
         self.braccio.write = MagicMock()  # Mock write function to prevent AttributeError
         self.braccio.servo_movement = MagicMock()  # Mock servo movement to avoid hardware calls
