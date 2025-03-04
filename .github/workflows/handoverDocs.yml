@@ -1,0 +1,29 @@
+name: Deploy Handover Documentation to GitHub Pages
+
+on: 
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Convert Handover Documentation to HTML
+        run: |
+         echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>My Site</title></head><body>" > index.html
+         cat handoverDocs/README.md >> index.html
+         echo "</body></html>" >> index.html
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with: 
+          branch: dev
+          folder: .
+          clean: false
+
+    
