@@ -102,7 +102,7 @@ Next, you'll be prompted to enter the port name that was previously displayed in
 between your computer and the Braccio robotic arm. Once you enter the correct port, the Braccio robotic arm will begin its startup routine. At the same time, a Pygame-based interface
 will automatically open on your screen. This interface serves as an intuitive control panel, allowing you to operate the robotic arm using key presses. It provides real-time feedback on
 the current state of the arm, displaying servo angles for different joints and helping you monitor movement accuracy also shows the last key pressed, and keeps a history of the last five
-key presses. You are now ready to control the robotic arm. Follow the provided instructions carefully to execute precise movements 
+key presses. You are now ready to control the robotic arm. Follow the provided instructions carefully to execute precise movements. 
 
 > [!WARNING]
 > Avoid lifting objects that exceed the robotic arm's weight capacity. Overloading can strain the servos, potentially causing permanent damage and reducing the arm’s overall lifespan.
