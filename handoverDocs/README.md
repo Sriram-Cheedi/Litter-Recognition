@@ -1,4 +1,16 @@
-# Robot System Guide
+# Litter Recognition Handover Documentation
+## Contents:
+- [Introduction](#introduction)
+- [Project Structure](#project-structure)
+- [Robot System Guide](#robot-system-guide)
+- [Litter Detection and Depth Calculation Code Guide](#litter-detection-and-depth-calculation-code-guide)
+- [Further Documentation](#further-documentation)
+
+## Introduction:
+
+## Project Structure:
+
+## Robot System Guide
 
 #### 1. braccio_adapter.py 
 **Purpose:** 
@@ -14,7 +26,7 @@
 - Main python file which integrates braccio_adapter for serial communication and Inverse_kinematics for movement control.
 - Provides a pygame based UI for real time servo movement visualisation and to control the robotic arm using keyboard input.
 
-## System Setup
+### System Setup:
 **You will need:**
 - Braccio Robotic Arm
 - Arduino UNO
@@ -27,7 +39,7 @@
    ```
 
 
-## Instructions for Controlling the Arm
+### Instructions for Controlling the Arm:
 
 **To control the arm for debugging:**
 
@@ -69,7 +81,7 @@ Now it will ask you to enter the port which was in you Arduino IDE. After enteri
 be opened. This displays servo angles of different joints of the robot and gives last key pressed along with history of last 5 keys pressed. You
 can now move the robot by following the instructions given above.
 
-## Troubleshooting
+### Troubleshooting:
 ### Common Issues and Fixes
 
 | Issue                                          | Possible Fix                                                        |
@@ -81,15 +93,15 @@ can now move the robot by following the instructions given above.
 
 
 
-# Litter Detection and Depth Calculation Code Guide
+## Litter Detection and Depth Calculation Code Guide
 
-## You will need:
+### You will need:
 - Two cameras of the exact same specification,
 - A computer with enough processing power to run the detection,
 - An object displaying an 8 by 6 (measured by interior vertices) chessboard pattern,
 - The code loaded up with the model onto the computer.
 
-## Step 1: Taking The Images for Calibration
+### Step 1: Taking The Images for Calibration
 With the cameras connected to your device, first run:
 
 ```console
@@ -109,7 +121,7 @@ Pictures must include the chessboard at different orientations and angles in eve
 |   |   |   ├── right # HERE
 ```
 
-## Step 2: Calibrate your Cameras
+### Step 2: Calibrate your Cameras
 Once the images have been taken, they should be saved into the local files 'left' and 'right' like above. Now run:
 
 ```console
@@ -118,7 +130,7 @@ python calibration.py
 
 This should show a series of frames with openCV having detected the chessboard corners in the images you took earlier. These corner locations are used to create a local file 'stereoMap.xml' needed to rectify the images which will be taken while running the depth and image detection. This file can be reused whenever now that you have calibrated the two cameras.
 
-## Step 3: Run the Detection Script
+### Step 3: Run the Detection Script
 Now that you have completed the preliminary tasks, all you need to do is run:
 
 ```console
