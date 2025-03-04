@@ -121,6 +121,7 @@ def jiggle(braccioDebug, baseServo):
 
 
 def robotLogic():
+    # Get serial port though user input
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port)
     pygame.init()
@@ -266,10 +267,13 @@ def robotLogic():
     sys.exit()
     
 
+
 def cameraLogic():
     # TODO: Implemement logic to open the camera. It should hopefully be non-blocking or else the code will never enter the UI
     # logic until the cameras are closed.
     print("Camera to be Implemented")
+
+
 
 def main():
     global d

@@ -2,7 +2,6 @@ import sys
 import os
 import unittest
 import numpy as np
-import Inverse_kinematics
 from unittest.mock import patch, MagicMock, Mock
 
 
