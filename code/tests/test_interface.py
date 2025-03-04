@@ -2,7 +2,6 @@ import sys
 import os
 import unittest
 import numpy as np
-import Inverse_kinematics
 from unittest.mock import patch, MagicMock, Mock
 
 
@@ -15,6 +14,7 @@ from interface import *
 class TestInterface(unittest.TestCase):
     
     def setUp(self):
+        # self.braccio = BraccioDebug("COM4")    
         self.braccio = BraccioDebug(mock=True)
         self.braccio.s_conn_robot = MagicMock()  # Mock serial connection
         self.braccio.write = MagicMock()  # Mock write function to prevent AttributeError
@@ -43,6 +43,8 @@ class TestInterface(unittest.TestCase):
         
         # Move servo within bounds
         self.braccio.move_single_joint(ServoMotor.S1, 10)
+        self.braccio.servo_movement.assert_called()
+
         self.assertTrue(10 <= self.braccio.s1 <= 30)
         
         # Move servo out of bounds
@@ -136,6 +138,29 @@ class TestInterface(unittest.TestCase):
         initial_position = self.braccio.s4
         self.braccio.move_single_joint(ServoMotor.S4, initial_position)
         self.assertEqual(self.braccio.s4, initial_position)
+        
+    def test_rapid_consecutive_moves(self):
+        for _ in range(10):
+            self.braccio.up(ServoMotor.S5, 5)
+            self.braccio.down(ServoMotor.S5, 5)
+
+        self.assertEqual(self.braccio.s5, 180)
+    
+    def read_feedback(self):
+        return "Mocked feedback: Servo positions - {}, {}, {}, {}, {}, {}".format(
+        self.s1, self.s2, self.s3, self.s4, self.s5, self.s6
+    )
+
+        
+    def test_keypress_multiple_servo_movement(self):
+        initial_s5 = self.braccio.s5
+        initial_s6 = self.braccio.s6
+
+        self.braccio.up(ServoMotor.S5, 5)
+        self.braccio.up(ServoMotor.S6, 5)
+
+        self.assertEqual(self.braccio.s5, min(180, initial_s5 + 5))
+        self.assertEqual(self.braccio.s6, min(73, initial_s6 + 5))
 
 
 
