@@ -10,6 +10,9 @@
 
 ## Project Structure:
 
+## Architecture Diagram
+![image](https://github.com/user-attachments/assets/22d654af-39bc-4fdd-8003-1cc4eb89514f)
+
 ## Robot System Guide
 
 #### 1. braccio_adapter.py 
