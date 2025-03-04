@@ -37,7 +37,7 @@ def checkInBounds(values, uBound, lBound):
 
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM3", mock=None):
+    def __init__(self, serial_port_robot_magnet="COM4", mock=None):
         # Detect CI mode automatically
         if mock is None:
             mock = os.getenv("USE_MOCK", "true").lower() == "true"
@@ -59,7 +59,16 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             super().__init__(serial_port_robot_magnet)
 
         self.home_position()
-
+        
+    def read_feedback(self):
+        return {
+            "s1": self.s1,
+            "s2": self.s2,
+            "s3": self.s3,
+            "s4": self.s4,
+            "s5": self.s5,
+            "s6": self.s6
+        }
 
     def get_position_feedback(self):
         try:
@@ -105,7 +114,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             print(f"Error moving joint {servo.name}: {e}")
  
     #Moves servo upwards
-    SPEED_MULTIPLIER = 5  # Adjust speed dynamically
+    SPEED_MULTIPLIER = 1  # Adjust speed dynamically
     def up(self, servo : ServoMotor, degrees = SPEED_MULTIPLIER):
         self.move_single_joint(servo, degrees)
 
