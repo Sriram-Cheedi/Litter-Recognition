@@ -126,7 +126,7 @@ def main():
 
     # User input for serial port
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
-    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port)    
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)    
     braccioControlString = "Control the Braccio using: \n\
                             Servo 5 UP/DOWN A/D\n\
                             Servo 6 UP/DOWN S/W\n\
