@@ -269,10 +269,13 @@ def robotLogic():
 
 
 def cameraLogic():
-    # TODO: Implemement logic to open the camera. It should hopefully be non-blocking or else the code will never enter the UI
-    # logic until the cameras are closed.
+    # TODO: Implemement logic to open just the camera.
     print("Camera to be Implemented")
 
+
+def automatedSystem():
+    # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
+    print("You know... The thing we promised to have done in less than two weeks...")
 
 
 def main():
@@ -282,12 +285,16 @@ def main():
     # User input for interface mode
     mode = input("Enter the interface mode (0 = Manual Control, 1 = Camera Mode, 2 = Manual & Camera Mode)")
     mode = int(mode)
-    if(mode == 1 or mode == 2):
+
+    if mode == 0:
+        robotLogic()
+
+
+    if mode == 1:
         cameraLogic()
 
-     # User input for serial port if robot control is required 
-    if(mode == 0 or mode == 2):
-        robotLogic()
+    if mode == 2:
+        automatedSystem()
 
 
 
