@@ -2,15 +2,17 @@
 ## Contents:
 - [Introduction](#introduction)
 - [Project Structure](#project-structure)
+- [Architecture Diagram](#architecture-diagram)
 - [Robot System Guide](#robot-system-guide)
 - [Litter Detection and Depth Calculation Code Guide](#litter-detection-and-depth-calculation-code-guide)
 - [Further Documentation](#further-documentation)
 
 ## Introduction:
+The purpose of this document is to serve as a guide for new developers to continue our work on the project. It will cover the existing code infrastructure and the structure of our repository.
 
 ## Project Structure:
 
-## Architecture Diagram
+## Architecture Diagram:
 ![image](https://github.com/user-attachments/assets/22d654af-39bc-4fdd-8003-1cc4eb89514f)
 
 ## Robot System Guide
@@ -143,3 +145,5 @@ python distInf.py
 This script runs real time inference on the camera feeds using the TFlite TACO-trained model powering our project. If both frames detect an object, the distance of this object should be calculated and displayed with the help of the rectification parameters you calculated via the calibration script. Now that the script is hopefully running as intended, you can act like Timmy below:
 
 ![Shaun The Sheep](https://media0.giphy.com/media/tIeCLkB8geYtW/giphy.gif?cid=47028fa8jgwxw5pmayj1hkegw38jlet0446le5qcmbnzcdy7&ep=v1_gifs&rid=giphy.gif&ct=g)
+
+## Further Documentation
