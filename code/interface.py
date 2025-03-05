@@ -141,22 +141,12 @@ def jiggle(braccioDebug, baseServo):
         braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
         direction *= -1
 
-    
 
-def main():
-    global d
-    global vector
-
-    # User input for serial port
+def robotLogic():
+    # Get serial port though user input
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
-    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)    
-    braccioControlString = "Control the Braccio using: \n\
-                            Servo 5 UP/DOWN A/D\n\
-                            Servo 6 UP/DOWN S/W\n\
-                            HOME C\
-                            Print degrees V\
-                            "
-    print(braccioControlString)
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = Flase)
+
     pygame.init()
     screen_width = 800
     screen_height = 600
@@ -186,7 +176,7 @@ def main():
     #Checks that all of the movement values are within their bounds
     #If not, they are set to the closest bound
     
-
+    # Run the UI logic 
     while running:
         
         screen.fill(BLACK)
@@ -227,31 +217,7 @@ def main():
             return 0 <= new_pos <= 180 
 
         keys = pygame.key.get_pressed()
-        # if keys[pygame.K_q]:
-        #     braccioDebug.up(ServoMotor.S1)
-        # if keys[pygame.K_w]:
-        #     braccioDebug.up(ServoMotor.S2)
-        # if keys[pygame.K_e]:
-        #     braccioDebug.up(ServoMotor.S3)
-        # if keys[pygame.K_r]:
-        #     braccioDebug.up(ServoMotor.S4)
-        # if keys[pygame.K_t]:
-        #     braccioDebug.up(ServoMotor.S5)
-        # if keys[pygame.K_y]:
-        #     braccioDebug.up(ServoMotor.S6)
-        # if keys[pygame.K_a]:
-        #     braccioDebug.down(ServoMotor.S1)
-        # if keys[pygame.K_s]:
-        #     braccioDebug.down(ServoMotor.S2)
-        # if keys[pygame.K_d]:
-        #     braccioDebug.down(ServoMotor.S3)
-        # if keys[pygame.K_f]:
-        #     braccioDebug.down(ServoMotor.S4)
-        # if keys[pygame.K_g]:
-        #     braccioDebug.down(ServoMotor.S5)
-        # if keys[pygame.K_h]:
-        #     braccioDebug.down(ServoMotor.S6)
-
+       
         # Control servos using keys
 
         if keys[pygame.K_a] and is_safe_move(ServoMotor.S5, 5):
@@ -328,9 +294,41 @@ def main():
 
         pygame.display.flip()
 
-
     pygame.quit()
     sys.exit()
+    
+
+
+def cameraLogic():
+    # TODO: Implemement logic to open just the camera.
+    print("Camera to be Implemented")
+
+
+def automatedSystem():
+    # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
+    print("You know... The thing we promised to have done in less than two weeks...")
+
+
+def main():
+    global d
+    global vector
+
+    # User input for interface mode
+    mode = input("Enter the interface mode (0 = Manual Control, 1 = Camera Mode, 2 = Manual & Camera Mode)")
+    mode = int(mode)
+
+    if mode == 0:
+        robotLogic()
+
+
+    if mode == 1:
+        cameraLogic()
+
+    if mode == 2:
+        automatedSystem()
+
+
+
 
 if __name__ == "__main__":
     main()
