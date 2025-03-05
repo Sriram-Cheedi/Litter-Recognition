@@ -15,20 +15,22 @@ import StereoVision.triangulation as triangulation
 
 import camera_distance
 
-pygame.int()
+pygame.init()
 screen_width = 1000
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface0")
 
 WHITE = (255,255,255)
-BALCK = (0,0,0)
+BLACK = (0,0,0)
 GREEN = (0,255,0)
 RED = (255,0,0)
 
 font = pygame.font.Font(None, 36)
 
-def display_text(text, x, y, color=WHITE):
+def display_text(text, x, y, color=WHITE,clear_area = False):
+    if clear_area:
+        pygame.draw.rect(screen, BLACK, (x, y, 300, 40))  # Clear the text area
     text_surface = font.render(text, True, color)
     screen.blit(text_surface, (x, y))
 # Loads the label map into a list
@@ -162,7 +164,7 @@ def detect(MODEL_PATH, LABELMAP_PATH):
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 550, 20, GREEN)
-            display_text(f"Object Position: {coords}", 550, 50, GREEN)
+            display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
