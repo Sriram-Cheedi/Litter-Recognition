@@ -3,13 +3,16 @@ import cv2
 import numpy as np
 import tensorflow.lite as tflite
 import time
-#import imutils
+import imutils
 from matplotlib import pyplot as plt
 
 # Other packages we have created
-import triangulation 
-import activeCalibration
+# Make sure python can tell StereoVision is one of the packages
+#from . import triangulation
+#from . import activeCalibration
 
+import activeCalibration
+import triangulation
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
     labelMap = {}
@@ -132,7 +135,13 @@ def detect(MODEL_PATH, LABELMAP_PATH):
         
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
-        
+
+            if cv2.waitKey(1) & 0xFF == ord('s'):
+                cameraLeft.release()
+                cameraRight.release()
+                cv2.destroyAllWindows()
+                return depth 
+
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
         
@@ -143,7 +152,7 @@ def detect(MODEL_PATH, LABELMAP_PATH):
         # Display image with detection 
         cv2.imshow("Litter Detection Left", captureLeft)
         cv2.imshow("Litter Detection Right", captureRight)
-        
+
         # Press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

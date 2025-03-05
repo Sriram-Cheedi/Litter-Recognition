@@ -322,6 +322,10 @@ def main():
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = Inverse_kinematics.move(vector)[4]
+
+
+
+
         if key_history:
             display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
 
