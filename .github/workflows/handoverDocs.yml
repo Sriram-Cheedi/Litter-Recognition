@@ -12,7 +12,7 @@ jobs:
     steps: 
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+   
       - name: Convert Handover Documentation to HTML
         run: |
           mkdir -p handoverDocs/pageAssets
@@ -36,4 +36,3 @@ jobs:
         uses: actions/deploy-pages@v4
 
 
-      
