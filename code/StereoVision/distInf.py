@@ -1,3 +1,5 @@
+#Running this file by python -m StereoVision.distInf
+
 import sys
 import cv2
 import numpy as np
@@ -8,11 +10,10 @@ from matplotlib import pyplot as plt
 
 # Other packages we have created
 # Make sure python can tell StereoVision is one of the packages
-#from . import triangulation
-#from . import activeCalibration
-
 import StereoVision.activeCalibration as activeCalibration
 import StereoVision.triangulation as triangulation
+
+
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
     labelMap = {}
