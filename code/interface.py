@@ -1,3 +1,4 @@
+import time
 import pygame
 import sys
 import braccio_adapter
@@ -38,7 +39,7 @@ def checkInBounds(values, uBound, lBound):
 
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM3", mock=None):
+    def __init__(self, serial_port_robot_magnet="COM4", mock=None):
         # Detect CI mode automatically
         if mock is None:
             mock = os.getenv("USE_MOCK", "true").lower() == "true"
@@ -60,54 +61,75 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             super().__init__(serial_port_robot_magnet)
 
         self.home_position()
+        
+    def read_feedback(self):
+        return {
+            "s1": self.s1,
+            "s2": self.s2,
+            "s3": self.s3,
+            "s4": self.s4,
+            "s5": self.s5,
+            "s6": self.s6
+        }
 
-
-    
+    def get_position_feedback(self):
+        try:
+            feedback = self.read_feedback()
+            if feedback:
+                print(f"Real-time position feedback: {feedback}")
+        except Exception as e:
+            print(f"Error reading position feedback: {e}")
     #Function to move the arm joints by specified degrees
     def move_single_joint(self, servo, degrees):
-        # get currect vals
-        s1 = self.s1
-        s2 = self.s2 
-        s3 = self.s3
-        s4 = self.s4 
-        s5 = self.s5
-        s6 = self.s6
-        servoPos = [10, s1, s2, s3, s4, s5, s6]
-        
-
-        #Holds upper and lower bounds for each servo motors movement
-        uBounds = [30, 180, 165, 180, 180, 180, 73]
-        lBounds = [10, 0, 15, 0, 0, 0, 10]
-
-        #Adjusts servo based on input degrees
-        if servo.value == 1:
-            servoPos[1] += degrees
-        if servo.value == 2:
-            servoPos[2] += degrees
-        if servo.value == 3:
-            servoPos[3] += degrees
-        if servo.value == 4:
-            servoPos[4] += degrees
-        if servo.value == 5:
-            servoPos[5] += degrees
-        if servo.value == 6:
-            servoPos[6] += degrees
-
-    
+  
+        try:
+                 # get currect vals
+            s1 = self.s1
+            s2 = self.s2 
+            s3 = self.s3
+            s4 = self.s4 
+            s5 = self.s5
+            s6 = self.s6
+            servoPos = [10, s1, s2, s3, s4, s5, s6]
+            uBounds = [30, 180, 165, 180, 180, 180, 73]  #Holds upper and lower bounds for each servo motors movement
+            lBounds = [10, 0, 15, 0, 0, 0, 10]
             
-        servoPos = checkInBounds(servoPos, uBounds, lBounds)
-        self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
-
-        # Update internal state
-        self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:]
-
+            
+            if servo.value == 1:  #Adjusts servo based on input degrees
+                servoPos[1] += degrees
+            if servo.value == 2:
+                servoPos[2] += degrees
+            if servo.value == 3:
+                servoPos[3] += degrees
+            if servo.value == 4:
+                servoPos[4] += degrees
+            if servo.value == 5:
+                servoPos[5] += degrees
+            if servo.value == 6:
+                servoPos[6] += degrees
+                
+            servoPos = checkInBounds(servoPos, uBounds, lBounds)
+            self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
+            self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:] 
+            self.get_position_feedback()
+        except Exception as e:
+            print(f"Error moving joint {servo.name}: {e}")
+ 
     #Moves servo upwards
-    def up(self, servo : ServoMotor, degrees = 1):
+    SPEED_MULTIPLIER = 1  # Adjust speed dynamically
+    def up(self, servo : ServoMotor, degrees = SPEED_MULTIPLIER):
         self.move_single_joint(servo, degrees)
 
     #Moves servo downwards
-    def down(self, servo: ServoMotor, degrees = -1):
+    def down(self, servo: ServoMotor, degrees = -SPEED_MULTIPLIER):
         self.move_single_joint(servo, degrees)
+        
+        
+    def calibrate_servos(braccio):
+        print("Calibrating servos to default positions...")
+        braccio.servo_movement(90, 90, 90, 90, 90, 90)  # Calibrate to default position0, 40, 180, 0, 180)
+        print("Calibration complete.")
+
 
 
 # Function to "correct" the precision error in the base servo
@@ -123,7 +145,8 @@ def jiggle(braccioDebug, baseServo):
 def robotLogic():
     # Get serial port though user input
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
-    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port)
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = Flase)
+
     pygame.init()
     screen_width = 800
     screen_height = 600
@@ -183,13 +206,21 @@ def robotLogic():
                     braccioDebug.home_position()
                 elif event.key == pygame.K_p:
                     print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                elif event.key == pygame.K_b:  # Bind B key to calibration
+                    braccioDebug.calibrate_servos(braccioDebug)
                 if event.key == pygame.K_ESCAPE:
                     running = False
+                    
+                    
+        def is_safe_move(servo, degrees):
+            new_pos = braccioDebug.__dict__[f"s{servo.value}"] + degrees
+            return 0 <= new_pos <= 180 
 
         keys = pygame.key.get_pressed()
        
         # Control servos using keys
-        if keys[pygame.K_a]:
+
+        if keys[pygame.K_a] and is_safe_move(ServoMotor.S5, 5):
             braccioDebug.up(ServoMotor.S5)
             vector = Inverse_kinematics.move(vector)[4]
         if keys[pygame.K_s]:
