@@ -11,6 +11,37 @@
 The purpose of this document is to serve as a guide for new developers to continue our work on the project. It will cover the existing code infrastructure and the structure of our repository.
 
 ## Project Structure:
+This section covers the different directories of our repository:
+
+```
+.
+├── .github/             # Templates and workflows
+├── .gitignore           # Other files
+├── LICENSE              ...
+├── README.md            ...
+├── Research/            # Research files
+├── code/                # All project code
+├── docs/                # Project documentation
+└── handoverDocs/        # Handover documentation (You are here)
+```
+
+### Links
+These links allow you to navigate to explanations of different areas of the repository:
+- [/.github](#github)
+- [/Research](#research)
+- [/code](#code)
+- [/docs](#docs)
+- [/handoverDocs](#handoverDocs)
+
+### /.github
+
+### /Research
+
+### /code
+
+###  /docs
+
+### /handoverDocs
 
 ## Architecture Diagram:
 ![image](https://github.com/user-attachments/assets/22d654af-39bc-4fdd-8003-1cc4eb89514f)
