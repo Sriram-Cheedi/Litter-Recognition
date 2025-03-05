@@ -1,4 +1,4 @@
-#Running this file by python -m StereoVision.distInf
+#Running this file by "python -m StereoVision.distInf"
 
 import sys
 import cv2
@@ -12,6 +12,8 @@ from matplotlib import pyplot as plt
 # Make sure python can tell StereoVision is one of the packages
 import StereoVision.activeCalibration as activeCalibration
 import StereoVision.triangulation as triangulation
+
+import camera_distance
 
 
 # Loads the label map into a list
@@ -90,6 +92,11 @@ def detect(MODEL_PATH, LABELMAP_PATH):
     camDist = 9 # Distance between cams (cm)
     focalLength = 12 # Camera lense's focal length (mm)
     alpha = 95 # Camera fov in horizontal plane (degrees)
+
+    # Camera position
+    camera_position1 = np.array([0, 150, 50])
+    camera_position2 = np.array([0, 150, 50])
+    camera_position = (camera_position1 + camera_position2)/2
         
     # Main detection loop
     while True:
@@ -133,15 +140,12 @@ def detect(MODEL_PATH, LABELMAP_PATH):
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         else:
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
-        
+
+            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
+            #print(coords)
+
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
-
-            if cv2.waitKey(1) & 0xFF == ord('s'):
-                cameraLeft.release()
-                cameraRight.release()
-                cv2.destroyAllWindows()
-                return depth 
 
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
@@ -153,6 +157,8 @@ def detect(MODEL_PATH, LABELMAP_PATH):
         # Display image with detection 
         cv2.imshow("Litter Detection Left", captureLeft)
         cv2.imshow("Litter Detection Right", captureRight)
+
+        
 
         # Press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -9,6 +9,9 @@ import os
 
 import time
 
+import StereoVision.distInf
+import camera_distance
+
 # Initial vector position and distance 
 vector = np.array([0, 150, 0])
 d = 100
@@ -323,6 +326,21 @@ def main():
         
             vector = Inverse_kinematics.move(vector)[4]
 
+        #if keys[pygame.K_5]:
+
+            #MODEL_PATH = "./Model/model.tflite"
+            #LABELMAP_PATH = "./Model/labels.txt"
+            #depth = StereoVision.distInf.detect(MODEL_PATH, LABELMAP_PATH)
+
+            #angle = 95
+
+            #camera_position1 = np.array([0, 150, 50])
+            #camera_position2 = np.array([0, 150, 50])
+            #camera_position = (camera_position1 + camera_position2)/2
+
+
+            #object_position = camera_distance.calculate_object_position(depth, angle, camera_position)
+            #print("Object Position Relative to Robot Base:", object_position)
 
 
 

@@ -16,7 +16,7 @@ A NumPy array providing the position of the object relative to the robot base.
 """
 
 import numpy as np
-import StereoVision.distInf
+#import StereoVision.distInf
 
 
 
@@ -43,8 +43,8 @@ def calculate_object_position(depth, angle, camera_position):
     return object_position_robot_frame
 
 #actual values to be added later 
-MODEL_PATH = "./Model/model.tflite"
-LABELMAP_PATH = "./Model/label.txt"
+'''MODEL_PATH = "./Model/model.tflite"
+LABELMAP_PATH = "./Model/labels.txt"
 depth = StereoVision.distInf.detect(MODEL_PATH, LABELMAP_PATH)
 
 angle = 95
@@ -55,4 +55,4 @@ camera_position = (camera_position1 + camera_position2)/2
 
 
 object_position = calculate_object_position(depth, angle, camera_position)
-print("Object Position Relative to Robot Base:", object_position)
+print("Object Position Relative to Robot Base:", object_position)'''
