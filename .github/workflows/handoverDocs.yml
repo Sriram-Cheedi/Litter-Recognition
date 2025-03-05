@@ -9,21 +9,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    #steps: 
-    #  - name: Checkout Repository
-   #     uses: actions/checkout@v4
+    steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+   
+      - name: Convert Handover Documentation to HTML
+        run: |
+          mkdir -p handoverDocs/pageAssets
+          npx markdown-to-html-cli --source handoverDocs/README.md -output handoverDocs/pageAssets/action.html
 
-  #    - name: Convert Handover Documentation to HTML
-        #run: |
-         #echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>My Site</title></head><body>" > index.html
-        # cat handoverDocs/README.md >> index.html
-       #  echo "</body></html>" >> index.html
+      - name: Upload static as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: handoverDocs/pageAssets
 
-      #- name: Deploy to GitHub Pages
-        #uses: JamesIves/github-pages-deploy-action@v4
-       # with: 
-      #    branch: dev
-     #     folder: .
-    #      clean: false
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy Handover to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
-    
+
