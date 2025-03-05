@@ -7,7 +7,7 @@ import tensorflow.lite as tflite
 import time
 import imutils
 from matplotlib import pyplot as plt
-
+import pygame
 # Other packages we have created
 # Make sure python can tell StereoVision is one of the packages
 import StereoVision.activeCalibration as activeCalibration
@@ -15,7 +15,24 @@ import StereoVision.triangulation as triangulation
 
 import camera_distance
 
+pygame.init()
+screen_width = 1000
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Object Interface")
 
+WHITE = (255,255,255)
+BLACK = (0,0,0)
+GREEN = (0,255,0)
+RED = (255,0,0)
+
+font = pygame.font.Font(None, 36)
+
+def display_text(text, x, y, color=WHITE,clear_area = False):
+    if clear_area:
+        pygame.draw.rect(screen, BLACK, (x, y, 300, 40)) #clears the previous text to print the updated text
+    text_surface = font.render(text, True, color)
+    screen.blit(text_surface, (x, y))
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
     labelMap = {}
@@ -146,6 +163,8 @@ def detect(MODEL_PATH, LABELMAP_PATH):
 
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
+            # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
+            display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
@@ -157,7 +176,20 @@ def detect(MODEL_PATH, LABELMAP_PATH):
         # Display image with detection 
         cv2.imshow("Litter Detection Left", captureLeft)
         cv2.imshow("Litter Detection Right", captureRight)
-
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                cameraLeft.release()
+                cameraRight.release()
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    cameraLeft.release()
+                    cameraRight.release()
+                    pygame.quit()
+                    sys.exit()
+        
+        pygame.display.flip()
         
 
         # Press 'q' to quit
