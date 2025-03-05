@@ -25,7 +25,7 @@ This section covers the different directories of our repository:
 └── handoverDocs/        # Handover documentation (You are here)
 ```
 
-### Links
+### Links:
 These links allow you to navigate to explanations of different areas of the repository:
 - [/.github](#github)
 - [/Research](#research)
@@ -33,15 +33,106 @@ These links allow you to navigate to explanations of different areas of the repo
 - [/docs](#docs)
 - [/handoverDocs](#handoverDocs)
 
-### /.github
+### /.github:
+The structure within the ```/.github``` directory can be found below:
 
-### /Research
+```
+.
+├── ISSUE_TEMPLATE                 # Templates for GitHub issues
+│   └── ISSUE_FORM.yml             # Issue template
+├── labeler.yml                    # Labeller action config file
+├── pull_request-template.md       # Pull request template
+└── workflows                      # Automated GitHub workflows
+    ├── handoverDocs.yml           # Action to upload the handover documents to GitHub pages
+    ├── labeler.yml                # Action to automatically label pull requests
+    ├── pyTest.yml                 # Action to run continuous integration tests on our code
+    ├── pylint.yml                 # Action to lint our code
+    └── zipDeployment.yml          # Action to deploy our code by releasing it as a zip
+```
 
-### /code
+### /Research:
+The structure within the ```/Research``` directory can be found below:
 
-###  /docs
+```
+.
+├── Arduino/                                 # Code to test our Arduino Braccio arm
+├── BraccioCode/                             # Basic robot code to test the robot
+├── CNN-Examples/                            # Example CNN training code
+├── Image-Detection-Proof-of-Concept/        # Documentation of our process of finding a detection model
+├── Inference-Set-Up.md                      # Documentation of the model conversion process
+├── Litter-Datasets.md                       # Research into what litter datasets to use for the project
+├── PiCam-Setup.md                           # Guides to set up PiCameras on a Raspberry Pi
+├── RESEARCH.md                              # Placeholder md file
+└── TensorFlow/                              # Research into how to use and install TensorFlow
+```
 
-### /handoverDocs
+### /code:
+The structure within the ```/code``` directory can be found below:
+
+```
+.
+├── Inverse_kinematics.py                    #
+├── Model                                    #
+│   ├── annotations.json                     #
+│   ├── labels.txt                           #
+│   └── model.tflite                         #
+├── README.md                                #
+├── StereoVision                             #
+│   ├── README.md                            #
+│   ├── __init__.py                          #
+│   ├── activeCalibration.py                 #
+│   ├── calibration.py                       #
+│   ├── calibration_images                   #
+│   ├── distInf.py                           #
+│   ├── stereoMap.xml                        #
+│   ├── take_Images.py                       #
+│   └── triangulation.py                     #
+├── __pycache__                              #
+│   ├── Inverse_kinematics.cpython-312.pyc   #
+│   ├── braccio_adapter.cpython-312.pyc      #
+│   ├── graphReconstructer.cpython-312.pyc   #
+│   └── interface.cpython-312.pyc            #
+├── archived                                 #
+│   ├── error_testing.py                     #
+│   └── inference.py                         #
+├── arduino-script                           #
+│   └── arduino-script.ino                   #
+├── braccio_adapter.py                       #
+├── camera_distance.py                       #
+├── graphReconstructer.py                    #
+├── inferenceCV.py                           #
+├── interface.py                             #
+├── labelMapCreator.py                       #
+├── requirements.txt                         #
+└── tests/                                   #
+```
+
+###  /docs:
+The structure within the ```/docs``` directory can be found below:
+
+```
+.
+├── AI_TOOLS.md             # Documentation on what AI tools we have used during the project
+├── ARDUCAM.md              # Documentation of how to set up the multi cam adapter on the Raspberry Pi
+├── Architecture-Diagrams/  # Architecture diagrams of the project
+├── Client-Meeting-Notes/   # Bi-weekly client meetings
+├── ETHICS.md               # Documentation of our chosen ethics route
+├── Images-And-Videos/      # Images and videos of the project
+├── Milestone-Slides/       # Slides for our MVP, Beta, and Final releases
+├── Pi/                     # Documentation for our Raspberry Pi
+├── Project-Proposal/       # Proposal of the project
+├── Research-Forms/         # Forms for user testing
+├── Robot-Documentation/    # Documentation of in-person hardware work
+└── User-Testing/           # Questionnaire for user testing
+```
+
+### /handoverDocs:
+The structure within the ```/handoverDocs``` directory can be found below:
+
+```
+.
+└── README.md   # Handover documentation
+```
 
 ## Architecture Diagram:
 ![image](https://github.com/user-attachments/assets/22d654af-39bc-4fdd-8003-1cc4eb89514f)
