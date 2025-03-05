@@ -15,15 +15,14 @@ jobs:
 
       - name: Convert Handover Documentation to HTML
         run: |
-          echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>My Site</title></head><body>" > index.html
-          cat handoverDocs/README.md >> index.html
-          echo "</body></html>" >> index.html
+          mkdir -p handoverDocs/pageAssets
+          npx markdown-to-html-cli --source handoverDocs/README.md -output handoverDocs/pageAssets/action.html
 
       - name: Upload static as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build_outputs_folder/
+          path: handoverDocs/pageAssets
 
   deploy:
     environment:
