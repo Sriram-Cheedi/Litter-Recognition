@@ -148,7 +148,7 @@ def jiggle(braccioDebug, baseServo):
 def robotLogic():
     # Get serial port though user input
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
-    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = Flase)
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
 
     pygame.init()
     screen_width = 800
