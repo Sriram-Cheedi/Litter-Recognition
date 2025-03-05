@@ -11,8 +11,8 @@ from matplotlib import pyplot as plt
 #from . import triangulation
 #from . import activeCalibration
 
-import activeCalibration
-import triangulation
+import StereoVision.activeCalibration as activeCalibration
+import StereoVision.triangulation as triangulation
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
     labelMap = {}
@@ -166,7 +166,7 @@ def detect(MODEL_PATH, LABELMAP_PATH):
 
 
 if __name__ == "__main__":
-    MODEL_PATH = "model.tflite"
-    LABELMAP_PATH = "label_map.txt"
+    MODEL_PATH = "./Model/model.tflite"
+    LABELMAP_PATH = "./Model/labels.txt"
     detect(MODEL_PATH, LABELMAP_PATH)
     

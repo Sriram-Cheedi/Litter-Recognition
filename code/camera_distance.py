@@ -43,8 +43,8 @@ def calculate_object_position(depth, angle, camera_position):
     return object_position_robot_frame
 
 #actual values to be added later 
-MODEL_PATH = "model.tflite"
-LABELMAP_PATH = "label_map.txt"
+MODEL_PATH = "./Model/model.tflite"
+LABELMAP_PATH = "./Model/labels.txt"
 depth = StereoVision.distInf.detect(MODEL_PATH, LABELMAP_PATH)
 
 angle = 95

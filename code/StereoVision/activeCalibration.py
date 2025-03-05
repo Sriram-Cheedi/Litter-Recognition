@@ -7,7 +7,7 @@ import cv2
 
 # Camera params to undistort and rectify images
 file = cv2.FileStorage()
-file.open('stereoMap.xml', cv2.FileStorage_READ)
+file.open('./StereoVision/stereoMap.xml', cv2.FileStorage_READ)
 
 stereoMapL_x = file.getNode('stereoMapL_x').mat()
 stereoMapL_y = file.getNode('stereoMapL_y').mat()
