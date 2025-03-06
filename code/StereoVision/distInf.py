@@ -192,8 +192,10 @@ def preProcess(frame, width, height):
 def drawBoxes(capture, scores, boxes, lblMap, classes):
     h, w, _ = capture.shape
     startY, startX, endY, endX = 0, 0, 0, 0
+    count = 0
     for i in range(len(scores)):
-        if scores[i] > 0.5:
+        if scores[i] > 0.9:
+            count += 1
             # Gets the coordinates of the bounding boxes
             (startY, startX, endY, endX) = (int(boxes[i][0] * h), int(boxes[i][1] * w), int(boxes[i][2] * h), int(boxes[i][3] * w))
                 
@@ -206,7 +208,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
             cv2.putText(capture, f"{label}: {score}%", (startX, startY - 10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
-    return ((startX + endX) / 2, (startY + endY) / 2) 
+    return ((startX + endX) / 2, (startY + endY) / 2), count
             
 # Calculates the fps (frames per second)
 def calculateFPS(captureLeft, captureRight, start, end):
@@ -289,11 +291,11 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         scores1 = interpreter.get_tensor(outTensors[2]['index'])[0]
 
         # Iterates through the detections
-        centreLeft = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
-        centreRight = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
+        centreLeft, leftCount = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
+        centreRight, rightCount = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
         
         # Ensures both cameras detect object
-        if scores.size == 0 or scores1.size == 0:
+        if leftCount == 0 or rightCount == 0:
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         else:
@@ -306,6 +308,31 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
+            if robot:
+                vector = [0,0,0]
+                vector[0] = int(input("Enter x:"))
+                vector[1] = int(input("Enter y:"))
+                vector[2] = int(input("Enter z:"))
+                print(vector)
+
+                # Stand up straight
+                braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
+
+                # Jiggle the base
+                baseServo = 90 - Inverse_kinematics.move(vector)[0]
+                jiggle(braccioDebug, baseServo)
+                
+
+                # Move thew arm down with class open
+                braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+                
+                # Shut the claw
+                braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
+                
+                # Stand up straight with claw shut
+                braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
+            
+                vector = Inverse_kinematics.move(vector)[4]
 
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
@@ -334,30 +361,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         
         # Get vector pos
 
-        if robot:
-            vector[0] = int(input("Enter x:"))
-            vector[1] = int(input("Enter y:"))
-            vector[2] = int(input("Enter z:"))
-            print(vector)
-
-            # Stand up straight
-            braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
-
-            # Jiggle the base
-            baseServo = 90 - Inverse_kinematics.move(vector)[0]
-            jiggle(braccioDebug, baseServo)
-            
-
-            # Move thew arm down with class open
-            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
-            
-            # Shut the claw
-            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
-            
-            # Stand up straight with claw shut
-            braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
-        
-            vector = Inverse_kinematics.move(vector)[4]
+       
 
         # Press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):
