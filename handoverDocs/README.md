@@ -71,40 +71,35 @@ The structure within the ```/code``` directory can be found below:
 
 ```
 .
-├── Inverse_kinematics.py                    #
-├── Model                                    #
-│   ├── annotations.json                     #
-│   ├── labels.txt                           #
-│   └── model.tflite                         #
-├── README.md                                #
-├── StereoVision                             #
-│   ├── README.md                            #
-│   ├── __init__.py                          #
-│   ├── activeCalibration.py                 #
-│   ├── calibration.py                       #
-│   ├── calibration_images                   #
-│   ├── distInf.py                           #
-│   ├── stereoMap.xml                        #
-│   ├── take_Images.py                       #
-│   └── triangulation.py                     #
-├── __pycache__                              #
-│   ├── Inverse_kinematics.cpython-312.pyc   #
-│   ├── braccio_adapter.cpython-312.pyc      #
-│   ├── graphReconstructer.cpython-312.pyc   #
-│   └── interface.cpython-312.pyc            #
-├── archived                                 #
-│   ├── error_testing.py                     #
-│   └── inference.py                         #
-├── arduino-script                           #
-│   └── arduino-script.ino                   #
-├── braccio_adapter.py                       #
-├── camera_distance.py                       #
-├── graphReconstructer.py                    #
-├── inferenceCV.py                           #
-├── interface.py                             #
-├── labelMapCreator.py                       #
-├── requirements.txt                         #
-└── tests/                                   #
+├── Inverse_kinematics.py                    # Converts a distance to angles for the joints to move
+├── Model                                    # Model and labels
+│   ├── annotations.json                     # Bounding box annotations
+│   ├── labels.txt                           # Label map for inference
+│   └── model.tflite                         # TFLite inference model
+├── README.md                                # Calculations used for inverse_kinematics.py
+├── StereoVision                             # StereoVision depth estimation code
+│   ├── README.md                             
+│   ├── __init__.py                          
+│   ├── activeCalibration.py                 # Undistorts captured video frames
+│   ├── calibration.py                       # Calibrates two cameras by using a checkerboard
+│   ├── calibration_images                   # Images captured by take_images.py
+│   ├── distInf.py                           # Real time inference with depth estimation
+│   ├── stereoMap.xml                        # Parameters used to undistort video frames
+│   ├── take_Images.py                       # Takes calibration images 
+│   └── triangulation.py                     # Calculates object depth from cameras
+├── archived                                 # Outdated or redundant code
+│   ├── error_testing.py                     # Debug code for robot arm
+│   └── inference.py                         # Original real-time inference script using the PiCamera2 library
+├── arduino-script                           # Code to move the arm
+│   └── arduino-script.ino                   # Moves robot arm using specified input
+├── braccio_adapter.py                       # Communicate with the arm through Python
+├── camera_distance.py                       # Calculates distance vector using estimated depth
+├── graphReconstructer.py                    # Reconstructs frozen graph from our incomplete inference model
+├── inferenceCV.py                           # Real time inference using openCV
+├── interface.py                             # Interface allowing interaction with the arm
+├── labelMapCreator.py                       # Creates label map from annotations.json
+├── requirements.txt                         # Project dependencies
+└── tests/                                   # Unit tests
 ```
 
 ###  /docs:
