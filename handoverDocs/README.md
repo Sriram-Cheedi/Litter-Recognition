@@ -257,7 +257,8 @@ python take_Images.py
 
 This should then display the two camera feeds on your screen. From here you will need to take a minimum of 5 photos by pressing the 's' key.
 
-Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboaard held to the corner of one of the cameras at an angle. Examples can be found in:
+> [!IMPORTANT]
+> Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboaard held to the corner of one of the cameras at an angle. Examples can be found in:
 
 ```bash
 2024-LitterRecognition1
@@ -289,3 +290,11 @@ This script runs real time inference on the camera feeds using the TFlite TACO-t
 ![Shaun The Sheep](https://media0.giphy.com/media/tIeCLkB8geYtW/giphy.gif?cid=47028fa8jgwxw5pmayj1hkegw38jlet0446le5qcmbnzcdy7&ep=v1_gifs&rid=giphy.gif&ct=g)
 
 ## Further Documentation
+
+| Resource | Link | 
+| ---------------- | --------------- |
+| Arduino IDE Documentation | [here](https://docs.arduino.cc/) |
+| Arduino Braccio Documentation | [here](https://docs.arduino.cc/retired/getting-started-guides/Braccio/) |
+| OpenCV Documentation | [here](https://docs.opencv.org/4.x/index.html) |
+| TensorFlow Lite Documentation | [here](https://www.tensorflow.org/api_docs/python/tf/lite) |
+| TensorFlow Model Source | [here](https://www.kaggle.com/code/bouweceunen/garbage-detection-with-tensorflow/notebook) |
