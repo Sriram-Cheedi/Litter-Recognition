@@ -14,6 +14,7 @@ import StereoVision.activeCalibration as activeCalibration
 import StereoVision.triangulation as triangulation
 
 import camera_distance
+import converter
 
 pygame.init()
 screen_width = 1000
@@ -106,14 +107,15 @@ def detect(MODEL_PATH, LABELMAP_PATH):
         
     # Stereo vision setup parameters
     frameRate = 120
-    camDist = 9 # Distance between cams (cm)
+    #camDist = 9 # Distance between cams (cm)
     focalLength = 12 # Camera lense's focal length (mm)
     alpha = 95 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([0, 150, 50])
-    camera_position2 = np.array([0, 150, 50])
-    camera_position = (camera_position1 + camera_position2)/2
+    camera_positionL = np.array([-5, 0, 30])
+    camera_positionR= np.array([5, 0, 30])
+    # Real camera distance
+    camDist = camera_positionR[0] - camera_positionL[0]
         
     # Main detection loop
     while True:
@@ -156,9 +158,10 @@ def detect(MODEL_PATH, LABELMAP_PATH):
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         else:
+            #TODO : Find two depth
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
-            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
+            coords = converter.get_coordinate(depth, depth, camera_positionL, camera_positionR)
             #print(coords)
 
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
