@@ -1,3 +1,4 @@
+#Cameras and the robot arm are at the same y plane
 import sympy as sp
 import numpy as np
 import StereoVision.distInf
@@ -19,19 +20,30 @@ def get_coordinate(depthL, depthR, camera_positionL, camera_positionR):
     eq1 = sp. Eq((x + abs(camera_positionL[0])) ** 2 + y ** 2, Dr ** 2)
     eq2 = sp. Eq((x - abs(camera_positionR[0])) ** 2 + y ** 2, Dl ** 2)
 
-    #Solve it
+    #Solve x and y coord
     solution = sp.solve([eq1, eq2], (x, y))
 
     #Guard clause
     if not solution:
         raise ValueError("No solution")
     
+    #Solve z coord
+    distanceL = np.sqrt((x - camera_positionL[0]) ** 2 + y ** 2)
+    midL = np.sqrt(depthL ** 2 - distanceL ** 2)
+    zL = camera_positionL[2] - midL
+
+    distanceR = np.sqrt((x - camera_positionL[0] ** 2 + y ** 2))
+    midR = np.sqrt(depthR ** 2 - distanceR ** 2)
+    zR = camera_positionR[2] - midR
+
     #Get the coordinate
     #Since we're using vector in inverse_kinematics
     #Need to have the sign correct
     x_coord = -x if Dl < Dr else x
     y_coord = y
-    z_coord = 0
+    z_coord = zL if Dl < Dr else zR
+
+
 
     object_position = np.array([x_coord, y_coord, z_coord])
     
@@ -56,5 +68,9 @@ z_arm = z_object
 2d-distanceL > 2d-distanceR
 
 
+
+(x-xcamera) ** 2 + y ** 2 = distance ** 2
+a**2 = depth ** 2 - distance ** 2
+height = camera height - a
 
 '''
