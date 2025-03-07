@@ -1,4 +1,4 @@
-#Cameras and the robot arm are at the same y plane
+#Cameras and the robot arm are all at the y = 0
 import sympy as sp
 import numpy as np
 import StereoVision.distInf
@@ -27,7 +27,7 @@ def get_coordinate(depthL, depthR, camera_positionL, camera_positionR):
     if not solution:
         raise ValueError("No solution")
     
-    #Solve z coord
+    #Get z coord depending on whether the obect is at the left-hand side or the right
     distanceL = np.sqrt((x - camera_positionL[0]) ** 2 + y ** 2)
     midL = np.sqrt(depthL ** 2 - distanceL ** 2)
     zL = camera_positionL[2] - midL
