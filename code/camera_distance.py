@@ -32,7 +32,7 @@ def calculate_object_position(depth, angle, camera_position):
 
     # Calculate object position in camera's frame
     object_x = depth * np.cos(angle_rad)  # Horizontal depth from camera
-    object_y = depth * np.sin(angle_rad)  # Vertical height from camera
+    object_y = depth * np.sin(angle_rad)  # Vertical height- from camera
 
     # Assuming the object is in the same Z-plane as the camera (or ignoring Z-axis for simplicity)
     object_position_camera_frame = np.array([object_x, object_y, 0])
