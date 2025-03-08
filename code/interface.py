@@ -292,6 +292,7 @@ def robotLogic():
         
             vector = inverse_kinematics.move(vector)[4]
 
+
         #if keys[pygame.K_5]:
 
             #MODEL_PATH = "./Model/model.tflite"
