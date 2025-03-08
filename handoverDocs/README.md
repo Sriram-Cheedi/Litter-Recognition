@@ -149,7 +149,7 @@ The structure within the ```/handoverDocs``` directory can be found below:
 - It offers three distinct modes: Camera mode, Manual mode, and a combined Camera & Manual mode, each incorporating sorting techniques.
 - Provides a pygame based UI for real time servo movement visualisation and to control the robotic arm using keyboard input.
 - Manual mode: Arm can be controlled using inverse_kinematics manually and also by entering the position of the litter.
-- Camera & Manual mode: This mode will be a autonomous system     where the litter detected by the camera will be picked and placed into a bin by the
+- Camera & Manual mode: This mode will be an autonomous system where the litter detected by the camera will be picked and placed into a bin by the
 arm.
 - Camera mode: This mode will only run the camera to detect the litter.
 
