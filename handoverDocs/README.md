@@ -144,16 +144,22 @@ The structure within the ```/handoverDocs``` directory can be found below:
 - Calculates servo angles using inverse kinematics.
 - Ensures the arm moves precisely to the target position.
 
-#### 3. Interface.py
+#### 3. interface.py
 - Main python file which integrates braccio_adapter for serial communication and Inverse_kinematics for movement control.
+- It offers three distinct modes: Camera mode, Manual mode, and a combined Camera & Manual mode, each incorporating sorting techniques.
 - Provides a pygame based UI for real time servo movement visualisation and to control the robotic arm using keyboard input.
+- Manual mode: Arm can be controlled using inverse_kinematics manually and also by entering the position of the litter.
+- Camera & Manual mode: This mode will be a autonomous system     where the litter detected by the camera will be picked and placed into a bin by the
+arm.
+- Camera mode: This mode will only run the camera to detect the litter.
+
 
 ### System Setup:
 **Prerequisites**
 - Braccio Robotic Arm
 - Arduino UNO
 - Arduino IDE
-- Computer with Python snstalled
+- Computer with Python installed
 **Installation**
 Ensure you have the required dependencies installed:
 
@@ -175,7 +181,7 @@ Ensure you have the required dependencies installed:
 | U/O  | Move arm up/down               |
 
 
-**To control the from specific coordinates:**
+**To control the arm from specific coordinates:**
 
 - Press 'M' to select coordinates screen 
 - Enter x,y,z coordinates when prompted (in millimetres,(0,0,0) is at the middle of the shoulder joint).
@@ -214,12 +220,13 @@ Now you have completed all the setup, run **interface.py** using:
 ```console
 python interface.py
 ```
-
-Next, you'll be prompted to enter the port name that was previously displayed in the Arduino IDE. Make sure to enter it correctly, as this is crucial for establishing a proper connection
-between your computer and the Braccio robotic arm. Once you enter the correct port, the Braccio robotic arm will begin its startup routine. At the same time, a Pygame-based interface
-will automatically open on your screen. This interface serves as an intuitive control panel, allowing you to operate the robotic arm using key presses. It provides real-time feedback on
-the current state of the arm, displaying servo angles for different joints and helping you monitor movement accuracy also shows the last key pressed, and keeps a history of the last five
-key presses. You are now ready to control the robotic arm. Follow the provided instructions carefully to execute precise movements. 
+Next, it will ask you to select one of the three modes (Camera mode, Manual mode and Camera & Manual mode), after selecting your preferred mode, you'll be
+prompted to enter the port name that was previously displayed in the Arduino IDE. Make sure to enter it correctly, as this is crucial for establishing a proper
+connection between your computer and the Braccio robotic arm. Once you enter the correct port, the Braccio robotic arm will begin its startup routine. At the
+same time, a Pygame based interface will automatically open on your screen. This interface serves as an intuitive control panel, allowing you to operate the
+robotic arm using key presses. It provides real-time feedback on the current state of the arm, displaying servo angles for different joints and helping you
+monitor movement accuracy also shows the last key pressed, and keeps a history of the last five key presses. You are now ready to control the robotic arm. Follow
+the provided instructions carefully to execute precise movements. 
 
 > [!WARNING]
 > Avoid lifting objects that exceed the robotic arm's weight capacity. Overloading can strain the servos, potentially causing permanent damage and reducing the arm’s overall lifespan.
@@ -234,7 +241,7 @@ key presses. You are now ready to control the robotic arm. Follow the provided i
 | Issue                                          | Possible Fix                                                        |
 |------------------------------------------------|---------------------------------------------------------------------|
 | **Braccio didn't move to the safety position**     | Check Arduino connections.                                          |
-| **Interface.py is not running**                | Ensure all dependencies (`pygame`, `numpy`, `pyserial`) are installed.  |
+| **interface.py is not running**                | Ensure all dependencies (`pygame`, `numpy`, `pyserial`) are installed.  |
 | **Arduino port not found**                     | Enter the correct port given in Arduino IDE.                        |
 
 
