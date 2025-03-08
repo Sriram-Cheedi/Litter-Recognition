@@ -1,0 +1,41 @@
+name: Deploy Handover Documentation to GitHub Pages
+
+on: 
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+   
+      - name: Convert Handover Documentation to HTML
+        run: |
+          mkdir -p handoverDocs/pageAssets
+          npx markdown-to-html-cli -i handoverDocs/README.md -o handoverDocs/pageAssets/action.html
+
+      - name: Upload static as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: handoverDocs/pageAssets
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy Handover to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+

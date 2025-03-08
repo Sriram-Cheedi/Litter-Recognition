@@ -9,7 +9,7 @@ import os
 
 import time
 
-#import StereoVision.distInf
+import StereoVision.distInf
 import camera_distance
 
 # Initial vector position and distance 
@@ -291,6 +291,7 @@ def robotLogic():
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = inverse_kinematics.move(vector)[4]
+
 
         #if keys[pygame.K_5]:
 
