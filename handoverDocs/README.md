@@ -265,7 +265,7 @@ python take_Images.py
 This should then display the two camera feeds on your screen. From here you will need to take a minimum of 5 photos by pressing the 's' key.
 
 > [!IMPORTANT]
-> Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboaard held to the corner of one of the cameras at an angle. Examples can be found in:
+> Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboard held to the corner of one of the cameras at an angle. Examples can be found in:
 
 ```bash
 2024-LitterRecognition1
