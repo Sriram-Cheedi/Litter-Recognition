@@ -58,7 +58,8 @@ def phase_two(d):
 def move_line(d):
   out = (0, 0, 0)
 
-  # Arbitrily set to 10 as minimum distance for now but improvements can be made to this
+
+
   if (d >= dmin):
 
     # Between d and dplus do phase one
@@ -72,31 +73,36 @@ def move_line(d):
 
   return out
 
-def move(vector):
+
+def boundVector(oldVector):
+  vector = oldVector
+
   # Make sure z value is no greater than 
   vector[2] = max(vector[2], -50)
+
   # Get the magnitude of the vector
-  dist = np.linalg.norm(vector)
-
-  # BAD CODE ALERT:
-  # This section causes strange behaviour when distance is not within bounds of robot
-  # The value of dist is capped at the max possible distance but x,y,z are not adjusted accordingly
-  # 
-  # 
-
-  dist = max(dmin, min(dmax, dist))   # Make sure dist does not go out of bounds
   mag = np.linalg.norm(vector)
+
+  # Make sure dist does not go out of bounds
+  dist = max(dmin, min(dmax, mag))
+
+  # Ensure that if 0,0,0 is entered somehow, we force the vector to have some magnitude
+  # as 0 < dmin
   if mag == 0:
     vector = np.array([0,1,0])
     mag = 1   
-  if dist == dmax:                        # Just in case (should never be 0) to avoid divide by 0 errors
-      vector = (vector / mag) * dmax  # Normalise the vector and then multiply it by dmax
+  if dist == dmax:
+      vector = (vector / mag) * dmax      # Normalise the vector and then multiply it by dmax
 
-  if dist == dmin:                        # Just in case (should never be 0) to avoid divide by 0 errors
+  if dist == dmin:
       vector = (vector / mag) * dmin
 
 
+  return vector
 
+def move(vector):
+  
+  vector = boundVector(vector)
 
   # Get projection of vector horizontally
   floor_projection = math.sqrt(vector[0]**2 + vector[1]**2)
@@ -107,8 +113,8 @@ def move(vector):
   #Calculate additional degrees for the shoulder
   shoulder = math.degrees(math.atan(vector[2] / floor_projection))
 
-  #Get degrees required to move arm by the magnitude of the vector
-  degrees = move_line(dist)
+  # Get degrees required to move arm by the magnitude of the vector
+  degrees = move_line(np.linalg.norm(vector))
 
   #Add the degrees required for the direction of the vector
   return (base, degrees[0] - shoulder, degrees[1], degrees[2], vector)

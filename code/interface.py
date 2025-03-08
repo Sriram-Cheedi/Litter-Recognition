@@ -1,3 +1,4 @@
+import time
 import pygame
 import sys
 import braccio_adapter
@@ -7,6 +8,9 @@ import numpy as np
 import os
 
 import time
+
+#import StereoVision.distInf
+import camera_distance
 
 # Initial vector position and distance 
 vector = np.array([0, 150, 0])
@@ -38,7 +42,7 @@ def checkInBounds(values, uBound, lBound):
 
 
 class BraccioDebug(braccio_adapter.BraccioAdapter):
-    def __init__(self, serial_port_robot_magnet="COM3", mock=None):
+    def __init__(self, serial_port_robot_magnet="COM4", mock=None):
         # Detect CI mode automatically
         if mock is None:
             mock = os.getenv("USE_MOCK", "true").lower() == "true"
@@ -60,54 +64,75 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             super().__init__(serial_port_robot_magnet)
 
         self.home_position()
+        
+    def read_feedback(self):
+        return {
+            "s1": self.s1,
+            "s2": self.s2,
+            "s3": self.s3,
+            "s4": self.s4,
+            "s5": self.s5,
+            "s6": self.s6
+        }
 
-
-    
+    def get_position_feedback(self):
+        try:
+            feedback = self.read_feedback()
+            if feedback:
+                print(f"Real-time position feedback: {feedback}")
+        except Exception as e:
+            print(f"Error reading position feedback: {e}")
     #Function to move the arm joints by specified degrees
     def move_single_joint(self, servo, degrees):
-        # get currect vals
-        s1 = self.s1
-        s2 = self.s2 
-        s3 = self.s3
-        s4 = self.s4 
-        s5 = self.s5
-        s6 = self.s6
-        servoPos = [10, s1, s2, s3, s4, s5, s6]
-        
-
-        #Holds upper and lower bounds for each servo motors movement
-        uBounds = [30, 180, 165, 180, 180, 180, 73]
-        lBounds = [10, 0, 15, 0, 0, 0, 10]
-
-        #Adjusts servo based on input degrees
-        if servo.value == 1:
-            servoPos[1] += degrees
-        if servo.value == 2:
-            servoPos[2] += degrees
-        if servo.value == 3:
-            servoPos[3] += degrees
-        if servo.value == 4:
-            servoPos[4] += degrees
-        if servo.value == 5:
-            servoPos[5] += degrees
-        if servo.value == 6:
-            servoPos[6] += degrees
-
-    
+  
+        try:
+                 # get currect vals
+            s1 = self.s1
+            s2 = self.s2 
+            s3 = self.s3
+            s4 = self.s4 
+            s5 = self.s5
+            s6 = self.s6
+            servoPos = [10, s1, s2, s3, s4, s5, s6]
+            uBounds = [30, 180, 165, 180, 180, 180, 73]  #Holds upper and lower bounds for each servo motors movement
+            lBounds = [10, 0, 15, 0, 0, 0, 10]
             
-        servoPos = checkInBounds(servoPos, uBounds, lBounds)
-        self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
-
-        # Update internal state
-        self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:]
-
+            
+            if servo.value == 1:  #Adjusts servo based on input degrees
+                servoPos[1] += degrees
+            if servo.value == 2:
+                servoPos[2] += degrees
+            if servo.value == 3:
+                servoPos[3] += degrees
+            if servo.value == 4:
+                servoPos[4] += degrees
+            if servo.value == 5:
+                servoPos[5] += degrees
+            if servo.value == 6:
+                servoPos[6] += degrees
+                
+            servoPos = checkInBounds(servoPos, uBounds, lBounds)
+            self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
+            self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:] 
+            self.get_position_feedback()
+        except Exception as e:
+            print(f"Error moving joint {servo.name}: {e}")
+ 
     #Moves servo upwards
-    def up(self, servo : ServoMotor, degrees = 1):
+    SPEED_MULTIPLIER = 1  # Adjust speed dynamically
+    def up(self, servo : ServoMotor, degrees = SPEED_MULTIPLIER):
         self.move_single_joint(servo, degrees)
 
     #Moves servo downwards
-    def down(self, servo: ServoMotor, degrees = -1):
+    def down(self, servo: ServoMotor, degrees = -SPEED_MULTIPLIER):
         self.move_single_joint(servo, degrees)
+        
+        
+    def calibrate_servos(braccio):
+        print("Calibrating servos to default positions...")
+        braccio.servo_movement(90, 90, 90, 90, 90, 90)  # Calibrate to default position0, 40, 180, 0, 180)
+        print("Calibration complete.")
+
 
 
 # Function to "correct" the precision error in the base servo
@@ -119,22 +144,12 @@ def jiggle(braccioDebug, baseServo):
         braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
         direction *= -1
 
-    
 
-def main():
-    global d
-    global vector
-
-    # User input for serial port
+def robotLogic():
+    # Get serial port though user input
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
-    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port)    
-    braccioControlString = "Control the Braccio using: \n\
-                            Servo 5 UP/DOWN A/D\n\
-                            Servo 6 UP/DOWN S/W\n\
-                            HOME C\
-                            Print degrees V\
-                            "
-    print(braccioControlString)
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
+
     pygame.init()
     screen_width = 800
     screen_height = 600
@@ -164,7 +179,7 @@ def main():
     #Checks that all of the movement values are within their bounds
     #If not, they are set to the closest bound
     
-
+    # Run the UI logic 
     while running:
         
         screen.fill(BLACK)
@@ -194,37 +209,21 @@ def main():
                     braccioDebug.home_position()
                 elif event.key == pygame.K_p:
                     print(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                elif event.key == pygame.K_b:  # Bind B key to calibration
+                    braccioDebug.calibrate_servos(braccioDebug)
                 if event.key == pygame.K_ESCAPE:
                     running = False
+                    
+                    
+        def is_safe_move(servo, degrees):
+            new_pos = braccioDebug.__dict__[f"s{servo.value}"] + degrees
+            return 0 <= new_pos <= 180 
 
         keys = pygame.key.get_pressed()
-        # if keys[pygame.K_q]:
-        #     braccioDebug.up(ServoMotor.S1)
-        # if keys[pygame.K_w]:
-        #     braccioDebug.up(ServoMotor.S2)
-        # if keys[pygame.K_e]:
-        #     braccioDebug.up(ServoMotor.S3)
-        # if keys[pygame.K_r]:
-        #     braccioDebug.up(ServoMotor.S4)
-        # if keys[pygame.K_t]:
-        #     braccioDebug.up(ServoMotor.S5)
-        # if keys[pygame.K_y]:
-        #     braccioDebug.up(ServoMotor.S6)
-        # if keys[pygame.K_a]:
-        #     braccioDebug.down(ServoMotor.S1)
-        # if keys[pygame.K_s]:
-        #     braccioDebug.down(ServoMotor.S2)
-        # if keys[pygame.K_d]:
-        #     braccioDebug.down(ServoMotor.S3)
-        # if keys[pygame.K_f]:
-        #     braccioDebug.down(ServoMotor.S4)
-        # if keys[pygame.K_g]:
-        #     braccioDebug.down(ServoMotor.S5)
-        # if keys[pygame.K_h]:
-        #     braccioDebug.down(ServoMotor.S6)
-
+       
         # Control servos using keys
-        if keys[pygame.K_a]:
+
+        if keys[pygame.K_a] and is_safe_move(ServoMotor.S5, 5):
             braccioDebug.up(ServoMotor.S5)
             vector = inverse_kinematics.move(vector)[4]
         if keys[pygame.K_s]:
@@ -272,18 +271,18 @@ def main():
             vector[0] = int(input("Enter x:"))
             vector[1] = int(input("Enter y:"))
             vector[2] = int(input("Enter z:"))
+            print(vector)
 
             # Stand up straight
             braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
 
-
             # Jiggle the base
-            baseServo = 90 - Inverse_kinematics.move(vector)[0]
+            baseServo = 90 - inverse_kinematics.move(vector)[0]
             jiggle(braccioDebug, baseServo)
             
 
             # Move thew arm down with class open
-            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(braccioDebug.s1, 90 - inverse_kinematics.move(vector)[1], 90 - inverse_kinematics.move(vector)[2], 90 - inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
             
             # Shut the claw
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
@@ -292,16 +291,66 @@ def main():
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = inverse_kinematics.move(vector)[4]
-            print(vector)
+
+        #if keys[pygame.K_5]:
+
+            #MODEL_PATH = "./Model/model.tflite"
+            #LABELMAP_PATH = "./Model/labels.txt"
+            #depth = StereoVision.distInf.detect(MODEL_PATH, LABELMAP_PATH)
+
+            #angle = 95
+
+            #camera_position1 = np.array([0, 150, 50])
+            #camera_position2 = np.array([0, 150, 50])
+            #camera_position = (camera_position1 + camera_position2)/2
+
+
+            #object_position = camera_distance.calculate_object_position(depth, angle, camera_position)
+            #print("Object Position Relative to Robot Base:", object_position)
+
+
+
         if key_history:
             display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
 
 
         pygame.display.flip()
 
-
     pygame.quit()
     sys.exit()
+    
+
+
+def cameraLogic():
+    # TODO: Implemement logic to open just the camera.
+    print("Camera to be Implemented")
+
+
+def automatedSystem():
+    # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
+    print("You know... The thing we promised to have done in less than two weeks...")
+
+
+def main():
+    global d
+    global vector
+
+    # User input for interface mode
+    mode = input("Enter the interface mode (0 = Manual Control, 1 = Camera Mode, 2 = Manual & Camera Mode)")
+    mode = int(mode)
+
+    if mode == 0:
+        robotLogic()
+
+
+    if mode == 1:
+        cameraLogic()
+
+    if mode == 2:
+        automatedSystem()
+
+
+
 
 if __name__ == "__main__":
     main()
