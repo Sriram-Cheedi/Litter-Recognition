@@ -58,17 +58,13 @@ def phase_two(d):
 def move_line(d):
   out = (0, 0, 0)
 
-
-
-  if (d >= dmin):
-
-    # Between d and dplus do phase one
-    if(d < dp):
-      out = phase_one(d)
-    
-    # Greater than dplus do phase two
-    else:
-      out = phase_two(d)
+  # Between d and dplus do phase one
+  if(d < dp):
+    out = phase_one(d)
+  
+  # Greater than dplus do phase two
+  else:
+    out = phase_two(d)
     
 
   return out
