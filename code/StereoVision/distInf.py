@@ -33,6 +33,7 @@ def display_text(text, x, y, color=WHITE,clear_area = False):
         pygame.draw.rect(screen, BLACK, (x, y, 300, 40)) #clears the previous text to print the updated text
     text_surface = font.render(text, True, color)
     screen.blit(text_surface, (x, y))
+    
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
     labelMap = {}
@@ -98,7 +99,11 @@ def detect(MODEL_PATH, LABELMAP_PATH):
     
     # Set up the camera
     cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    cameraLeft.set(3, 640)
+    cameraLeft.set(4, 480)
     cameraRight = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cameraRight.set(3, 640)
+    cameraRight.set(4, 480)
     
     if not cameraLeft.isOpened() or not cameraRight.isOpened():
         print("Error: a camera could not be opened")
