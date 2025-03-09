@@ -11,6 +11,123 @@
 The purpose of this document is to serve as a guide for new developers to continue our work on the project. It will cover the existing code infrastructure and the structure of our repository.
 
 ## Project Structure:
+This section covers the different directories of our repository:
+
+```
+.
+├── .github/             # Templates and workflows
+├── .gitignore           # Other files
+├── LICENSE              ...
+├── README.md            ...
+├── Research/            # Research files
+├── code/                # All project code
+├── docs/                # Project documentation
+└── handoverDocs/        # Handover documentation (You are here)
+```
+
+### Links:
+These links allow you to navigate to explanations of different areas of the repository:
+- [/.github](#github)
+- [/Research](#research)
+- [/code](#code)
+- [/docs](#docs)
+- [/handoverDocs](#handoverDocs)
+
+### /.github:
+The structure within the ```/.github``` directory can be found below:
+
+```
+.
+├── ISSUE_TEMPLATE                 # Templates for GitHub issues
+│   └── ISSUE_FORM.yml             # Issue template
+├── labeler.yml                    # Labeller action config file
+├── pull_request-template.md       # Pull request template
+└── workflows                      # Automated GitHub workflows
+    ├── handoverDocs.yml           # Action to upload the handover documents to GitHub pages
+    ├── labeler.yml                # Action to automatically label pull requests
+    ├── pyTest.yml                 # Action to run continuous integration tests on our code
+    ├── pylint.yml                 # Action to lint our code
+    └── zipDeployment.yml          # Action to deploy our code by releasing it as a zip
+```
+
+### /Research:
+The structure within the ```/Research``` directory can be found below:
+
+```
+.
+├── Arduino/                                 # Code to test our Arduino Braccio arm
+├── BraccioCode/                             # Basic robot code to test the robot
+├── CNN-Examples/                            # Example CNN training code
+├── Image-Detection-Proof-of-Concept/        # Documentation of our process of finding a detection model
+├── Inference-Set-Up.md                      # Documentation of the model conversion process
+├── Litter-Datasets.md                       # Research into what litter datasets to use for the project
+├── PiCam-Setup.md                           # Guides to set up PiCameras on a Raspberry Pi
+├── RESEARCH.md                              # Placeholder md file
+└── TensorFlow/                              # Research into how to use and install TensorFlow
+```
+
+### /code:
+The structure within the ```/code``` directory can be found below:
+
+```
+.
+├── Inverse_kinematics.py                    # Converts a distance to angles for the joints to move
+├── Model                                    # Model and labels
+│   ├── annotations.json                     # Bounding box annotations
+│   ├── labels.txt                           # Label map for inference
+│   └── model.tflite                         # TFLite inference model
+├── README.md                                # Calculations used for inverse_kinematics.py
+├── StereoVision                             # StereoVision depth estimation code
+│   ├── README.md                             
+│   ├── __init__.py                          
+│   ├── activeCalibration.py                 # Undistorts captured video frames
+│   ├── calibration.py                       # Calibrates two cameras by using a checkerboard
+│   ├── calibration_images                   # Images captured by take_images.py
+│   ├── distInf.py                           # Real time inference with depth estimation
+│   ├── stereoMap.xml                        # Parameters used to undistort video frames
+│   ├── take_Images.py                       # Takes calibration images 
+│   └── triangulation.py                     # Calculates object depth from cameras
+├── archived                                 # Outdated or redundant code
+│   ├── error_testing.py                     # Debug code for robot arm
+│   └── inference.py                         # Original real-time inference script using the PiCamera2 library
+├── arduino-script                           # Code to move the arm
+│   └── arduino-script.ino                   # Moves robot arm using specified input
+├── braccio_adapter.py                       # Communicate with the arm through Python
+├── camera_distance.py                       # Calculates distance vector using estimated depth
+├── graphReconstructer.py                    # Reconstructs frozen graph from our incomplete inference model
+├── inferenceCV.py                           # Real time inference using openCV
+├── interface.py                             # Interface allowing interaction with the arm
+├── labelMapCreator.py                       # Creates label map from annotations.json
+├── requirements.txt                         # Project dependencies
+└── tests/                                   # Unit tests
+```
+
+###  /docs:
+The structure within the ```/docs``` directory can be found below:
+
+```
+.
+├── AI_TOOLS.md             # Documentation on what AI tools we have used during the project
+├── ARDUCAM.md              # Documentation of how to set up the multi cam adapter on the Raspberry Pi
+├── Architecture-Diagrams/  # Architecture diagrams of the project
+├── Client-Meeting-Notes/   # Bi-weekly client meetings
+├── ETHICS.md               # Documentation of our chosen ethics route
+├── Images-And-Videos/      # Images and videos of the project
+├── Milestone-Slides/       # Slides for our MVP, Beta, and Final releases
+├── Pi/                     # Documentation for our Raspberry Pi
+├── Project-Proposal/       # Proposal of the project
+├── Research-Forms/         # Forms for user testing
+├── Robot-Documentation/    # Documentation of in-person hardware work
+└── User-Testing/           # Questionnaire for user testing
+```
+
+### /handoverDocs:
+The structure within the ```/handoverDocs``` directory can be found below:
+
+```
+.
+└── README.md   # Handover documentation
+```
 
 ## Architecture Diagram:
 ![image](https://github.com/user-attachments/assets/22d654af-39bc-4fdd-8003-1cc4eb89514f)
@@ -27,16 +144,22 @@ The purpose of this document is to serve as a guide for new developers to contin
 - Calculates servo angles using inverse kinematics.
 - Ensures the arm moves precisely to the target position.
 
-#### 3. Interface.py
+#### 3. interface.py
 - Main python file which integrates braccio_adapter for serial communication and Inverse_kinematics for movement control.
+- It offers three distinct modes: Camera mode, Manual mode, and a combined Camera & Manual mode, each incorporating sorting techniques.
 - Provides a pygame based UI for real time servo movement visualisation and to control the robotic arm using keyboard input.
+- Manual mode: Arm can be controlled using inverse_kinematics manually and also by entering the position of the litter.
+- Camera & Manual mode: This mode will be an autonomous system where the litter detected by the camera will be picked and placed into a bin by the
+arm.
+- Camera mode: This mode will only run the camera to detect the litter.
+
 
 ### System Setup:
 **Prerequisites**
 - Braccio Robotic Arm
 - Arduino UNO
 - Arduino IDE
-- Computer with Python snstalled
+- Computer with Python installed
 **Installation**
 Ensure you have the required dependencies installed:
 
@@ -58,7 +181,7 @@ Ensure you have the required dependencies installed:
 | U/O  | Move arm up/down               |
 
 
-**To control the from specific coordinates:**
+**To control the arm from specific coordinates:**
 
 - Press 'M' to select coordinates screen 
 - Enter x,y,z coordinates when prompted (in millimetres,(0,0,0) is at the middle of the shoulder joint).
@@ -97,12 +220,13 @@ Now you have completed all the setup, run **interface.py** using:
 ```console
 python interface.py
 ```
-
-Next, you'll be prompted to enter the port name that was previously displayed in the Arduino IDE. Make sure to enter it correctly, as this is crucial for establishing a proper connection
-between your computer and the Braccio robotic arm. Once you enter the correct port, the Braccio robotic arm will begin its startup routine. At the same time, a Pygame-based interface
-will automatically open on your screen. This interface serves as an intuitive control panel, allowing you to operate the robotic arm using key presses. It provides real-time feedback on
-the current state of the arm, displaying servo angles for different joints and helping you monitor movement accuracy also shows the last key pressed, and keeps a history of the last five
-key presses. You are now ready to control the robotic arm. Follow the provided instructions carefully to execute precise movements. 
+Next, it will ask you to select one of the three modes (Camera mode, Manual mode and Camera & Manual mode), after selecting your preferred mode, you'll be
+prompted to enter the port name that was previously displayed in the Arduino IDE. Make sure to enter it correctly, as this is crucial for establishing a proper
+connection between your computer and the Braccio robotic arm. Once you enter the correct port, the Braccio robotic arm will begin its startup routine. At the
+same time, a Pygame based interface will automatically open on your screen. This interface serves as an intuitive control panel, allowing you to operate the
+robotic arm using key presses. It provides real-time feedback on the current state of the arm, displaying servo angles for different joints and helping you
+monitor movement accuracy also shows the last key pressed, and keeps a history of the last five key presses. You are now ready to control the robotic arm. Follow
+the provided instructions carefully to execute precise movements. 
 
 > [!WARNING]
 > Avoid lifting objects that exceed the robotic arm's weight capacity. Overloading can strain the servos, potentially causing permanent damage and reducing the arm’s overall lifespan.
@@ -117,7 +241,7 @@ key presses. You are now ready to control the robotic arm. Follow the provided i
 | Issue                                          | Possible Fix                                                        |
 |------------------------------------------------|---------------------------------------------------------------------|
 | **Braccio didn't move to the safety position**     | Check Arduino connections.                                          |
-| **Interface.py is not running**                | Ensure all dependencies (`pygame`, `numpy`, `pyserial`) are installed.  |
+| **interface.py is not running**                | Ensure all dependencies (`pygame`, `numpy`, `pyserial`) are installed.  |
 | **Arduino port not found**                     | Enter the correct port given in Arduino IDE.                        |
 
 
@@ -140,7 +264,8 @@ python take_Images.py
 
 This should then display the two camera feeds on your screen. From here you will need to take a minimum of 5 photos by pressing the 's' key.
 
-Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboaard held to the corner of one of the cameras at an angle. Examples can be found in:
+> [!IMPORTANT]
+> Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboard held to the corner of one of the cameras at an angle. Examples can be found in:
 
 ```bash
 2024-LitterRecognition1
@@ -172,3 +297,11 @@ This script runs real time inference on the camera feeds using the TFlite TACO-t
 ![Shaun The Sheep](https://media0.giphy.com/media/tIeCLkB8geYtW/giphy.gif?cid=47028fa8jgwxw5pmayj1hkegw38jlet0446le5qcmbnzcdy7&ep=v1_gifs&rid=giphy.gif&ct=g)
 
 ## Further Documentation
+
+| Resource | Link | 
+| ---------------- | --------------- |
+| Arduino IDE Documentation | [here](https://docs.arduino.cc/) |
+| Arduino Braccio Documentation | [here](https://docs.arduino.cc/retired/getting-started-guides/Braccio/) |
+| OpenCV Documentation | [here](https://docs.opencv.org/4.x/index.html) |
+| TensorFlow Lite Documentation | [here](https://www.tensorflow.org/api_docs/python/tf/lite) |
+| TensorFlow Model Source | [here](https://www.kaggle.com/code/bouweceunen/garbage-detection-with-tensorflow/notebook) |
