@@ -107,7 +107,7 @@ def move(vector):
   base = math.degrees(math.atan(vector[0]/vector[1]))
 
   #Calculate additional degrees for the shoulder
-  shoulder = math.degrees(math.atan(vector[2] / floor_projection))
+  shoulder = math.degrees(math.atan2(vector[2] / floor_projection))
 
   # Get degrees required to move arm by the magnitude of the vector
   degrees = move_line(np.linalg.norm(vector))
