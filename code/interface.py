@@ -9,7 +9,7 @@ import os
 
 import time
 
-# import StereoVision.distInf
+import StereoVision.distInf
 import camera_distance
 
 # Initial vector position and distance 
