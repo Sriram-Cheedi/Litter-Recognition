@@ -328,13 +328,14 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 theta2 = -camera_angle + (midpointy - centreRight[1]) * (alpha / width)
                 phi2 = (centreRight[0] - midpointx) * (alpha / width)
 
+                # Average the two angles between the cameras
                 theta = (theta1 + theta2) / 2
                 phi = (phi1 + phi2) / 2
 
                 # Calculating coordinates based on depth and angles from the cameras normal vectors
-                x = depth * np.rad2deg(np.sin(theta))
-                y = depth * np.sqrt(np.rad2deg(np.sin(theta))**2 - np.rad2deg((np.sin(phi)))**2)
-                z = depth * np.rad2deg(np.sin(phi))
+                x = depth * np.sin(np.deg2rad(theta))
+                y = depth * np.sqrt(np.sin(np.deg2rad(theta))**2 - np.sin(np.deg2rad(phi))**2)
+                z = depth * np.sin(np.deg2rad(phi))
                 
 
                 vector = [x,y,z] - camera_position
