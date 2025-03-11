@@ -253,25 +253,28 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         exit()
         
     # Stereo vision setup parameters
-    frameRate = 120
-    camDist = 9 # Distance between cams (cm)
-    focalLength = 12 # Camera lense's focal length (mm)
-    alpha = 95 # Camera fov in horizontal plane (degrees)
+    frameRate = 60
+    camDist = 5 # Distance between cams (cm)
+    focalLength = 4 # Camera lense's focal length (mm)
+    alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
     camera_position1 = np.array([0, 150, 50])
     camera_position2 = np.array([0, 150, 50])
     camera_position = (camera_position1 + camera_position2)/2
+    camera_angle = 20
         
     # Main detection loop
     while True:
+        
+
         #  Capture and pre-process image
         ret, captureLeft = cameraLeft.read()
         ret1, captureRight = cameraRight.read()
         #capture = cv2.cvtColor(capture, cv2.COLOR_RGB2BGR)
         
         captureLeft, captureRight = activeCalibration.undistortRect(captureLeft, captureRight)
-        
+
         start = time.time()
         
         img = preProcess(captureLeft, width, height)
@@ -314,10 +317,30 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
             if robot:
-                vector = [0,0,0]
-                vector[0] = int(input("Enter x:"))
-                vector[1] = int(input("Enter y:"))
-                vector[2] = int(input("Enter z:"))
+
+                # Calculate angles to object from the normal to the camera and 
+                midpointx = screen_width / 2
+                midpointy = screen_height / 2
+
+                theta1 = -camera_angle + (midpointy - centreLeft[1]) * (alpha / width)
+                phi1 = (centreLeft[0] - midpointx) * (alpha / width)
+
+                theta2 = -camera_angle + (midpointy - centreRight[1]) * (alpha / width)
+                phi2 = (centreRight[0] - midpointx) * (alpha / width)
+
+                theta = (theta1 + theta2) / 2
+                phi = (phi1 + phi2) / 2
+
+                # Calculating coordinates based on depth and angles from the cameras normal vectors
+                x = depth * np.rad2deg(np.sin(theta))
+                y = depth * np.sqrt(np.rad2deg(np.sin(theta))**2 - np.rad2deg((np.sin(phi)))**2)
+                z = depth * np.rad2deg(np.sin(phi))
+                
+
+                vector = [x,y,z] - camera_position
+                # vector[0] = int(input("Enter x:"))
+                # vector[1] = int(input("Enter y:"))
+                # vector[2] = int(input("Enter z:"))
                 print(vector)
 
                 # Stand up straight
