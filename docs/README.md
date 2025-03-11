@@ -130,7 +130,7 @@ The structure within the ```/handoverDocs``` directory can be found below:
 ```
 
 ## Architecture Diagram:
-![image](https://github.com/user-attachments/assets/22d654af-39bc-4fdd-8003-1cc4eb89514f)
+![image](./Architecture-Diagrams/Architecture_diagram.jpeg)
 
 ## Robot System Guide
 
