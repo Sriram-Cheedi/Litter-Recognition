@@ -259,10 +259,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([270, -9, 25])
-    camera_position2 = np.array([277, -9, 25])
+    camera_position1 = np.array([270, -90, 250])
+    camera_position2 = np.array([277, -90, 250])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 15
+    camera_angle = 20
         
     # Main detection loop
     while True:
@@ -322,27 +322,37 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 midpointx = screen_width / 2
                 midpointy = screen_height / 2
 
-                theta1 = -camera_angle + (midpointy - centreLeft[1]) * (alpha / width)
+                theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
                 phi1 = (centreLeft[0] - midpointx) * (alpha / width)
 
-                theta2 = -camera_angle + (midpointy - centreRight[1]) * (alpha / width)
+                theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
                 phi2 = (centreRight[0] - midpointx) * (alpha / width)
 
                 # Average the two angles between the cameras
                 theta = (theta1 + theta2) / 2
                 phi = (phi1 + phi2) / 2
+                print("Theta: ", theta)
+                print("Phi: ", phi)
 
                 # Calculating coordinates based on depth and angles from the cameras normal vectors
                 x = depth * np.sin(np.deg2rad(theta))
                 z = depth * np.sin(np.deg2rad(phi))
                 y = np.sqrt(depth**2 - x**2 - z**2)
-                
-                
 
-                vector = [x,y,z] - camera_position
+                # If the object has a negative x component then negate the x component
+                if phi < 0:
+                    x *= -1
+                
+                
+                # Translate the vector to the position of the robot
+                vector = [x,y,z] + camera_position
+
+
                 # vector[0] = int(input("Enter x:"))
                 # vector[1] = int(input("Enter y:"))
                 # vector[2] = int(input("Enter z:"))
+                print([x, y, z])
+                print(camera_position)
                 print(vector)
 
                 # Stand up straight
