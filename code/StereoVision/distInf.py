@@ -262,7 +262,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     camera_position1 = np.array([270, -90, 250])
     camera_position2 = np.array([277, -90, 250])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 20
+    camera_angle = 25
         
     # Main detection loop
     while True:
@@ -318,6 +318,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
             if robot:
 
+                depth *= 10
+
                 # Calculate angles to object from the normal to the camera and 
                 midpointx = screen_width / 2
                 midpointy = screen_height / 2
@@ -335,13 +337,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print("Phi: ", phi)
 
                 # Calculating coordinates based on depth and angles from the cameras normal vectors
-                x = depth * np.sin(np.deg2rad(theta))
-                z = depth * np.sin(np.deg2rad(phi))
+                z = depth * np.sin(np.deg2rad(theta))
+                x = depth * np.sin(np.deg2rad(phi))
                 y = np.sqrt(depth**2 - x**2 - z**2)
-
-                # If the object has a negative x component then negate the x component
-                if phi < 0:
-                    x *= -1
                 
                 
                 # Translate the vector to the position of the robot
