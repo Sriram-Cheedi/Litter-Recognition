@@ -195,7 +195,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
     for i in range(len(scores)):
-        if scores[i] > 0.9:
+        if scores[i] > 0.75:
             count += 1
             # Gets the coordinates of the bounding boxes
             (startY, startX, endY, endX) = (int(boxes[i][0] * h), int(boxes[i][1] * w), int(boxes[i][2] * h), int(boxes[i][3] * w))
@@ -241,7 +241,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     lblMap = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
-    cameraLeft = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
     cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
@@ -259,10 +259,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([270, -90, 250])
-    camera_position2 = np.array([277, -90, 250])
+    camera_position1 = np.array([270, -90, 165])
+    camera_position2 = np.array([277, -90, 165])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 25
+    camera_angle = 35
         
     # Main detection loop
     while True:
