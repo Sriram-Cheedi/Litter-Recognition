@@ -113,7 +113,8 @@ def detect(MODEL_PATH, LABELMAP_PATH):
 
     # Camera position
     camera_positionL = np.array([-5, 0, 30])
-    camera_positionR= np.array([5, 0, 30])
+    camera_positionR = np.array([5, 0, 30])
+    camera_position = (camera_positionL + camera_positionR)/2
     # Real camera distance
     camDist = camera_positionR[0] - camera_positionL[0]
         
@@ -158,7 +159,6 @@ def detect(MODEL_PATH, LABELMAP_PATH):
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         else:
-            #TODO : Find two depth
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
             coords = converter.get_coordinate(depth, depth, camera_positionL, camera_positionR)

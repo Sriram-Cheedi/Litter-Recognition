@@ -1,7 +1,12 @@
 #Cameras and the robot arm are all at the y = 0
+#TODO : TEST CODE AND MIDDLE
 import sympy as sp
 import numpy as np
 import StereoVision.distInf
+
+
+
+
 
 
 def get_coordinate(depthL, depthR, camera_positionL, camera_positionR):
@@ -48,6 +53,15 @@ def get_coordinate(depthL, depthR, camera_positionL, camera_positionR):
     object_position = np.array([x_coord, y_coord, z_coord])
     
     return object_position
+
+#TEST
+camera_positionL = np.array([-3.5, 0, 30])
+camera_positionR= np.array([3.5, 0, 30])
+depthL = 10
+depthR = 12
+Vector = get_coordinate(depthL, depthR, camera_positionL, camera_positionR)
+print(Vector)
+
 
 '''
 2d-distanceL < 2d-distanceR
