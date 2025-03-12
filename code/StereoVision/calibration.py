@@ -95,7 +95,7 @@ def calibrate(objPoints, lImgPoints, rImgPoints, imgL, imgR, grayL, grayR):
     rStereoMap = cv2.initUndistortRectifyMap(rNewCamMatrix, rDist, rRect, rProjMatrix, grayR.shape[::-1], cv2.CV_16SC2)
     
     # Saves the parameters needed to rectify the images
-    output = cv2.FileStorage('./StereoVision/stereoMap.xml', cv2.FILE_STORAGE_WRITE)
+    output = cv2.FileStorage('stereoMap.xml', cv2.FILE_STORAGE_WRITE)
     output.write('stereoMapL_x', lStereoMap[0])
     output.write('stereoMapL_y', lStereoMap[1])
     output.write('stereoMapR_x', rStereoMap[0])

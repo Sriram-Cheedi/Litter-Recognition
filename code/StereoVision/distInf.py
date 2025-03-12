@@ -241,10 +241,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     lblMap = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
-    cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    cameraLeft = cv2.VideoCapture(1, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
-    cameraRight = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
     cameraRight.set(3, 640)
     cameraRight.set(4, 480)
     
@@ -254,15 +254,15 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         
     # Stereo vision setup parameters
     frameRate = 60
-    camDist = 5 # Distance between cams (cm)
+    camDist = 7 # Distance between cams (cm)
     focalLength = 4 # Camera lense's focal length (mm)
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([0, 150, 50])
-    camera_position2 = np.array([0, 150, 50])
+    camera_position1 = np.array([270, -9, 25])
+    camera_position2 = np.array([277, -9, 25])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 20
+    camera_angle = 15
         
     # Main detection loop
     while True:
@@ -334,8 +334,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
                 # Calculating coordinates based on depth and angles from the cameras normal vectors
                 x = depth * np.sin(np.deg2rad(theta))
-                y = depth * np.sqrt(np.sin(np.deg2rad(theta))**2 - np.sin(np.deg2rad(phi))**2)
                 z = depth * np.sin(np.deg2rad(phi))
+                y = np.sqrt(depth**2 - x**2 - z**2)
+                
                 
 
                 vector = [x,y,z] - camera_position
