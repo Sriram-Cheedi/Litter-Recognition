@@ -14,7 +14,6 @@ import StereoVision.activeCalibration as activeCalibration
 import StereoVision.triangulation as triangulation
 
 import camera_distance
-import converter
 
 pygame.init()
 screen_width = 1000
@@ -161,7 +160,7 @@ def detect(MODEL_PATH, LABELMAP_PATH):
         else:
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
-            coords = converter.get_coordinate(depth, depth, camera_positionL, camera_positionR)
+            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
             #print(coords)
 
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)

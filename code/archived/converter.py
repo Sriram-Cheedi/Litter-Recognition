@@ -1,5 +1,10 @@
+"""
+This part of the code was about taking two depth from two cameras to convert into coordinate, while two cameras can only generate one depth
+This code now could only work with the object standing in the middle of two cameras so the depth for both cameras will be the same
+"""
+
+
 #Cameras and the robot arm are all at the y = 0
-#TODO : TEST CODE AND MIDDLE
 import sympy as sp
 import numpy as np
 import StereoVision.distInf
