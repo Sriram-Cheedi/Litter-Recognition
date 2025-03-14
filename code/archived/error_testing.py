@@ -1,3 +1,6 @@
+"""
+This part of code is for testing the error values of the Braccio arm
+"""
 import pygame
 import sys
 import braccio_adapter
