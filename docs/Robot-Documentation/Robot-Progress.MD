@@ -12,6 +12,8 @@ To see documentation for the time we spent on the Raspberry Pi and camera system
 ### MVP
 At the early stage of the project, we initially planned to use two Braccio robotic arms working in coordination to pick up litter simultaneously. To achieve this, we borrowed two robotic arms from the uni and assembled them together as a team. The detailed assembly process can be found in ROBOT.md. However, due to time constraints, we ultimately decided to use only one robotic arm.
 
+Following the instruction manual, we successfully installed Arduino IDE and established a connection between the board, the robotic arm, and a laptop. We then wrote simple control code to operate the robotic arm, enabling it to perform basic movement tests and also the safety position.
+
 ### Beta Release
 
 Towards the tail end of our release to the client, we ran a few tests with the arm to see how precisely it could target a specific vector. To our horror
