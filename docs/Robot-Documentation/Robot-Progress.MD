@@ -47,6 +47,17 @@ anymore resistance and stop just short of the target. So - we took to a software
 target by some number of degrees and then slowly "wiggle" its way back to the target.
 
 
+#### Robot Stand
+
+Moving into the last few weeks of development. We all agreed we needed to finalise a way of holding the arm and cameras in place. We started by defining
+the requirements for the stand. These were:
+
+1) A base to hold the arm in place
+
+2) A pillar to support the platform that will hold the cameras and Raspberry Pi
+
+After a first attempt at design using "onshape" (some free online CAD software), we created a base.
+
 
 
 
