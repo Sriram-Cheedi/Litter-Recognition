@@ -175,8 +175,6 @@ def robotLogic():
 
     print("Press the keys for the output. Press ESC to quit.")
     
-                
-
         
     #Checks that all of the movement values are within their bounds
     #If not, they are set to the closest bound
@@ -373,39 +371,8 @@ def cameraLogic():
 
 
 def automatedSystem():
-    MODEL_PATH = "./Model/model.tflite"
-    LABELMAP_PATH = "./Model/labels.txt"
-    
-    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
-    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
-    
-    label =  StereoVision.distInf.detect(MODEL_PATH, LABELMAP_PATH)
-    
-    if label:
-        print(f"Litter detected: {label}")
-        
-        biodegradable = ["Carton Box", "Paper"]
-        non_biodegradable = ["Glass","Plastic", "Metal", "ABS"]
-        
-        if label in biodegradable:
-            bin_type = "Biodegradable"
-        elif label in non_biodegradable:
-            bin_type = "Non-biodegradable"
-        else:
-            print("Unknown")
-            
-        print(f"Placing {label} in {bin_type} bin")
-        
-        biodegradable_non_biodegradable(braccioDebug,label)
-        
-        time.sleep(1)
-        braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
-        time.sleep(1)
-        
-        braccioDebug.home_position()
-        
-    else:
-        print("No litter detected.")
+  # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
+    print("You know... The thing we promised to have done in less than two weeks...")
     
 
 
