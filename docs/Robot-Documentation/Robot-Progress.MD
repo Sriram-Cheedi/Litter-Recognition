@@ -73,6 +73,11 @@ our list for the stand:
 
 3) The platform must be adjustable in such a way the camera viewing angle can be changed as desired
 
+Thus we went back to the drawing board and created this new design for the platform:
+
+![Base design](./stand-CAD-files/images/Platform2.png)
+
+
 
 
 
