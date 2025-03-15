@@ -79,7 +79,7 @@ The structure within the ```/code``` directory can be found below:
 ├── README.md                                # Calculations used for inverse_kinematics.py
 ├── StereoVision                             # StereoVision depth estimation code
 │   ├── README.md                             
-│   ├── __init__.py                          
+│   ├── __init__.py                          # Allowing other modules to import StereoVision
 │   ├── activeCalibration.py                 # Undistorts captured video frames
 │   ├── calibration.py                       # Calibrates two cameras by using a checkerboard
 │   ├── calibration_images                   # Images captured by take_images.py
@@ -90,6 +90,7 @@ The structure within the ```/code``` directory can be found below:
 ├── archived                                 # Outdated or redundant code
 │   ├── error_testing.py                     # Debug code for robot arm
 │   └── inference.py                         # Original real-time inference script using the PiCamera2 library
+|   └── converter.py                         # Converting depth to coordinate with assumptions
 ├── arduino-script                           # Code to move the arm
 │   └── arduino-script.ino                   # Moves robot arm using specified input
 ├── braccio_adapter.py                       # Communicate with the arm through Python
@@ -130,7 +131,7 @@ The structure within the ```/handoverDocs``` directory can be found below:
 ```
 
 ## Architecture Diagram:
-![image](https://github.com/user-attachments/assets/22d654af-39bc-4fdd-8003-1cc4eb89514f)
+![image](./Architecture-Diagrams/Architecture_diagram.jpeg)
 
 ## Robot System Guide
 

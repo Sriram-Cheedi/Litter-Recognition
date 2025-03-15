@@ -6,7 +6,7 @@ from unittest.mock import mock_open, patch, MagicMock
 
 # Allows the tests to find the graphReconstructor module
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from graphReconstructer import *
+from graph_reconstructer import *
 
 class TestReconstructor(unittest.TestCase):
     

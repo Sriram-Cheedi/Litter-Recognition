@@ -1,5 +1,6 @@
 #Running this file by "python -m StereoVision.distInf"
 
+import os
 import sys
 import cv2
 import numpy as np
@@ -263,6 +264,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     camera_position2 = np.array([277, -90, 165])
     camera_position = (camera_position1 + camera_position2)/2
     camera_angle = 35
+
         
     # Main detection loop
     while True:

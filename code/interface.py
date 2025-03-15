@@ -143,11 +143,10 @@ def jiggle(braccioDebug, baseServo):
         offset = (jiggleAmount-i) * jiggleAmount * direction
         braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
         direction *= -1
-
-
+        
 def robotLogic():
     # Get serial port though user input
-    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
+    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
 
     pygame.init()
@@ -166,7 +165,7 @@ def robotLogic():
     small_font = pygame.font.Font(None, 36)
 
     key_history = []
-
+    type_of_litter = ""
     running = True
 
 
@@ -175,7 +174,8 @@ def robotLogic():
         screen.blit(text_surface, (x, y))
 
     print("Press the keys for the output. Press ESC to quit.")
-
+    
+        
     #Checks that all of the movement values are within their bounds
     #If not, they are set to the closest bound
     
@@ -197,6 +197,9 @@ def robotLogic():
         display_text(f"Servo 4: {braccioDebug.s4}°", small_font, GREEN, 400, 220)
         display_text(f"Servo 5: {braccioDebug.s5}°", small_font, GREEN, 400, 260)
         display_text(f"Servo 6: {braccioDebug.s6}°", small_font, GREEN, 400, 300)
+        
+        if type_of_litter:
+            display_text(f"Classification:{type_of_litter}",small_font, WHITE,100,400)
 
         for event in pygame.event.get():
             
@@ -268,6 +271,7 @@ def robotLogic():
             vector = Inverse_kinematics.move(vector)[4]
 
         if keys[pygame.K_m]:
+            vector = [0,0,0]
             vector[0] = int(input("Enter x:"))
             vector[1] = int(input("Enter y:"))
             vector[2] = int(input("Enter z:"))
@@ -291,6 +295,46 @@ def robotLogic():
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = Inverse_kinematics.move(vector)[4]
+            
+            
+             # Open claw to drop object
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
+            time.sleep(1)
+            
+            braccioDebug.home_position()
+            
+        if keys[pygame.K_p]:
+            
+            vector = [0,0,0]
+            vector[0] = int(input("Enter x:"))
+            vector[1] = int(input("Enter y:"))
+            vector[2] = int(input("Enter z:"))
+            approach_vector = ([vector[0] + 100, vector[1] + 100, vector[2] + 100])
+            print(approach_vector)
+            servo_positions = Inverse_kinematics.move(approach_vector)
+            print(servo_positions)
+            
+
+                 
+            braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
+
+            # Jiggle the base
+            baseServo = 90 - Inverse_kinematics.move(vector)[0]
+            jiggle(braccioDebug, baseServo)
+              
+            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(approach_vector)[1], 90 - Inverse_kinematics.move(approach_vector)[2], 90 - Inverse_kinematics.move(approach_vector)[3], braccioDebug.s5, braccioDebug.s6)
+            time.sleep(1)
+            braccioDebug.servo_movement(braccioDebug.s1, 70, braccioDebug.s3,braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            time.sleep(1)
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, 17, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            time.sleep(1)
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, 0, braccioDebug.s5, braccioDebug.s6)
+     
+            # braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1],90 - Inverse_kinematics.move(vector)[2], 0, braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73) 
+            braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6) 
+
 
         #if keys[pygame.K_5]:
 
@@ -327,8 +371,9 @@ def cameraLogic():
 
 
 def automatedSystem():
-    # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
+  # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
     print("You know... The thing we promised to have done in less than two weeks...")
+    
 
 
 def main():
