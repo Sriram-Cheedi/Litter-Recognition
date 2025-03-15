@@ -144,41 +144,6 @@ def jiggle(braccioDebug, baseServo):
         braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
         direction *= -1
         
-        
-def litter_classification():
-        type_of_litter = {"1": "Glass","2": "Carton Box","3": "Plastic","4": "Metal","5": "Paper","6": "ABS"}
-        print("Select the type of litter:")
-        for key, value in type_of_litter.items():
-            print(f"{key} - {value}")
-        
-        while True:
-            choice = input("Enter the number of the object")
-            if choice in type_of_litter:
-                return type_of_litter[choice]
-            else:
-                print("Invalid object")
-                
-
-
-def biodegradable_non_biodegradable(braccioDebug,type_of_litter):
-        bio_bin = [280,100,5]
-        non_bio_bin = [-280,100,5]
-        if type_of_litter == "Glass":
-            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
-        elif type_of_litter == "Carton Box":
-            braccioDebug.servo_movement(*Inverse_kinematics.move(bio_bin))
-        elif type_of_litter == "Plastic":
-            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
-        elif type_of_litter == "Metal":
-            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
-        elif type_of_litter == "Paper":
-            braccioDebug.servo_movement(*Inverse_kinematics.move(bio_bin))
-        else:
-            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
-
-
-        
-
 def robotLogic():
     # Get serial port though user input
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
@@ -333,14 +298,6 @@ def robotLogic():
         
             vector = Inverse_kinematics.move(vector)[4]
             
-            type_of_litter = litter_classification()
-            if type_of_litter in ["Carton Box", "Paper"]:
-                type_of_litter = f"{type_of_litter} (Biodegradable)"
-            else:
-                type_of_litter = f"{type_of_litter} (Non-Biodegradable)"
-            
-            biodegradable_non_biodegradable(braccioDebug, type_of_litter)
-            time.sleep(1)
             
              # Open claw to drop object
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
@@ -359,11 +316,7 @@ def robotLogic():
             servo_positions = Inverse_kinematics.move(approach_vector)
             print(servo_positions)
             
-            type_of_litter = litter_classification()
-            if type_of_litter in ["Carton Box", "Paper"]:
-                type_of_litter = f"{type_of_litter} (Biodegradable)"
-            else:
-                type_of_litter = f"{type_of_litter} (Non-Biodegradable)"
+
                  
             braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
 
@@ -379,19 +332,11 @@ def robotLogic():
             time.sleep(1)
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, 0, braccioDebug.s5, braccioDebug.s6)
      
-                        # braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1],90 - Inverse_kinematics.move(vector)[2], 0, braccioDebug.s5, braccioDebug.s6)
+            # braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1],90 - Inverse_kinematics.move(vector)[2], 0, braccioDebug.s5, braccioDebug.s6)
             braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73) 
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6) 
 
-
-                
-            # biodegradable_non_biodegradable(braccioDebug, type_of_litter)
-            
-            
-            
-            
-            
 
         #if keys[pygame.K_5]:
 
