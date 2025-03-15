@@ -77,6 +77,13 @@ Thus we went back to the drawing board and created this new design for the platf
 
 ![Base design](./stand-files/images/Platform2.png)
 
+This stand was much more robust. It is designed so that we can mount the portion of the stand that holds the cameras to another section that will be
+attached to the threaded poles. This is done in such a way that we can change the viewing angle by loosening/tightening a bolt and manually moving the
+mount into a desired position. The way the attatchement works is jigsaw-like. The assembled version of this portion of the stand can be seen below:
+
+![Base design](./stand-files/images/camera-mount-irl.png)
+
+
 
 
 
