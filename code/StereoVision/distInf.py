@@ -254,14 +254,16 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         
     # Stereo vision setup parameters
     frameRate = 120
-    camDist = 9 # Distance between cams (cm)
+    #camDist = 9 # Distance between cams (cm)
     focalLength = 12 # Camera lense's focal length (mm)
     alpha = 95 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([0, 150, 50])
-    camera_position2 = np.array([0, 150, 50])
-    camera_position = (camera_position1 + camera_position2)/2
+    camera_positionL = np.array([-5, 0, 30])
+    camera_positionR = np.array([5, 0, 30])
+    camera_position = (camera_positionL + camera_positionR)/2
+    # Real camera distance
+    camDist = camera_positionR[0] - camera_positionL[0]
         
     # Main detection loop
     while True:
