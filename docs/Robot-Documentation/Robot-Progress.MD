@@ -83,6 +83,7 @@ mount into a desired position. The way the attatchement works is jigsaw-like. Th
 
 ![Base design](./stand-files/images/camera-mount-irl.png)
 
+The cameras have not yet been fixed in place. But otherwise this is the version we will use to test our final release of the robot proof of concept.
 
 
 
