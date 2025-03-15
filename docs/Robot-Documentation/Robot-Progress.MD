@@ -47,6 +47,48 @@ anymore resistance and stop just short of the target. So - we took to a software
 target by some number of degrees and then slowly "wiggle" its way back to the target.
 
 
+#### Robot Stand
+
+Moving into the last few weeks of development. We all agreed we needed to finalise a way of holding the arm and cameras in place. We started by defining
+the requirements for the stand. These were:
+
+1) A base to hold the arm in place
+
+2) A pillar to support the platform that will hold the cameras and Raspberry Pi
+
+After a first attempt at design using "onshape" (some free online CAD software), we created a base.
+
+![Base design](./stand-files/images/Base.png)
+
+*see CAD files folder for .dwg file of all designs shown*
+
+The holes on the left are 10mm in diameter and hold metal threaded poles that will support the afformentioned platform. The platform was initially
+designed as such:
+
+![Base design](./stand-files/images/Platform1.png)
+
+As can probably be seen at a glance, there were a few oversights in this design. Firstly, the cameras were facing the wrong way. There was also no
+way to adjust the plane in which the cameras could view. They were stuck looking straight down. With this in mind we added a new requirement to
+our list for the stand:
+
+3) The platform must be adjustable in such a way the camera viewing angle can be changed as desired
+
+Thus we went back to the drawing board and created this new design for the platform:
+
+![Base design](./stand-files/images/Platform2.png)
+
+This stand was much more robust. It is designed so that we can mount the portion of the stand that holds the cameras to another section that will be
+attached to the threaded poles. This is done in such a way that we can change the viewing angle by loosening/tightening a bolt and manually moving the
+mount into a desired position. The way the attatchement works is jigsaw-like. The assembled version of this portion of the stand can be seen below:
+
+![Base design](./stand-files/images/camera-mount-irl.png)
+
+The cameras have not yet been fixed in place. But otherwise this is the version we will use to test our final release of the robot proof of concept.
+
+
+
+
+
 
 
 
