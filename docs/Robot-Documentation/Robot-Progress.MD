@@ -58,6 +58,8 @@ the requirements for the stand. These were:
 
 After a first attempt at design using "onshape" (some free online CAD software), we created a base.
 
+![Base design](./stand-CAD-files/images/Base.png)
+
 
 
 
