@@ -2,6 +2,11 @@
 <img src="docs/Images-And-Videos/Litter_Recognition_Logo.png" height="250">
 <h1 id="title">2024-LitterRecognition1</h1>   
 
+[![Handover-Docs](https://img.shields.io/badge/Handover-Docs-blue)](https://spe-uob.github.io/2024-LitterRecognition1/)
+[![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)](https://www.python.org/)
+[![Arduino](https://img.shields.io/badge/Arduino-blue?style=for-the-badge&logo=arduino&logoColor=white)](https://www.arduino.cc/)
+
+
 ## Contents:
 - [Autonomous Litter Recognition System](https://github.com/spe-uob/2024-LitterRecognition1/blob/main/README.md#autonomous-litter-recognition-system)
    - [Problem Statement](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#problem-statement)
