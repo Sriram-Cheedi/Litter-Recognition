@@ -58,14 +58,14 @@ the requirements for the stand. These were:
 
 After a first attempt at design using "onshape" (some free online CAD software), we created a base.
 
-![Base design](./stand-CAD-files/images/Base.png)
+![Base design](./stand-files/images/Base.png)
 
 *see CAD files folder for .dwg file of all designs shown*
 
 The holes on the left are 10mm in diameter and hold metal threaded poles that will support the afformentioned platform. The platform was initially
 designed as such:
 
-![Base design](./stand-CAD-files/images/Platform1.png)
+![Base design](./stand-files/images/Platform1.png)
 
 As can probably be seen at a glance, there were a few oversights in this design. Firstly, the cameras were facing the wrong way. There was also no
 way to adjust the plane in which the cameras could view. They were stuck looking straight down. With this in mind we added a new requirement to
@@ -75,7 +75,7 @@ our list for the stand:
 
 Thus we went back to the drawing board and created this new design for the platform:
 
-![Base design](./stand-CAD-files/images/Platform2.png)
+![Base design](./stand-files/images/Platform2.png)
 
 
 
