@@ -29,10 +29,10 @@ def takeImages(capture1, capture2):
 
 
 if __name__ == "__main__":
-    stream1 = cv2.VideoCapture(0)
+    stream1 = cv2.VideoCapture(1)
     stream1.set(3, 640)
     stream1.set(4, 480)
-    stream2 = cv2.VideoCapture(1)
+    stream2 = cv2.VideoCapture(2)
     stream2.set(3, 640)
     stream2.set(4, 480)
     

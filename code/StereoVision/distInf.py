@@ -196,7 +196,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
     for i in range(len(scores)):
-        if scores[i] > 0.9:
+        if scores[i] > 0.75:
             count += 1
             # Gets the coordinates of the bounding boxes
             (startY, startX, endY, endX) = (int(boxes[i][0] * h), int(boxes[i][1] * w), int(boxes[i][2] * h), int(boxes[i][3] * w))
@@ -245,7 +245,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
-    cameraRight = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
     cameraRight.set(3, 640)
     cameraRight.set(4, 480)
     
@@ -254,27 +254,29 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         exit()
         
     # Stereo vision setup parameters
-    frameRate = 120
-    #camDist = 9 # Distance between cams (cm)
-    focalLength = 12 # Camera lense's focal length (mm)
-    alpha = 95 # Camera fov in horizontal plane (degrees)
+    frameRate = 60
+    camDist = 7 # Distance between cams (cm)
+    focalLength = 4 # Camera lense's focal length (mm)
+    alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_positionL = np.array([-5, 0, 30])
-    camera_positionR = np.array([5, 0, 30])
-    camera_position = (camera_positionL + camera_positionR)/2
-    # Real camera distance
-    camDist = camera_positionR[0] - camera_positionL[0]
+    camera_position1 = np.array([270, -90, 165])
+    camera_position2 = np.array([277, -90, 165])
+    camera_position = (camera_position1 + camera_position2)/2
+    camera_angle = 35
+
         
     # Main detection loop
     while True:
+        
+
         #  Capture and pre-process image
         ret, captureLeft = cameraLeft.read()
         ret1, captureRight = cameraRight.read()
         #capture = cv2.cvtColor(capture, cv2.COLOR_RGB2BGR)
         
         captureLeft, captureRight = activeCalibration.undistortRect(captureLeft, captureRight)
-        
+
         start = time.time()
         
         img = preProcess(captureLeft, width, height)
@@ -317,10 +319,40 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
             if robot:
-                vector = [0,0,0]
-                vector[0] = int(input("Enter x:"))
-                vector[1] = int(input("Enter y:"))
-                vector[2] = int(input("Enter z:"))
+
+                depth *= 10
+
+                # Calculate angles to object from the normal to the camera and 
+                midpointx = screen_width / 2
+                midpointy = screen_height / 2
+
+                theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
+                phi1 = (centreLeft[0] - midpointx) * (alpha / width)
+
+                theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
+                phi2 = (centreRight[0] - midpointx) * (alpha / width)
+
+                # Average the two angles between the cameras
+                theta = (theta1 + theta2) / 2
+                phi = (phi1 + phi2) / 2
+                print("Theta: ", theta)
+                print("Phi: ", phi)
+
+                # Calculating coordinates based on depth and angles from the cameras normal vectors
+                z = depth * np.sin(np.deg2rad(theta))
+                x = depth * np.sin(np.deg2rad(phi))
+                y = np.sqrt(depth**2 - x**2 - z**2)
+                
+                
+                # Translate the vector to the position of the robot
+                vector = [x,y,z] + camera_position
+
+
+                # vector[0] = int(input("Enter x:"))
+                # vector[1] = int(input("Enter y:"))
+                # vector[2] = int(input("Enter z:"))
+                print([x, y, z])
+                print(camera_position)
                 print(vector)
 
                 # Stand up straight
