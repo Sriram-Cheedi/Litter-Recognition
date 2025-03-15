@@ -143,11 +143,45 @@ def jiggle(braccioDebug, baseServo):
         offset = (jiggleAmount-i) * jiggleAmount * direction
         braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
         direction *= -1
+        
+        
+def litter_classification():
+        type_of_litter = {"1": "Glass","2": "Carton Box","3": "Plastic","4": "Metal","5": "Paper","6": "ABS"}
+        print("Select the type of litter:")
+        for key, value in type_of_litter.items():
+            print(f"{key} - {value}")
+        
+        while True:
+            choice = input("Enter the number of the object")
+            if choice in type_of_litter:
+                return type_of_litter[choice]
+            else:
+                print("Invalid object")
+                
 
+
+def biodegradable_non_biodegradable(braccioDebug,type_of_litter):
+        bio_bin = [280,100,5]
+        non_bio_bin = [-280,100,5]
+        if type_of_litter == "Glass":
+            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
+        elif type_of_litter == "Carton Box":
+            braccioDebug.servo_movement(*Inverse_kinematics.move(bio_bin))
+        elif type_of_litter == "Plastic":
+            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
+        elif type_of_litter == "Metal":
+            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
+        elif type_of_litter == "Paper":
+            braccioDebug.servo_movement(*Inverse_kinematics.move(bio_bin))
+        else:
+            braccioDebug.servo_movement(*Inverse_kinematics.move(non_bio_bin))
+
+
+        
 
 def robotLogic():
     # Get serial port though user input
-    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
+    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
 
     pygame.init()
@@ -166,7 +200,7 @@ def robotLogic():
     small_font = pygame.font.Font(None, 36)
 
     key_history = []
-
+    type_of_litter = ""
     running = True
 
 
@@ -175,7 +209,10 @@ def robotLogic():
         screen.blit(text_surface, (x, y))
 
     print("Press the keys for the output. Press ESC to quit.")
+    
+                
 
+        
     #Checks that all of the movement values are within their bounds
     #If not, they are set to the closest bound
     
@@ -197,6 +234,9 @@ def robotLogic():
         display_text(f"Servo 4: {braccioDebug.s4}°", small_font, GREEN, 400, 220)
         display_text(f"Servo 5: {braccioDebug.s5}°", small_font, GREEN, 400, 260)
         display_text(f"Servo 6: {braccioDebug.s6}°", small_font, GREEN, 400, 300)
+        
+        if type_of_litter:
+            display_text(f"Classification:{type_of_litter}",small_font, WHITE,100,400)
 
         for event in pygame.event.get():
             
@@ -268,6 +308,7 @@ def robotLogic():
             vector = Inverse_kinematics.move(vector)[4]
 
         if keys[pygame.K_m]:
+            vector = [0,0,0]
             vector[0] = int(input("Enter x:"))
             vector[1] = int(input("Enter y:"))
             vector[2] = int(input("Enter z:"))
@@ -291,6 +332,66 @@ def robotLogic():
             braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
         
             vector = Inverse_kinematics.move(vector)[4]
+            
+            type_of_litter = litter_classification()
+            if type_of_litter in ["Carton Box", "Paper"]:
+                type_of_litter = f"{type_of_litter} (Biodegradable)"
+            else:
+                type_of_litter = f"{type_of_litter} (Non-Biodegradable)"
+            
+            biodegradable_non_biodegradable(braccioDebug, type_of_litter)
+            time.sleep(1)
+            
+             # Open claw to drop object
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
+            time.sleep(1)
+            
+            braccioDebug.home_position()
+            
+        if keys[pygame.K_p]:
+            
+            vector = [0,0,0]
+            vector[0] = int(input("Enter x:"))
+            vector[1] = int(input("Enter y:"))
+            vector[2] = int(input("Enter z:"))
+            approach_vector = ([vector[0] + 100, vector[1] + 100, vector[2] + 100])
+            print(approach_vector)
+            servo_positions = Inverse_kinematics.move(approach_vector)
+            print(servo_positions)
+            
+            type_of_litter = litter_classification()
+            if type_of_litter in ["Carton Box", "Paper"]:
+                type_of_litter = f"{type_of_litter} (Biodegradable)"
+            else:
+                type_of_litter = f"{type_of_litter} (Non-Biodegradable)"
+                 
+            braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
+
+            # Jiggle the base
+            baseServo = 90 - Inverse_kinematics.move(vector)[0]
+            jiggle(braccioDebug, baseServo)
+              
+            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(approach_vector)[1], 90 - Inverse_kinematics.move(approach_vector)[2], 90 - Inverse_kinematics.move(approach_vector)[3], braccioDebug.s5, braccioDebug.s6)
+            time.sleep(1)
+            braccioDebug.servo_movement(braccioDebug.s1, 70, braccioDebug.s3,braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            time.sleep(1)
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, 17, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+            time.sleep(1)
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, 0, braccioDebug.s5, braccioDebug.s6)
+     
+                        # braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1],90 - Inverse_kinematics.move(vector)[2], 0, braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+            braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73) 
+            braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6) 
+
+
+                
+            # biodegradable_non_biodegradable(braccioDebug, type_of_litter)
+            
+            
+            
+            
+            
 
         #if keys[pygame.K_5]:
 
@@ -327,8 +428,40 @@ def cameraLogic():
 
 
 def automatedSystem():
-    # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
-    print("You know... The thing we promised to have done in less than two weeks...")
+    MODEL_PATH = "./Model/model.tflite"
+    LABELMAP_PATH = "./Model/labels.txt"
+    
+    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
+    braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
+    
+    label =  StereoVision.distInf.detect(MODEL_PATH, LABELMAP_PATH)
+    
+    if label:
+        print(f"Litter detected: {label}")
+        
+        biodegradable = ["Carton Box", "Paper"]
+        non_biodegradable = ["Glass","Plastic", "Metal", "ABS"]
+        
+        if label in biodegradable:
+            bin_type = "Biodegradable"
+        elif label in non_biodegradable:
+            bin_type = "Non-biodegradable"
+        else:
+            print("Unknown")
+            
+        print(f"Placing {label} in {bin_type} bin")
+        
+        biodegradable_non_biodegradable(braccioDebug,label)
+        
+        time.sleep(1)
+        braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
+        time.sleep(1)
+        
+        braccioDebug.home_position()
+        
+    else:
+        print("No litter detected.")
+    
 
 
 def main():
