@@ -12,9 +12,14 @@ def bar_chart():
 
     """
 
+    txt_path = os.path.join("Data", "litters.txt")
+    f = open(txt_path, "r")
+    lines = f.readlines()
 
-    litters = ['6 Clear plastic bottle']
-    counter = [1]
+    counts = Counter(lines)
+
+    litters = list(counts.keys())
+    counter = list(counts.values())
 
     plt.bar(litters, counter)
 
@@ -25,6 +30,6 @@ def bar_chart():
     image_path = os.path.join("Data", "bar_chart.png") 
     plt.savefig(image_path)
 
-    plt.show()
+    #plt.show()
 
 bar_chart()
