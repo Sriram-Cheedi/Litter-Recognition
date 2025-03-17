@@ -214,7 +214,7 @@ All code can be found within the /code file of the GitHub and the fully built tf
 
 ## Architecture Diagram
 
-![Architecture Diagram](docs/Architecture-Diagrams/Architecture_Diagram.jpeg)
+![Architecture Diagram](docs/Architecture-Diagrams/beta_diagram_colour.jpeg)
 
 
 
