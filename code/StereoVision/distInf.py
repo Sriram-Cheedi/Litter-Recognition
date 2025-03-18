@@ -10,6 +10,7 @@ import imutils
 from matplotlib import pyplot as plt
 import pygame
 from enum import Enum
+import pandas as pd
 
 # Other packages we have created
 # Make sure python can tell StereoVision is one of the packages
@@ -22,8 +23,8 @@ import Inverse_kinematics
 import camera_distance
 
 pygame.init()
-screen_width = 1000
-screen_height = 600
+screen_width = 1080
+screen_height = 720
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface")
 
@@ -219,11 +220,26 @@ def calculateFPS(captureLeft, captureRight, start, end):
     
     cv2.putText(captureLeft, f'FPS: {int(fps)}', (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
     
+# Creates a Pie chart of the collected litter so far
+def createPieChart():
+    #pygame.display.flip
+    dataReader = pd.read_csv('Data/litters.txt', header=None, names=["Litter"])
+    #print(dataReader.to_string())
+    
+    sums = dataReader.groupby(dataReader["Litter"]).sum()
+    plt.axis('equal')
+    plt.pie(sums, labels=sums.index)
+    plt.show()
+    
+    
     
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
+
+    createPieChart()
+    
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
         braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
