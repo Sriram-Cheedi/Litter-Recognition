@@ -210,7 +210,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
             cv2.putText(capture, f"{label}: {score}%", (startX, startY - 10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
-    return ((startX + endX) / 2, (startY + endY) / 2), count
+    return ((startX + endX) / 2, (startY + endY) / 2), count, label
             
 # Calculates the fps (frames per second)
 def calculateFPS(captureLeft, captureRight, start, end):
@@ -227,7 +227,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
         braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
-
+    
+    objects = []
 
     # Set up the interpreter for inference
     interpreter = tflite.Interpreter(MODEL_PATH)
@@ -301,8 +302,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         scores1 = interpreter.get_tensor(outTensors[2]['index'])[0]
 
         # Iterates through the detections
-        centreLeft, leftCount = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
-        centreRight, rightCount = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
+        centreLeft, leftCount, labelL = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
+        centreRight, rightCount, labelR = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
         
         # Ensures both cameras detect object
         if leftCount == 0 or rightCount == 0:
@@ -318,6 +319,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
+
+            objects.append()
+
             if robot:
 
                 depth *= 10
@@ -354,6 +358,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print([x, y, z])
                 print(camera_position)
                 print(vector)
+
+                objects.append((labelL, vector))
+                print(objects)
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
