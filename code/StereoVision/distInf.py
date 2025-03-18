@@ -224,6 +224,7 @@ def calculateFPS(captureLeft, captureRight, start, end):
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
+    timeCounter = 0
     display_text("PICKING UP!", 780, 520, GREEN)
     pygame.display.flip()
     # input()
@@ -277,6 +278,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         
     # Main detection loop
     while True:
+
+        # Draw over the previous picking up alert
         pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
         pygame.display.flip()
 
@@ -318,7 +321,17 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         if leftCount == 0 or rightCount == 0:
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+            # If it has been 60 frames since an object has been found
+            timeCounter += 1
+            if timeCounter >= 60:
+                display_text("NO OBJECTS!", 780, 620, RED)
+                pygame.display.flip()
         else:
+            timeCounter = 0
+            pygame.draw.rect(screen, BLACK, pygame.Rect(780, 620, 300, 45))
+            pygame.display.flip()
+
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
             coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
@@ -372,9 +385,11 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print(objects)
                 items = len(objects)
 
-                pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+                # Draw over the previous pickup failed alert
+                pygame.draw.rect(screen, BLACK, pygame.Rect(780, 570, 300, 45))
                 pygame.display.flip()
 
+                # If the last two items detected are the same, turn on the pickup failed alert
                 if items > 1 and objects[items - 1][0] == objects[items - 2][0]:
                     display_text("PICK UP FAILED!", 780, 570, RED)
                     pygame.display.flip()
