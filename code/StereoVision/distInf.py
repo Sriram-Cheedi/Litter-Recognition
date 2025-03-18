@@ -8,7 +8,9 @@ import tensorflow.lite as tflite
 import time
 import imutils
 from matplotlib import pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as figCanvas
 import pygame
+from pygame.locals import *
 from enum import Enum
 import pandas as pd
 
@@ -222,21 +224,33 @@ def calculateFPS(captureLeft, captureRight, start, end):
     
 # Creates a Pie chart of the collected litter so far
 def createPieChart():
-    #pygame.display.flip
+    # Read the collected litter into a dataframe format
     dataReader = pd.read_csv('Data/litters.txt', header=None, names=["Litter"])
-    #print(dataReader.to_string())
+    sums = dataReader["Litter"].value_counts()
     
-    sums = dataReader.groupby(dataReader["Litter"]).sum()
-    plt.axis('equal')
-    plt.pie(sums, labels=sums.index)
-    plt.show()
+    fig, ax = plt.subplots()
+    ax.axis('equal')
+    ax.pie(sums, labels=sums.index)
     
+    pieArea = figCanvas(fig)
+    
+    # Converts the pie chart to a Pygame surface
+    pieArea.draw()
+    renderer = pieArea.get_renderer()
+    rgbData = renderer.tostring_argb()
+    canWidth, canHeight = pieArea.get_width_height()
+    
+    pieSurface = pygame.image.fromstring(rgbData, (canWidth, canHeight), "ARGB")
+    
+    # Renders the surface onto the interface
+    screen.blit(pieSurface, (0, 0))
+    pygame.display.update()
+
     
     
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
-
 
     createPieChart()
     
