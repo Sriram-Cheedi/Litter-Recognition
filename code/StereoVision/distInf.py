@@ -22,8 +22,8 @@ import Inverse_kinematics
 import camera_distance
 
 pygame.init()
-screen_width = 1000
-screen_height = 600
+screen_width = 1080
+screen_height = 720
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface")
 
@@ -224,6 +224,14 @@ def calculateFPS(captureLeft, captureRight, start, end):
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
+    display_text("PICKING UP!", 780, 520, GREEN)
+    pygame.display.flip()
+    # input()
+    display_text("PICK UP FAILED!", 780, 570, RED)
+    display_text("NO OBJECTS!", 780, 620, RED)
+    pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+    pygame.display.flip()
+
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
         braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
@@ -269,7 +277,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         
     # Main detection loop
     while True:
-        
+        pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+        pygame.display.flip()
 
         #  Capture and pre-process image
         ret, captureLeft = cameraLeft.read()
@@ -320,10 +329,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
-            objects.append()
 
             if robot:
-
+                display_text("PICKING UP!", 780, 520, GREEN)
+                pygame.display.flip()
                 depth *= 10
 
                 # Calculate angles to object from the normal to the camera and 
@@ -361,6 +370,15 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
                 objects.append((labelL, vector))
                 print(objects)
+                items = len(objects)
+
+                pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+                pygame.display.flip()
+
+                if items > 1 and objects[items - 1][0] == objects[items - 2][0]:
+                    display_text("PICK UP FAILED!", 780, 570, RED)
+                    pygame.display.flip()
+
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
