@@ -27,22 +27,26 @@ screen_height = 720
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface")
 
-detected_litter = [] 
-def update_litter_history(new_litter):
-    global detected_litter
-    detected_litter.append(new_litter)
-    if len(detected_litter) > 5:
-        detected_litter.pop(0) 
+detected_objects = []  # Store (label, position) tuples
 
-def display_litter_history():
+def update_litter_history(new_object):
+    global detected_objects
+    detected_objects.append(new_object)  
+    if len(detected_objects) > 5:  
+        detected_objects.pop(0)
+
+
+def display_litter_history(objects):
     y_offset = 100
-    pygame.draw.rect(screen, BLACK, (50, y_offset - 40, 300, 200)) 
-    display_text("Litter History:", 60, WHITE, 10, 60)
+    pygame.draw.rect(screen, BLACK, (50, y_offset - 40, 400, 200))  
 
-    for i, litter in enumerate(detected_litter[-5:]):  
-        display_text(f"{i+1}. {litter}", 60, y_offset + (i * 30), WHITE)  
+    for i, obj in enumerate(objects[-5:]): 
+        label, position = obj  
+        display_text(f"{i+1}. {label} at {position}", 60, y_offset + (i * 30), WHITE)  
 
     pygame.display.update()  
+
+
 
         
         
@@ -230,8 +234,6 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
             cv2.rectangle(capture, (startX, startY), (endX, endY), (0, 255, 0), 2)
             cv2.putText(capture, f"{label}: {score}%", (startX, startY - 10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-    if label:
-        update_litter_history(label)
             
     return ((startX + endX) / 2, (startY + endY) / 2), count, label
             
@@ -337,14 +339,12 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
             coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
             #print(coords)
-
+ 
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
-
-            objects.append()
-
+            
             if robot:
 
                 depth *= 10
@@ -373,8 +373,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 
                 # Translate the vector to the position of the robot
                 vector = [x,y,z] + camera_position
-
-
+                
+                
                 # vector[0] = int(input("Enter x:"))
                 # vector[1] = int(input("Enter y:"))
                 # vector[2] = int(input("Enter z:"))
@@ -383,7 +383,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print(vector)
 
                 objects.append((labelL, vector))
+                display_litter_history(objects)
                 print(objects)
+                
+
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
@@ -452,4 +455,3 @@ if __name__ == "__main__":
     MODEL_PATH = "./Model/model.tflite"
     LABELMAP_PATH = "./Model/labels.txt"
     detect(MODEL_PATH, LABELMAP_PATH, True)
-    
