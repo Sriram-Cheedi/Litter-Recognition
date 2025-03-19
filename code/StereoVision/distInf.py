@@ -433,8 +433,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                     pygame.quit()
                     sys.exit()
         screen.fill(BLACK) 
-           
-        display_litter_history() 
         
         pygame.display.flip()
         
