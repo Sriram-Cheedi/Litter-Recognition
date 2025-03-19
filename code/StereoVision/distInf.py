@@ -195,6 +195,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     h, w, _ = capture.shape
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
+    label = None
     for i in range(len(scores)):
         if scores[i] > 0.75:
             count += 1
@@ -320,7 +321,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
-            objects.append()
 
             if robot:
 
