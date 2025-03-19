@@ -36,8 +36,8 @@ def update_litter_history(new_litter):
 
 def display_litter_history():
     y_offset = 100
-    pygame.draw.rect(screen, BLACK, (50, y_offset - 40, 300, 200)) 
-    display_text("Litter History:", 60, WHITE, 10, 60)
+    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
+    display_text("Litter History:", 10, 60, WHITE)
 
     for i, litter in enumerate(detected_litter[-5:]):  
         display_text(f"{i+1}. {litter}", 60, y_offset + (i * 30), WHITE)  
@@ -185,7 +185,8 @@ def jiggle(braccioDebug, baseServo):
 
 def display_text(text, x, y, color=WHITE,clear_area = False):
     if clear_area:
-        pygame.draw.rect(screen, BLACK, (x, y, 300, 40)) #clears the previous text to print the updated text
+        print(x, y)
+        pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, 300, 40)) #clears the previous text to print the updated text
     text_surface = font.render(text, True, color)
     screen.blit(text_surface, (x, y))
     
@@ -342,8 +343,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
-
-            objects.append()
 
             if robot:
 
