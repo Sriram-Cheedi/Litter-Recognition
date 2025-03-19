@@ -233,6 +233,8 @@ def createPieChart():
     ax.axis('equal')
     ax.pie(sums, labels=sums.index)
     
+    ax.set_aspect('equal')
+    
     pieArea = figCanvas(fig)
     
     # Converts the pie chart to a Pygame surface
@@ -245,15 +247,13 @@ def createPieChart():
     
     # Renders the surface onto the interface
     screen.blit(pieSurface, (0, 0))
-    pygame.display.update()
+    #pygame.display.update()
 
     
     
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
-
-    createPieChart()
     
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
@@ -351,7 +351,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
-            objects.append()
 
             if robot:
 
@@ -392,6 +391,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
                 objects.append((labelL, vector))
                 print(objects)
+                
+                with open('Data/litters.txt', 'a') as file:
+                    file.write(labelL + "\n")
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
@@ -435,6 +437,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                     pygame.quit()
                     sys.exit()
         
+        createPieChart()
         pygame.display.flip()
         
         # Get vector pos
