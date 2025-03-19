@@ -22,11 +22,30 @@ import Inverse_kinematics
 import camera_distance
 
 pygame.init()
-screen_width = 1000
-screen_height = 600
+screen_width = 1086
+screen_height = 720
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface")
 
+detected_litter = [] 
+def update_litter_history(new_litter):
+    global detected_litter
+    detected_litter.append(new_litter)
+    if len(detected_litter) > 5:
+        detected_litter.pop(0) 
+
+def display_litter_history():
+    y_offset = 100
+    pygame.draw.rect(screen, BLACK, (50, y_offset - 40, 300, 200)) 
+    display_text("Litter History:", 60, WHITE, 10, 60)
+
+    for i, litter in enumerate(detected_litter[-5:]):  
+        display_text(f"{i+1}. {litter}", 60, y_offset + (i * 30), WHITE)  
+
+    pygame.display.update()  
+
+        
+        
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREEN = (0,255,0)
@@ -196,6 +215,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
     label = None
+
     for i in range(len(scores)):
         if scores[i] > 0.75:
             count += 1
@@ -210,6 +230,8 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
             cv2.rectangle(capture, (startX, startY), (endX, endY), (0, 255, 0), 2)
             cv2.putText(capture, f"{label}: {score}%", (startX, startY - 10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    if label:
+        update_litter_history(label)
             
     return ((startX + endX) / 2, (startY + endY) / 2), count, label
             
@@ -321,6 +343,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
+            objects.append()
 
             if robot:
 
@@ -403,6 +426,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                     cameraRight.release()
                     pygame.quit()
                     sys.exit()
+        screen.fill(BLACK) 
+           
+        display_litter_history() 
         
         pygame.display.flip()
         
