@@ -198,6 +198,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     h, w, _ = capture.shape
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
+    label = None
     for i in range(len(scores)):
         if scores[i] > 0.75:
             count += 1
