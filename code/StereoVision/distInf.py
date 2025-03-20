@@ -410,7 +410,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print([x, y, z])
                 print(camera_position)
                 print(vector)
-
+                
+                    
                 objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
                 print(objects)
@@ -445,6 +446,15 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
             
                 vector = Inverse_kinematics.move(vector)[4]
+                if classificationL == "Biodegradable":
+                    bin_position = [200, 100, 10]  
+                else:
+                    bin_position = [-200, 100, 10]
+                    
+                braccioDebug.servo_movement(90 - Inverse_kinematics.move(bin_position)[0], 90 - Inverse_kinematics.move(bin_position)[1], 90 - Inverse_kinematics.move(bin_position)[2], 90 - Inverse_kinematics.move(bin_position)[3], braccioDebug.s5, braccioDebug.s6)
+                braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10) 
+                time.sleep(1)
+                braccioDebug.home_position()
 
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
