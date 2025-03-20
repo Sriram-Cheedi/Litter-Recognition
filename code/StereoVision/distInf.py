@@ -225,6 +225,10 @@ def calculateFPS(captureLeft, captureRight, start, end):
     
 # Creates a Pie chart of the collected litter so far
 def createPieChart():
+    
+    # Closes all current figures
+    plt.close('all')
+    
     # Read the collected litter into a dataframe format
     dataReader = pd.read_csv('Data/litters.txt', header=None, names=["Litter"])
     sums = dataReader["Litter"].value_counts()
@@ -247,7 +251,6 @@ def createPieChart():
     
     # Renders the surface onto the interface
     screen.blit(pieSurface, (0, 0))
-    #pygame.display.update()
 
     
     
