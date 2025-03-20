@@ -22,11 +22,28 @@ import Inverse_kinematics
 import camera_distance
 
 pygame.init()
-screen_width = 1000
-screen_height = 600
+screen_width = 1086
+screen_height = 720
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface")
 
+detected_objects = []  # Store (label, position) tuples
+
+def display_litter_history(objects):
+    y_offset = 100
+    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
+    display_text("Litter History:", 10, 60, WHITE)
+    for i, obj in enumerate(reverse(objects[-5:])): 
+        label, position = obj  
+        rounded_position = tuple(round(p, 1) for p in position)  
+        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE)  
+
+    pygame.display.update()  
+
+
+
+        
+        
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREEN = (0,255,0)
@@ -166,7 +183,8 @@ def jiggle(braccioDebug, baseServo):
 
 def display_text(text, x, y, color=WHITE,clear_area = False):
     if clear_area:
-        pygame.draw.rect(screen, BLACK, (x, y, 300, 40)) #clears the previous text to print the updated text
+        print(x, y)
+        pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, 300, 40)) #clears the previous text to print the updated text
     text_surface = font.render(text, True, color)
     screen.blit(text_surface, (x, y))
     
@@ -195,6 +213,8 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     h, w, _ = capture.shape
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
+    label = None
+
     for i in range(len(scores)):
         if scores[i] > 0.75:
             count += 1
@@ -314,14 +334,12 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
             coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
             #print(coords)
-
+ 
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
-
-            objects.append()
-
+            
             if robot:
 
                 depth *= 10
@@ -350,8 +368,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 
                 # Translate the vector to the position of the robot
                 vector = [x,y,z] + camera_position
-
-
+                
+                
                 # vector[0] = int(input("Enter x:"))
                 # vector[1] = int(input("Enter y:"))
                 # vector[2] = int(input("Enter z:"))
@@ -360,7 +378,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print(vector)
 
                 objects.append((labelL, vector))
+                display_litter_history(objects)
                 print(objects)
+                
+
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
@@ -403,6 +424,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                     cameraRight.release()
                     pygame.quit()
                     sys.exit()
+        screen.fill(BLACK) 
         
         pygame.display.flip()
         
@@ -426,4 +448,3 @@ if __name__ == "__main__":
     MODEL_PATH = "./Model/model.tflite"
     LABELMAP_PATH = "./Model/labels.txt"
     detect(MODEL_PATH, LABELMAP_PATH, True)
-    
