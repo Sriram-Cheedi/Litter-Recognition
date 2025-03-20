@@ -29,13 +29,6 @@ pygame.display.set_caption("Object Interface")
 
 detected_objects = []  # Store (label, position) tuples
 
-def update_litter_history(new_object):
-    global detected_objects
-    detected_objects.append(new_object)  
-    if len(detected_objects) > 5:  
-        detected_objects.pop(0)
-
-
 def display_litter_history(objects):
     y_offset = 100
     pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
