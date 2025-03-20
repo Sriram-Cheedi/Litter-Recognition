@@ -1,5 +1,6 @@
 #Running this file by "python -m StereoVision.distInf"
 
+import os
 import sys
 import cv2
 import numpy as np
@@ -195,7 +196,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
     for i in range(len(scores)):
-        if scores[i] > 0.9:
+        if scores[i] > 0.75:
             count += 1
             # Gets the coordinates of the bounding boxes
             (startY, startX, endY, endX) = (int(boxes[i][0] * h), int(boxes[i][1] * w), int(boxes[i][2] * h), int(boxes[i][3] * w))
@@ -209,7 +210,7 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
             cv2.putText(capture, f"{label}: {score}%", (startX, startY - 10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
-    return ((startX + endX) / 2, (startY + endY) / 2), count
+    return ((startX + endX) / 2, (startY + endY) / 2), count, label
             
 # Calculates the fps (frames per second)
 def calculateFPS(captureLeft, captureRight, start, end):
@@ -226,7 +227,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
         braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
-
+    
+    objects = []
 
     # Set up the interpreter for inference
     interpreter = tflite.Interpreter(MODEL_PATH)
@@ -244,7 +246,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
-    cameraRight = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
     cameraRight.set(3, 640)
     cameraRight.set(4, 480)
     
@@ -253,25 +255,29 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         exit()
         
     # Stereo vision setup parameters
-    frameRate = 120
-    camDist = 9 # Distance between cams (cm)
-    focalLength = 12 # Camera lense's focal length (mm)
-    alpha = 95 # Camera fov in horizontal plane (degrees)
+    frameRate = 60
+    camDist = 7 # Distance between cams (cm)
+    focalLength = 4 # Camera lense's focal length (mm)
+    alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([0, 150, 50])
-    camera_position2 = np.array([0, 150, 50])
+    camera_position1 = np.array([270, -90, 165])
+    camera_position2 = np.array([277, -90, 165])
     camera_position = (camera_position1 + camera_position2)/2
+    camera_angle = 35
+
         
     # Main detection loop
     while True:
+        
+
         #  Capture and pre-process image
         ret, captureLeft = cameraLeft.read()
         ret1, captureRight = cameraRight.read()
         #capture = cv2.cvtColor(capture, cv2.COLOR_RGB2BGR)
         
         captureLeft, captureRight = activeCalibration.undistortRect(captureLeft, captureRight)
-        
+
         start = time.time()
         
         img = preProcess(captureLeft, width, height)
@@ -296,8 +302,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         scores1 = interpreter.get_tensor(outTensors[2]['index'])[0]
 
         # Iterates through the detections
-        centreLeft, leftCount = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
-        centreRight, rightCount = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
+        centreLeft, leftCount, labelL = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
+        centreRight, rightCount, labelR = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
         
         # Ensures both cameras detect object
         if leftCount == 0 or rightCount == 0:
@@ -313,12 +319,48 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
+
+            objects.append()
+
             if robot:
-                vector = [0,0,0]
-                vector[0] = int(input("Enter x:"))
-                vector[1] = int(input("Enter y:"))
-                vector[2] = int(input("Enter z:"))
+
+                depth *= 10
+
+                # Calculate angles to object from the normal to the camera and 
+                midpointx = screen_width / 2
+                midpointy = screen_height / 2
+
+                theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
+                phi1 = (centreLeft[0] - midpointx) * (alpha / width)
+
+                theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
+                phi2 = (centreRight[0] - midpointx) * (alpha / width)
+
+                # Average the two angles between the cameras
+                theta = (theta1 + theta2) / 2
+                phi = (phi1 + phi2) / 2
+                print("Theta: ", theta)
+                print("Phi: ", phi)
+
+                # Calculating coordinates based on depth and angles from the cameras normal vectors
+                z = depth * np.sin(np.deg2rad(theta))
+                x = depth * np.sin(np.deg2rad(phi))
+                y = np.sqrt(depth**2 - x**2 - z**2)
+                
+                
+                # Translate the vector to the position of the robot
+                vector = [x,y,z] + camera_position
+
+
+                # vector[0] = int(input("Enter x:"))
+                # vector[1] = int(input("Enter y:"))
+                # vector[2] = int(input("Enter z:"))
+                print([x, y, z])
+                print(camera_position)
                 print(vector)
+
+                objects.append((labelL, vector))
+                print(objects)
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
