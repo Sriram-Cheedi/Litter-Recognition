@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from collections import Counter
 import os
+import datetime
 def bar_chart():
 
     """
@@ -12,7 +13,7 @@ def bar_chart():
 
     """
 
-    txt_path = os.path.join("code", "Data", "litters.txt")
+    txt_path = os.path.join("Data", "litters.txt")
     f = open(txt_path, "r")
     #Remove \n
     lines = [line.strip() for line in f.readlines()]
@@ -24,11 +25,13 @@ def bar_chart():
 
     plt.bar(litters, counter)
 
-    plt.title("Litters")
+    x = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    plt.title(x)
     plt.xlabel("Types")
     plt.ylabel("Count")
 
-    image_path = os.path.join("code", "Data", "bar_chart.png") 
+    image_path = os.path.join("Data", f'bar_chart-{x.replace(" ", "_").replace(":", "-")}.png') 
     plt.savefig(image_path)
 
     plt.show()
