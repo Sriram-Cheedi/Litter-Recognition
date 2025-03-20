@@ -22,8 +22,10 @@ import Inverse_kinematics
 import camera_distance
 
 pygame.init()
-screen_width = 1086
+
+screen_width = 1080
 screen_height = 720
+
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface")
 
@@ -214,7 +216,6 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
     label = None
-
     for i in range(len(scores)):
         if scores[i] > 0.75:
             count += 1
@@ -243,6 +244,15 @@ def calculateFPS(captureLeft, captureRight, start, end):
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
+
+    timeCounter = 0
+    display_text("PICKING UP!", 780, 520, GREEN)
+    pygame.display.flip()
+    # input()
+    display_text("PICK UP FAILED!", 780, 570, RED)
+    display_text("NO OBJECTS!", 780, 620, RED)
+    pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+    pygame.display.flip()
 
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
@@ -289,7 +299,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         
     # Main detection loop
     while True:
-        
+
+        # Draw over the previous picking up alert
+        pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+        pygame.display.flip()
 
         #  Capture and pre-process image
         ret, captureLeft = cameraLeft.read()
@@ -329,7 +342,17 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         if leftCount == 0 or rightCount == 0:
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+            # If it has been 60 frames since an object has been found
+            timeCounter += 1
+            if timeCounter >= 60:
+                display_text("NO OBJECTS!", 780, 620, RED)
+                pygame.display.flip()
         else:
+            timeCounter = 0
+            pygame.draw.rect(screen, BLACK, pygame.Rect(780, 620, 300, 45))
+            pygame.display.flip()
+
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
             coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
@@ -339,9 +362,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
             display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
-            
-            if robot:
 
+            if robot:
+                display_text("PICKING UP!", 780, 520, GREEN)
+                pygame.display.flip()
                 depth *= 10
 
                 # Calculate angles to object from the normal to the camera and 
@@ -380,7 +404,17 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 objects.append((labelL, vector))
                 display_litter_history(objects)
                 print(objects)
-                
+
+                items = len(objects)
+
+                # Draw over the previous pickup failed alert
+                pygame.draw.rect(screen, BLACK, pygame.Rect(780, 570, 300, 45))
+                pygame.display.flip()
+
+                # If the last two items detected are the same, turn on the pickup failed alert
+                if items > 1 and objects[items - 1][0] == objects[items - 2][0]:
+                    display_text("PICK UP FAILED!", 780, 570, RED)
+                    pygame.display.flip()
 
 
                 # Stand up straight
