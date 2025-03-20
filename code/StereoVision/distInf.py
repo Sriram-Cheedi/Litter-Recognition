@@ -35,17 +35,13 @@ def display_litter_history(objects):
     y_offset = 100
     pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
     display_text("Litter History:", 10, 60, WHITE)
-    for i, obj in enumerate(reverse(objects[-5:])): 
-        label, position = obj  
+    for i, obj in enumerate(reversed(objects[-5:])): 
+        label, classification, position = obj  
         rounded_position = tuple(round(p, 1) for p in position)  
-        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE)  
+        display_text(f"{i+1}. {label} ({classification}) at {rounded_position}", 60, y_offset + (i * 30), WHITE)  
 
     pygame.display.update()  
 
-
-
-        
-        
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREEN = (0,255,0)
@@ -193,6 +189,10 @@ def display_text(text, x, y, color=WHITE,clear_area = False):
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
     labelMap = {}
+    classificationMap = {}
+    
+    bio = {16, 26, 32, 14, 15, 17, 18, 19, 20, 21, 31, 33, 34, 35, 57}
+    non_bio = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 27, 28, 29, 30, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60}
     
     with open(LABELMAP_PATH, "r") as lmap:
         for line in lmap:
@@ -200,8 +200,16 @@ def loadLabelMap(LABELMAP_PATH):
             parts = line.strip().split(" ", 1)
             if len(parts) == 2:
                 index, lbl = parts
+                index1 = int(index)
                 labelMap[int(index)] = lbl
-    return labelMap
+                
+                if index1 in bio:
+                    classificationMap[index1] = "Biodegradable"
+                elif index in non_bio:
+                    classificationMap[index1] = "Non-Biodegradable"
+                else:
+                    classificationMap[index1] = "Unknown"
+    return labelMap, classificationMap
 
 # Pre process the frame before inference
 def preProcess(frame, width, height):
@@ -211,11 +219,12 @@ def preProcess(frame, width, height):
     return img
 
 # Draws the bounding boxes onto the image
-def drawBoxes(capture, scores, boxes, lblMap, classes):
+def drawBoxes(capture, scores, boxes, lblMap,classificationMap, classes):
     h, w, _ = capture.shape
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
     label = None
+    classification = "Unknown"
     for i in range(len(scores)):
         if scores[i] > 0.75:
             count += 1
@@ -224,14 +233,15 @@ def drawBoxes(capture, scores, boxes, lblMap, classes):
                 
             # Gets the class and score associated with the detection
             label = lblMap[int(classes[i])]
+            classification = classificationMap[int(classes[i])] 
             score = int(scores[i] * 100)
-                
+            
             # Draws the bounding box
             cv2.rectangle(capture, (startX, startY), (endX, endY), (0, 255, 0), 2)
-            cv2.putText(capture, f"{label}: {score}%", (startX, startY - 10), 
+            cv2.putText(capture, f"{label} ({classification}): {score}%", (startX, startY - 10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
-    return ((startX + endX) / 2, (startY + endY) / 2), count, label
+    return ((startX + endX) / 2, (startY + endY) / 2), count, label, classification
             
 # Calculates the fps (frames per second)
 def calculateFPS(captureLeft, captureRight, start, end):
@@ -270,7 +280,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     inpShape = inpTensors[0]['shape']
     height, width = inpShape[1], inpShape[2]
     
-    lblMap = loadLabelMap(LABELMAP_PATH)
+    lblMap,classificationMap  = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
     cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -335,8 +345,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         scores1 = interpreter.get_tensor(outTensors[2]['index'])[0]
 
         # Iterates through the detections
-        centreLeft, leftCount, labelL = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
-        centreRight, rightCount, labelR = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
+        centreLeft, leftCount, labelL, classificationL = drawBoxes(captureLeft, scores, boxes, lblMap,classificationMap, classes)
+        centreRight, rightCount, labelR, classificationR = drawBoxes(captureRight, scores1, boxes1, lblMap, classificationMap, classes1)
         
         # Ensures both cameras detect object
         if leftCount == 0 or rightCount == 0:
@@ -401,7 +411,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print(camera_position)
                 print(vector)
 
-                objects.append((labelL, vector))
+                objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
                 print(objects)
 
