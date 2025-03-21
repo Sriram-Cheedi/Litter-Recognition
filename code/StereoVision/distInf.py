@@ -35,10 +35,10 @@ def display_litter_history(objects):
     y_offset = 100
     pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
     display_text("Litter History:", 10, 60, WHITE)
-    for i, obj in enumerate(reverse(objects[-5:])): 
+    for i, obj in enumerate(reversed(objects[-5:])): 
         label, position = obj  
-        rounded_position = tuple(round(p, 1) for p in position)  
-        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE)  
+        rounded_position = tuple(round(float(p), 1) for p in position)
+        display_text(f"{i+1}. {label} ({classification}) at ({rounded_position[0]:.1f}, {rounded_position[1]:.1f}, {rounded_position[2]:.1f})", 60, y_offset + (i * 30), WHITE)
 
     pygame.display.update()  
 
@@ -458,7 +458,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                     cameraRight.release()
                     pygame.quit()
                     sys.exit()
-        screen.fill(BLACK) 
+       
         
         pygame.display.flip()
         
