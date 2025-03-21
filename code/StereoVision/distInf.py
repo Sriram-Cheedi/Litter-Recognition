@@ -37,8 +37,8 @@ def display_litter_history(objects):
     display_text("Litter History:", 10, 60, WHITE)
     for i, obj in enumerate(reversed(objects[-5:])): 
         label, position = obj  
-        rounded_position = tuple(round(float(p), 1) for p in position)
-        display_text(f"{i+1}. {label} ({classification}) at ({rounded_position[0]:.1f}, {rounded_position[1]:.1f}, {rounded_position[2]:.1f})", 60, y_offset + (i * 30), WHITE)
+        rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
+        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE) 
 
     pygame.display.update()  
 
