@@ -234,10 +234,13 @@ def createPieChart():
     sums = dataReader["Litter"].value_counts()
     
     fig, ax = plt.subplots()
-    ax.axis('equal')
+    ax.axis('equal')    
+    ax.set_aspect('equal', adjustable='box')
+
     ax.pie(sums, labels=sums.index)
-    
-    ax.set_aspect('equal')
+
+    fig.tight_layout()
+
     
     pieArea = figCanvas(fig)
     
