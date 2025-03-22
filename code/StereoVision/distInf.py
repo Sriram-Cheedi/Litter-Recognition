@@ -33,15 +33,16 @@ detected_objects = []  # Store (label, position) tuples
 
 def display_litter_history(objects):
     y_offset = 100
-    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
-    display_text("Litter History:", 10, 60, WHITE)
-    for i, obj in enumerate(reversed(objects[-5:])): 
+    max_items = 5
+    box_height = max_items * 30 + 40
+    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 400, box_height)) 
+    display_text("Litter History:", 60, y_offset - 30, WHITE)
+    for i, obj in enumerate(reversed(objects[-max_items:])): 
         label, position = obj  
         rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
-        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE) 
+        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE)
 
-    pygame.display.update()  
-
+    pygame.display.update()
 
 
         
