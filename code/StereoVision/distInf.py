@@ -33,14 +33,21 @@ detected_objects = []  # Store (label, position) tuples
 
 def display_litter_history(objects):
     y_offset = 100
-    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
-    display_text("Litter History:", 10, 60, WHITE)
-    for i, obj in enumerate(reverse(objects[-5:])): 
-        label, position = obj  
-        rounded_position = tuple(round(p, 1) for p in position)  
-        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE)  
+    max_items = 5
+    line_height = 30
+    box_width = 500
+    box_height = max_items * line_height + 40
 
-    pygame.display.update()  
+    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, box_width, box_height))
+
+    display_text("Litter History:", 60, y_offset - 30, WHITE)
+
+    for i, obj in enumerate(reversed(objects[-max_items:])): 
+        label, position = obj  
+        rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
+        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
+
+    pygame.display.update()
 
 
 
@@ -355,13 +362,13 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
-            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
+           
             #print(coords)
  
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
-            display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
+           
 
             if robot:
                 display_text("PICKING UP!", 780, 520, GREEN)
@@ -458,7 +465,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                     cameraRight.release()
                     pygame.quit()
                     sys.exit()
-        screen.fill(BLACK) 
+       
         
         pygame.display.flip()
         
