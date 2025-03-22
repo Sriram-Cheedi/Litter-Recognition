@@ -234,10 +234,12 @@ def createPieChart():
     sums = dataReader["Litter"].value_counts()
     
     fig, ax = plt.subplots()
+    fig.patch.set_facecolor('black')
     ax.axis('equal')    
     ax.set_aspect('equal', adjustable='box')
 
-    ax.pie(sums, labels=sums.index)
+    ax.pie(sums, labels=sums.index, textprops={'color': 'white'}, radius=0.7)
+
 
     fig.tight_layout()
 
@@ -253,7 +255,7 @@ def createPieChart():
     pieSurface = pygame.image.fromstring(rgbData, (canWidth, canHeight), "ARGB")
     
     # Renders the surface onto the interface
-    screen.blit(pieSurface, (0, 0))
+    screen.blit(pieSurface, (0, screen_height - canHeight))
 
     
     
