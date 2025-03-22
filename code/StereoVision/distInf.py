@@ -355,13 +355,13 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
-            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
+           
             #print(coords)
  
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
-            display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
+           
 
             if robot:
                 display_text("PICKING UP!", 780, 520, GREEN)
