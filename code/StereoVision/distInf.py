@@ -13,6 +13,7 @@ import pygame
 from pygame.locals import *
 from enum import Enum
 import pandas as pd
+from StereoVision.bar_chart import bar_chart
 
 # Other packages we have created
 # Make sure python can tell StereoVision is one of the packages
@@ -38,7 +39,7 @@ def display_litter_history(objects):
     y_offset = 100
     max_items = 5
     line_height = 30
-    box_width = 500
+    box_width = 700
     box_height = max_items * line_height + 40
 
     pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, box_width, box_height))
@@ -291,13 +292,13 @@ def createPieChart():
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
     timeCounter = 0
-    display_text("PICKING UP!", 780, 520, GREEN)
-    pygame.display.flip()
-    # input()
-    display_text("PICK UP FAILED!", 780, 570, RED)
-    display_text("NO OBJECTS!", 780, 620, RED)
-    pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
-    pygame.display.flip()
+    # display_text("PICKING UP!", 780, 520, GREEN)
+    # pygame.display.flip()
+    # # input()
+    # display_text("PICK UP FAILED!", 780, 570, RED)
+    # display_text("NO OBJECTS!", 780, 620, RED)
+    # pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+    # pygame.display.flip()
 
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
@@ -496,12 +497,14 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             if event.type == pygame.QUIT:
                 cameraLeft.release()
                 cameraRight.release()
+                bar_chart()
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     cameraLeft.release()
                     cameraRight.release()
+                    bar_chart()
                     pygame.quit()
                     sys.exit()
        
