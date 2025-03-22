@@ -25,11 +25,37 @@ import Inverse_kinematics
 import camera_distance
 
 pygame.init()
+
 screen_width = 1080
 screen_height = 720
+
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Object Interface")
 
+detected_objects = []  # Store (label, position) tuples
+
+def display_litter_history(objects):
+    y_offset = 100
+    max_items = 5
+    line_height = 30
+    box_width = 500
+    box_height = max_items * line_height + 40
+
+    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, box_width, box_height))
+
+    display_text("Litter History:", 60, y_offset - 30, WHITE)
+
+    for i, obj in enumerate(reversed(objects[-max_items:])): 
+        label, position = obj  
+        rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
+        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
+
+    pygame.display.update()
+
+
+
+        
+        
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 GREEN = (0,255,0)
@@ -169,7 +195,8 @@ def jiggle(braccioDebug, baseServo):
 
 def display_text(text, x, y, color=WHITE,clear_area = False):
     if clear_area:
-        pygame.draw.rect(screen, BLACK, (x, y, 300, 40)) #clears the previous text to print the updated text
+        print(x, y)
+        pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, 300, 40)) #clears the previous text to print the updated text
     text_surface = font.render(text, True, color)
     screen.blit(text_surface, (x, y))
     
@@ -262,7 +289,16 @@ def createPieChart():
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
-    
+
+    timeCounter = 0
+    display_text("PICKING UP!", 780, 520, GREEN)
+    pygame.display.flip()
+    # input()
+    display_text("PICK UP FAILED!", 780, 570, RED)
+    display_text("NO OBJECTS!", 780, 620, RED)
+    pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+    pygame.display.flip()
+
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
         braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
@@ -308,7 +344,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         
     # Main detection loop
     while True:
-        
+
+        # Draw over the previous picking up alert
+        pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+        pygame.display.flip()
 
         #  Capture and pre-process image
         ret, captureLeft = cameraLeft.read()
@@ -348,20 +387,28 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
         if leftCount == 0 or rightCount == 0:
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+            # If it has been 60 frames since an object has been found
+            timeCounter += 1
+            if timeCounter >= 60:
+                display_text("NO OBJECTS!", 780, 620, RED)
+                pygame.display.flip()
         else:
+            timeCounter = 0
+            pygame.draw.rect(screen, BLACK, pygame.Rect(780, 620, 300, 45))
+            pygame.display.flip()
+
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
-            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
+           
             #print(coords)
-
+ 
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
-            # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
-            display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
-
 
             if robot:
-
+                display_text("PICKING UP!", 780, 520, GREEN)
+                pygame.display.flip()
                 depth *= 10
 
                 # Calculate angles to object from the normal to the camera and 
@@ -388,8 +435,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 
                 # Translate the vector to the position of the robot
                 vector = [x,y,z] + camera_position
-
-
+                
+                
                 # vector[0] = int(input("Enter x:"))
                 # vector[1] = int(input("Enter y:"))
                 # vector[2] = int(input("Enter z:"))
@@ -398,10 +445,23 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 print(vector)
 
                 objects.append((labelL, vector))
+                display_litter_history(objects)
                 print(objects)
                 
                 with open('Data/litters.txt', 'a') as file:
                     file.write(labelL + "\n")
+
+                items = len(objects)
+
+                # Draw over the previous pickup failed alert
+                pygame.draw.rect(screen, BLACK, pygame.Rect(780, 570, 300, 45))
+                pygame.display.flip()
+
+                # If the last two items detected are the same, turn on the pickup failed alert
+                if items > 1 and objects[items - 1][0] == objects[items - 2][0]:
+                    display_text("PICK UP FAILED!", 780, 570, RED)
+                    pygame.display.flip()
+
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
@@ -444,6 +504,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                     cameraRight.release()
                     pygame.quit()
                     sys.exit()
+       
         
         createPieChart()
         pygame.display.flip()
@@ -468,4 +529,3 @@ if __name__ == "__main__":
     MODEL_PATH = "./Model/model.tflite"
     LABELMAP_PATH = "./Model/labels.txt"
     detect(MODEL_PATH, LABELMAP_PATH, True)
-    
