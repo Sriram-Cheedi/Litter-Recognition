@@ -30,26 +30,25 @@ Litter blights our major roads and highways leading to serious environmental and
 disposal from moving vehicles and regular detachment of plastic undercarriages or mobile vehicle parts (such as tyres). It not only threatens the endless fauna and fish of our life-filled rivers, but it also
 poses a danger to road traffic when potential hazards form at shoulder level.
 
-The way in which litter is managed now, it's wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that
-can detect and clear road litter efficiently reducing human intervention while maintaining safety complying environmental impact as well.
+The way in which litter is managed now is wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that
+can detect and clear road litter efficiently, reducing human intervention while maintaining safety complying environmental impact as well.
 
 
 ## Project Description:
-This proposal will investigate an advanced system for the identification and collection of litter that will automate the litter recognition, classification, and collecting process in roadside environments,
-particularly in regions with
-limited or precarious, such that accesses are restricted. It would be a system that utilizes advanced technologies of machine learning, computer vision, and robotics to automatically detect litter in rough
+This proposal will investigate an advanced system for the identification and collection of litter that will automate the litter recognition and collecting process in roadside environments. The system would utilize advanced machine learning, computer vision, and robotics to automatically detect litter in rough
 terrain, such as grasslands, shrubs, and trees along the road. The technology will be applied to smaller-scale autonomous vehicles that can safely work at the edge of the road in poor conditions.
-The increasing volume of non-biodegradable packaging, the intensification of litter from vehicles, and frequent breakdown of vehicle parts (such as tyres).Apart from the plastic parts and tyres, there is also the big problem of litter accumulating along the roadsides.
 
 **The System will leverage several cutting-edge technologies, including:**
-**Computer Vision and Machine Learning:** For accurate detection and classification of litter. Convolutional neural networks (CNNs) will be employed to analyze video feeds or images captured by onboard cameras.
+**Computer Vision and Machine Learning:** For accurate detection and classification of litter. Convolutional Neural Networks (CNNs) will be employed to analyze video feeds or images captured by onboard cameras.
 The system will be trained to recognize common types of litter and differentiate them from natural elements like leaves and rocks.
 
-**Robotic Mechanisms:** The autonomous vehicle will be equipped with mechanical arms, to collect litter of various sizes and compositions. These systems will be designed to operate effectively in rough and
+**Robotic Mechanisms:** The autonomous vehicle will be equipped with mechanical arms to collect litter of various sizes and compositions. These systems will be designed to operate effectively in rough and
 uneven terrain, typical of roadside verges.
 
 **Autonomous Navigation:** The vehicle will be capable of navigating along the roadside without human intervention, using GPS and sensor technologies to stay within designated areas while avoiding obstacles
 such as road signs, barriers, and natural features.
+
+**Our project aims to create a proof-of-concept iteration of this design with limited features that can be worked upon. We will use a single arm and a computer to produce a system that can identify and pick up key types of litter.**
 
 ## Project Requirements:
 **Litter Detection:** The system will use advanced image recognition and object detection techniques to identify man-made items scattered along the roadside. This includes detecting litter both on the ground
@@ -92,17 +91,17 @@ initiatives.
 **Government Agencies and Road Maintenance Authorities:**
 * Role: They are the biggest beneficiaries of the system, and they would ensure that their utilization of the system would lead to maintaining the roads and protecting the environmental 
   concerns associated with roadside litter.
-* Purpose for the System: The groups will apply the system to improve their current workflow of dispatching groups of litter collectors late at night. They have to clean the road side by side, along with 
+* Purpose for the System: The authorities will apply the system to improve their current workflow of dispatching groups of litter collectors late at night. They have to clean the road side by side, along with 
   closing the road and inefficient gathering. The new system is targeted to automate this process for cost reductions and efficiency.
 
 **Environmental Research Institutes:**
 * Role: Scientists will be more interested in the data generated through the implementation of the system and its effect on pollution and local wildlife.
 * Purpose for the System: Institutions may be a keen observer of the system and the results to assess the ability of the system to respond effectively to the reduction in pollution and conservation of nature at 
-  the local level. Data collected may be found useful in determining the progress made in conservation 
+  the local level. Data collected may be found useful in determining the progress made in conservation. 
 
 ## User Stories:
 **As a client, I want..**
- * A system that will identify a wide variety of roadside litter and identify how to deal with it
+ * A system that will identify a wide variety of roadside litter and identify how to deal with it.
 
 **As a Waste Management Contractor, I want to..**
  * Integrate autonomous litter collection vehicles into my operations, so that I can reduce the cost and risk of manual roadside litter collection.
@@ -112,11 +111,11 @@ initiatives.
  * A safe and contained system not impeding my use of the road.
 
 **As an Environmental Protection Agency official, I want to..**
- * I want a system which has the capability for quick identification and collection of non-biodegradable litter so that I am able to ensure cleaner environments and reduction of the impact of pollution on wildlife and ecosystems as much as possible.
+ * I want a system which has the capability for quick identification and collection of non-biodegradable litter so that I am able to ensure cleaner environments and the reduction of the impact of pollution on wildlife and ecosystems as much as possible.
 
 **As a student, I want to..**
  * Create a proof of concept for an autonomous litter detection and disposal system so that I can utilize knowledge in computer
-   Integrate vision and robotics into some meaningful project.
+    vision and robotics in a meaningful project.
 
 
   
@@ -129,21 +128,15 @@ initiatives.
 ```bash
 
 2024-LitterRecognition1
-├── Research/                             # Folder housing all research materials, reports, studies, and references foundational to the project.
-├── code                                  # Directory containing the project's source code.
-│   ├── README.md                         # Detailed guide to the codebase, explaining the purpose of each script and its usage.
-│   ├── ROI_safety.py                     # Code for determining ROI and ensuring safety in robotic movements.
-│   ├── arduino-script/
-│   │   └── arduino-script.ino            # Script for controlling the Braccio robotic arm via serial input.
-│   ├── braccio_adapter.py                # Code facilitating serial communication with an Arduino.
-│   ├── interface.py                      # User interface for controlling the Braccio robotic arm via keyboard inputs, extending functionality of braccio_adapter.py.
-│   ├── requirements.txt                  # File listing required dependencies.
-│   └── tests/
-│       └── test_interface.py             # Test cases for the Braccio Arm.
-├── docs                                  # Directory with architecture diagrams and documentation on AI tools and related resources.
-├── LICENSE                               # File defining licensing terms for using, modifying, or distributing the project.
-└── README.md                             # Primary documentation file with an overview of the project, setup instructions, and essential information.
+├── .github/             # Templates and workflows
+├── .gitignore           # Other files
+├── LICENSE              ...
+├── README.md            ...
+├── Research/            # Research files
+├── code/                # All project code
+└──  docs/                # Project documentation 
 ```
+More details can be found using the 'Handover Documentation' link at the top or by looking at the README in /docs.
 
 ## User Instructions
 
@@ -190,26 +183,24 @@ All code can be found within the /code file of the GitHub and the fully built tf
 ### Hardware 
  - Sensors:
     - Cameras
-    - LIDAR
  - Actuators:
     - Robotic Arms
-    - Wheel
  - Microcontroller
     - Raspberry Pi
 ### Software 
  - Operating System
  - Python
  - Computer Vision
-     - YOLO
- - Machine Learning
-    - Pytorch
- - Image Processing
     - OPENCV
+ - Image Processing
+    - TensorFlow
  - Robotics
- - Control Systems
- - Route Planning System
+
 ### Development Tools
  - GitHub
+ - Google Colab
+ - Jupyter Notebook
+ - Visual Studio Code
 
 
 ## Architecture Diagram
