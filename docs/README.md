@@ -21,8 +21,7 @@ This section covers the different directories of our repository:
 ├── README.md            ...
 ├── Research/            # Research files
 ├── code/                # All project code
-├── docs/                # Project documentation
-└── handoverDocs/        # Handover documentation (You are here)
+└── docs/                # Project documentation
 ```
 
 ### Links:
@@ -31,7 +30,6 @@ These links allow you to navigate to explanations of different areas of the repo
 - [/Research](#research)
 - [/code](#code)
 - [/docs](#docs)
-- [/handoverDocs](#handoverDocs)
 
 ### /.github:
 The structure within the ```/.github``` directory can be found below:
@@ -119,15 +117,8 @@ The structure within the ```/docs``` directory can be found below:
 ├── Project-Proposal/       # Proposal of the project
 ├── Research-Forms/         # Forms for user testing
 ├── Robot-Documentation/    # Documentation of in-person hardware work
+├── README.md               # Handover Documentation
 └── User-Testing/           # Questionnaire for user testing
-```
-
-### /handoverDocs:
-The structure within the ```/handoverDocs``` directory can be found below:
-
-```
-.
-└── README.md   # Handover documentation
 ```
 
 ## Architecture Diagram:
