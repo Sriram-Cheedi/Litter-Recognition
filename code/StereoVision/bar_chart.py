@@ -12,8 +12,9 @@ def bar_chart():
     save image
 
     """
+    plt.close('all')
 
-    txt_path = os.path.join("code", "Data", "litters.txt")
+    txt_path = os.path.join("Data", "litters.txt")
     f = open(txt_path, "r")
     #Remove \n
     lines = [line.strip() for line in f.readlines()]
@@ -31,9 +32,10 @@ def bar_chart():
     plt.xlabel("Types")
     plt.ylabel("Count")
 
-    image_path = os.path.join("code", "Data", f'bar_chart-{x.replace(" ", "_").replace(":", "-")}.png') 
+    image_path = os.path.join("Data", f'bar_chart-{x.replace(" ", "_").replace(":", "-")}.png') 
     plt.savefig(image_path)
 
-    plt.show()
+    # plt.show()
 
-bar_chart()
+if __name__ == "__main__":
+    bar_chart()

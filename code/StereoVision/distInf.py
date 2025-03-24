@@ -8,8 +8,12 @@ import tensorflow.lite as tflite
 import time
 import imutils
 from matplotlib import pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as figCanvas
 import pygame
+from pygame.locals import *
 from enum import Enum
+import pandas as pd
+from StereoVision.bar_chart import bar_chart
 
 # Other packages we have created
 # Make sure python can tell StereoVision is one of the packages
@@ -33,14 +37,21 @@ detected_objects = []  # Store (label, position) tuples
 
 def display_litter_history(objects):
     y_offset = 100
-    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
-    display_text("Litter History:", 10, 60, WHITE)
-    for i, obj in enumerate(reverse(objects[-5:])): 
-        label, position = obj  
-        rounded_position = tuple(round(p, 1) for p in position)  
-        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * 30), WHITE)  
+    max_items = 5
+    line_height = 30
+    box_width = 700
+    box_height = max_items * line_height + 40
 
-    pygame.display.update()  
+    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, box_width, box_height))
+
+    display_text("Litter History:", 60, y_offset - 30, WHITE)
+
+    for i, obj in enumerate(reversed(objects[-max_items:])): 
+        label, position = obj  
+        rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
+        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
+
+    pygame.display.update()
 
 
 
@@ -240,19 +251,54 @@ def calculateFPS(captureLeft, captureRight, start, end):
     
     cv2.putText(captureLeft, f'FPS: {int(fps)}', (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
     
+# Creates a Pie chart of the collected litter so far
+def createPieChart():
+    
+    # Closes all current figures
+    plt.close('all')
+    
+    # Read the collected litter into a dataframe format
+    dataReader = pd.read_csv('Data/litters.txt', header=None, names=["Litter"])
+    sums = dataReader["Litter"].value_counts()
+    
+    fig, ax = plt.subplots()
+    fig.patch.set_facecolor('black')
+    ax.axis('equal')    
+    ax.set_aspect('equal', adjustable='box')
+
+    ax.pie(sums, labels=sums.index, textprops={'color': 'white'}, radius=0.7)
+
+
+    fig.tight_layout()
+
+    
+    pieArea = figCanvas(fig)
+    
+    # Converts the pie chart to a Pygame surface
+    pieArea.draw()
+    renderer = pieArea.get_renderer()
+    rgbData = renderer.tostring_argb()
+    canWidth, canHeight = pieArea.get_width_height()
+    
+    pieSurface = pygame.image.fromstring(rgbData, (canWidth, canHeight), "ARGB")
+    
+    # Renders the surface onto the interface
+    screen.blit(pieSurface, (0, screen_height - canHeight))
+
+    
     
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
     timeCounter = 0
-    display_text("PICKING UP!", 780, 520, GREEN)
-    pygame.display.flip()
-    # input()
-    display_text("PICK UP FAILED!", 780, 570, RED)
-    display_text("NO OBJECTS!", 780, 620, RED)
-    pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
-    pygame.display.flip()
+    # display_text("PICKING UP!", 780, 520, GREEN)
+    # pygame.display.flip()
+    # # input()
+    # display_text("PICK UP FAILED!", 780, 570, RED)
+    # display_text("NO OBJECTS!", 780, 620, RED)
+    # pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+    # pygame.display.flip()
 
     if robot:
         serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
@@ -355,13 +401,11 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
-            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
+           
             #print(coords)
  
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
-            # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
-            display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
             if robot:
                 display_text("PICKING UP!", 780, 520, GREEN)
@@ -404,6 +448,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 objects.append((labelL, vector))
                 display_litter_history(objects)
                 print(objects)
+                
+                with open('Data/litters.txt', 'a') as file:
+                    file.write(labelL + "\n")
 
                 items = len(objects)
 
@@ -450,16 +497,19 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             if event.type == pygame.QUIT:
                 cameraLeft.release()
                 cameraRight.release()
+                bar_chart()
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     cameraLeft.release()
                     cameraRight.release()
+                    bar_chart()
                     pygame.quit()
                     sys.exit()
-        screen.fill(BLACK) 
+       
         
+        createPieChart()
         pygame.display.flip()
         
         # Get vector pos
