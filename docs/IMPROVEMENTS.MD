@@ -40,6 +40,12 @@ Below we will describe improvements that could be made to the software half of t
 
 ### Specialised Model
 
+We currently use a publicly available model for detecting litter. It has worked well for the purpose of providing a proof of
+concept and allowing us to test the idea of an autonamous system that can pickup litter. However, a model that has been
+specifically trained to detect litter in roadside environments would increase the success rate of the robot greatly. We,
+of course, did not have time to train a model ourselves due to the huge time commitment collecting the data and training a 
+model would have entailed. However, the real product would benefit greatly from this time investment.
+
 ### Parallelised UI and Robot
 
 ### Code To Handle a Movement System
