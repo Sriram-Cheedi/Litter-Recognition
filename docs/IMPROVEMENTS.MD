@@ -30,6 +30,9 @@ movements, making it rather poor at performing pickups at high ranges.
 
 ### A Movement System
 
+In conjuntion with a higher wuality arm, having a system on which it can traverse roads is a necessity for the success of the
+project as a legitimate product. Without it, the robot obviously cannot complete its intended purpose without great assistance
+from a human - defeating the purpose. An agile X-like system which can handle difficult off and on-road terrain would be ideal.
 
 ## Software Improvements
 
