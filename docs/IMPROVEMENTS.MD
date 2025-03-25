@@ -15,6 +15,11 @@ would make a lot of sense due to a higher degree of accuracy when assessing dist
 
 ### Raspberry Pi
 
+Due to time constraints and seemingly random and rather annoying bugs, we were unable to get our Raspbberry Pi to work
+within our system. Regrettably, this did mean we failed to meet a requirement we set ourselves at the start of the project.
+A big first improvement would be to shrink the central computer from a laptop to a small computer like a Rapsberry Pi 5 (our
+Raspberry Pi 4 had big issues with recognising two cameras of the same type) or a Jetson Nano.
+
 ### Higher Quality Arm
 
 ### A Movement System
