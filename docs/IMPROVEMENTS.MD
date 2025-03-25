@@ -52,6 +52,13 @@ Currently, our sysem cannot be interrupted while the robot is moving. The UI wil
 action and it will not begin to update again until it has finished its pickup method. To fix this, the arm's movement
 needs to be run in parallel with the UI as it collects data on the arm's status.
 
-
 ### Code To Handle a Movement System
+
+Once a movement system is added, code to support this must be added too. Not only is code for controlling the robot needed,
+but so is code to account for moving targets. A pattern of movement needs to be considered. Will the robot move as it picks
+litter up? Will it halt for each piece of litter? And also, how will we ensure it doesn't miss any pieces as it moves along
+the road?
+
+
+
 
