@@ -319,7 +319,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     lblMap = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
-    cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    cameraLeft = cv2.VideoCapture(1, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
     cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
@@ -337,10 +337,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([270, -90, 165])
-    camera_position2 = np.array([277, -90, 165])
+    camera_position1 = np.array([0, -90, 850])
+    camera_position2 = np.array([0, -90, 850])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 75
+    camera_angle = 65
 
         
     # Main detection loop
@@ -411,11 +411,12 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 display_text("PICKING UP!", 780, 520, GREEN)
                 pygame.display.flip()
                 depth *= 10
+                depth = 950
 
                 # New coordinate calculations
 
                 # Pixels per mm value
-                p = (2 * np.tan(np.deg2rad(alpha/2)) * focalLength) / 640
+                p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
                 print(p)
 
                 mpx = 640 / 2
@@ -425,21 +426,23 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 y = (centreLeft[1] + centreRight[1]) / 2
                 print(x, y)
 
-                P = np.array([[x - mpx],
-                              [focalLength],
-                              [y - mpy]])
+                P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
                 print(P)
 
                 norm = np.linalg.norm(P)
 
                 PNorm = P / norm
+                
+                print(PNorm)
+                print(depth)
 
                 rotMatrix = np.array([[1, 0, 0],
                                       [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
                                       [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
 
-                ObjCoords = rotMatrix @ (PNorm * depth) + camera_position.transpose()
-
+                ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
+                print(PNorm * depth)
+                print(camera_position)
                 print(ObjCoords)
 
                 # # Calculate angles to object from the normal to the camera and 
