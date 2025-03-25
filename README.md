@@ -227,12 +227,16 @@ Press "m" to select coordinates screen, then enter the x,y,z coordinates when pr
 **Requirements**: 
 - [Python](https://www.python.org/downloads/),
 - [Arduino IDE](https://www.arduino.cc/en/software),
-- Raspberry Pi 4B,
-- A PiCamera or equivalent,
 - The libraries present within /code/requirements.txt,
-- Arduino UNO and a Braccio robot arm.
+- Arduino UNO and a Braccio robot arm,
+- Two cameras of the exact same specification,
+- A computer with enough processing power to run the detection,
+- An object displaying an 8 by 6 (measured by interior vertices) chessboard pattern.
+  
 
 All code can be found within the /code file of the GitHub and the fully built tflite model can be found within code/Model.
+
+A much more detailed description of the codebase can be seen in the handover documentation found at the link at the top of the README. The documentation can also be found within /docs.
 
 
 ## Tech Stack
