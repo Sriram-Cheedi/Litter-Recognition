@@ -22,6 +22,12 @@ Raspberry Pi 4 had big issues with recognising two cameras of the same type) or 
 
 ### Higher Quality Arm
 
+The current arm works perfectly for a proof of concept. As far as the possibility of it "roaming highways" goes, it's rather
+bleak. A necessary improvement for the success of this product would be the upgrade of the arm so that it could withstand bad
+weather, rough terrain and potential physical abuse from drivers or other animals. The current arm also struggle with precise
+movements, making it rather poor at performing pickups at high ranges.
+
+
 ### A Movement System
 
 
