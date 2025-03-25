@@ -340,7 +340,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     camera_position1 = np.array([0, -90, 850])
     camera_position2 = np.array([0, -90, 850])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 65
+    camera_angle = 50
 
         
     # Main detection loop
@@ -411,7 +411,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 display_text("PICKING UP!", 780, 520, GREEN)
                 pygame.display.flip()
                 depth *= 10
-                depth = 950
+                depth = 1500
 
                 # New coordinate calculations
 
@@ -476,6 +476,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
                 # vector[2] = int(input("Enter z:"))
                 # print([x, y, z])
                 # print(camera_position)
+                vector[0] = -vector[0]
                 print(vector)
 
                 objects.append((labelL, vector))
