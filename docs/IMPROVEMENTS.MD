@@ -48,5 +48,10 @@ model would have entailed. However, the real product would benefit greatly from 
 
 ### Parallelised UI and Robot
 
+Currently, our sysem cannot be interrupted while the robot is moving. The UI will freeze whenever the arm is performing an
+action and it will not begin to update again until it has finished its pickup method. To fix this, the arm's movement
+needs to be run in parallel with the UI as it collects data on the arm's status.
+
+
 ### Code To Handle a Movement System
 
