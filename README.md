@@ -140,15 +140,71 @@ More details can be found using the 'Handover Documentation' link at the top or 
 
 ## User Instructions
 
-**Requirements**: [Python](https://www.python.org/downloads/), [Arduino IDE](https://www.arduino.cc/en/software), Arduino UNO and a Braccio robot arm
-
-Download interface.py, braccio_adapter.py and the arduino_script directory in "code". Place all three in the same directory on your machine.
+**Requirements**: 
+- [Python](https://www.python.org/downloads/),
+- [Arduino IDE](https://www.arduino.cc/en/software),
+- Arduino UNO and a Braccio robot arm
+- Two cameras of the exact same specification,
+- A computer with enough processing power to run the detection,
+- An object displaying an 8 by 6 (measured by interior vertices) chessboard pattern.
+  
+Download the latest release of the project onto your device.
 
 Connect your arm to the Arduino and power it on.
 
 Open the arduino_script.ino file in the arduino IDE and click Upload in the top right. The arm should now move to the safety position.
 
 Now navigate to the directory the python files are stored in on your machine via command line and run 
+
+```console
+cd 2024-LitterRecognition1/code/StereoVision
+```
+
+Then:
+
+```console
+python take_Images.py
+```
+
+This should then display the two camera feeds on your screen. From here you will need to take a minimum of 5 photos by pressing the 's' key.
+
+> [!IMPORTANT]
+> Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboard held to the corner of one of the cameras at an angle. Examples can be found in:
+
+```bash
+2024-LitterRecognition1
+├── code/          
+│   ├── StereoVision/
+|   |   ├── calibration_images
+|   |   |   ├── left  # HERE
+|   |   |   ├── right # HERE
+```
+
+### Step 2: Calibrate your Cameras
+Once the images have been taken, they should be saved into the local files 'left' and 'right' like above. Now run:
+
+```console
+python calibration.py
+```
+
+This should show a series of frames with openCV having detected the chessboard corners in the images you took earlier. These corner locations are used to create a local file 'stereoMap.xml' needed to rectify the images which will be taken while running the depth and image detection. This file can be reused whenever now that you have calibrated the two cameras.
+
+### Step 3: Run the Detection Script
+Now that you have completed the preliminary tasks, all you need to do is run:
+
+```console
+cd ..
+```
+Then:
+
+```console
+python -m StereoVision.distInf
+```
+
+This script runs real time inference on the camera feeds using the TFlite TACO-trained model powering our project. If both frames detect an object, the distance of this object should be calculated and displayed with the help of the rectification parameters you calculated via the calibration script.
+
+
+**If you would like to control the arm manually, run:**
 
 ```console
 python interface.py
