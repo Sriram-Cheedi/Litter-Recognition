@@ -67,9 +67,9 @@ particles = [(random.randint(0, screen_width), random.randint(0, screen_height),
 def load_image(path, size):
     return pygame.transform.smoothscale(pygame.image.load(path).convert(), size)
 
-braccio_left = load_image("./assets/braccioright.png", (100, 100))
-braccio_right = load_image("./assets/braccioleft.png", (100, 100))
-group_image = load_image("./assets/group.jpg", (600, 400))
+braccio_left = load_image(".StereoVision/assets/braccioright.png", (100, 100))
+braccio_right = load_image(".StereoVision/assets/braccioleft.png", (100, 100))
+group_image = load_image(".StereoVision/assets/group.jpg", (600, 400))
 
 def gradient(surface, top_color, bottom_color):
     for y in range(surface.get_height()):
