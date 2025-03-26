@@ -319,7 +319,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     lblMap = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
-    cameraLeft = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
     cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
