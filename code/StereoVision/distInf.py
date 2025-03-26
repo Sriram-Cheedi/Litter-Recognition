@@ -65,7 +65,7 @@ particles = [(random.randint(0, screen_width), random.randint(0, screen_height),
 
 
 def load_image(path, size):
-    return pygame.transform.smoothscale(pygame.image.load(path).convert(), size)
+    return pygame.transform.smoothscale(pygame.image.load(path).convert_alpha(), size)
 
 braccio_left = load_image("./StereoVision/assets/braccioright.png", (100, 100))
 braccio_right = load_image("./StereoVision/assets/braccioleft.png", (100, 100))
@@ -643,5 +643,7 @@ if __name__ == "__main__":
     LABELMAP_PATH = "./Model/labels.txt"
     
     port = serial_port()
+    screen.fill(BLACK)
+    pygame.display.flip()
     if port:
         detect(MODEL_PATH, LABELMAP_PATH, robot=True, port=port)
