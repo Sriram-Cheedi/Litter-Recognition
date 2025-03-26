@@ -30,26 +30,25 @@ Litter blights our major roads and highways leading to serious environmental and
 disposal from moving vehicles and regular detachment of plastic undercarriages or mobile vehicle parts (such as tyres). It not only threatens the endless fauna and fish of our life-filled rivers, but it also
 poses a danger to road traffic when potential hazards form at shoulder level.
 
-The way in which litter is managed now, it's wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that
-can detect and clear road litter efficiently reducing human intervention while maintaining safety complying environmental impact as well.
+The way in which litter is managed now is wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that
+can detect and clear road litter efficiently, reducing human intervention while maintaining safety complying environmental impact as well.
 
 
 ## Project Description:
-This proposal will investigate an advanced system for the identification and collection of litter that will automate the litter recognition, classification, and collecting process in roadside environments,
-particularly in regions with
-limited or precarious, such that accesses are restricted. It would be a system that utilizes advanced technologies of machine learning, computer vision, and robotics to automatically detect litter in rough
+This proposal will investigate an advanced system for the identification and collection of litter that will automate the litter recognition and collecting process in roadside environments. The system would utilize advanced machine learning, computer vision, and robotics to automatically detect litter in rough
 terrain, such as grasslands, shrubs, and trees along the road. The technology will be applied to smaller-scale autonomous vehicles that can safely work at the edge of the road in poor conditions.
-The increasing volume of non-biodegradable packaging, the intensification of litter from vehicles, and frequent breakdown of vehicle parts (such as tyres).Apart from the plastic parts and tyres, there is also the big problem of litter accumulating along the roadsides.
 
 **The System will leverage several cutting-edge technologies, including:**
-**Computer Vision and Machine Learning:** For accurate detection and classification of litter. Convolutional neural networks (CNNs) will be employed to analyze video feeds or images captured by onboard cameras.
+**Computer Vision and Machine Learning:** For accurate detection and classification of litter. Convolutional Neural Networks (CNNs) will be employed to analyze video feeds or images captured by onboard cameras.
 The system will be trained to recognize common types of litter and differentiate them from natural elements like leaves and rocks.
 
-**Robotic Mechanisms:** The autonomous vehicle will be equipped with mechanical arms, to collect litter of various sizes and compositions. These systems will be designed to operate effectively in rough and
+**Robotic Mechanisms:** The autonomous vehicle will be equipped with mechanical arms to collect litter of various sizes and compositions. These systems will be designed to operate effectively in rough and
 uneven terrain, typical of roadside verges.
 
 **Autonomous Navigation:** The vehicle will be capable of navigating along the roadside without human intervention, using GPS and sensor technologies to stay within designated areas while avoiding obstacles
 such as road signs, barriers, and natural features.
+
+**Our project aims to create a proof-of-concept iteration of this design with limited features that can be worked upon. We will use a single arm and a computer to produce a system that can identify and pick up key types of litter.**
 
 ## Project Requirements:
 **Litter Detection:** The system will use advanced image recognition and object detection techniques to identify man-made items scattered along the roadside. This includes detecting litter both on the ground
@@ -92,17 +91,17 @@ initiatives.
 **Government Agencies and Road Maintenance Authorities:**
 * Role: They are the biggest beneficiaries of the system, and they would ensure that their utilization of the system would lead to maintaining the roads and protecting the environmental 
   concerns associated with roadside litter.
-* Purpose for the System: The groups will apply the system to improve their current workflow of dispatching groups of litter collectors late at night. They have to clean the road side by side, along with 
+* Purpose for the System: The authorities will apply the system to improve their current workflow of dispatching groups of litter collectors late at night. They have to clean the road side by side, along with 
   closing the road and inefficient gathering. The new system is targeted to automate this process for cost reductions and efficiency.
 
 **Environmental Research Institutes:**
 * Role: Scientists will be more interested in the data generated through the implementation of the system and its effect on pollution and local wildlife.
 * Purpose for the System: Institutions may be a keen observer of the system and the results to assess the ability of the system to respond effectively to the reduction in pollution and conservation of nature at 
-  the local level. Data collected may be found useful in determining the progress made in conservation 
+  the local level. Data collected may be found useful in determining the progress made in conservation. 
 
 ## User Stories:
 **As a client, I want..**
- * A system that will identify a wide variety of roadside litter and identify how to deal with it
+ * A system that will identify a wide variety of roadside litter and identify how to deal with it.
 
 **As a Waste Management Contractor, I want to..**
  * Integrate autonomous litter collection vehicles into my operations, so that I can reduce the cost and risk of manual roadside litter collection.
@@ -112,11 +111,11 @@ initiatives.
  * A safe and contained system not impeding my use of the road.
 
 **As an Environmental Protection Agency official, I want to..**
- * I want a system which has the capability for quick identification and collection of non-biodegradable litter so that I am able to ensure cleaner environments and reduction of the impact of pollution on wildlife and ecosystems as much as possible.
+ * I want a system which has the capability for quick identification and collection of non-biodegradable litter so that I am able to ensure cleaner environments and the reduction of the impact of pollution on wildlife and ecosystems as much as possible.
 
 **As a student, I want to..**
  * Create a proof of concept for an autonomous litter detection and disposal system so that I can utilize knowledge in computer
-   Integrate vision and robotics into some meaningful project.
+    vision and robotics in a meaningful project.
 
 
   
@@ -129,33 +128,83 @@ initiatives.
 ```bash
 
 2024-LitterRecognition1
-├── Research/                             # Folder housing all research materials, reports, studies, and references foundational to the project.
-├── code                                  # Directory containing the project's source code.
-│   ├── README.md                         # Detailed guide to the codebase, explaining the purpose of each script and its usage.
-│   ├── ROI_safety.py                     # Code for determining ROI and ensuring safety in robotic movements.
-│   ├── arduino-script/
-│   │   └── arduino-script.ino            # Script for controlling the Braccio robotic arm via serial input.
-│   ├── braccio_adapter.py                # Code facilitating serial communication with an Arduino.
-│   ├── interface.py                      # User interface for controlling the Braccio robotic arm via keyboard inputs, extending functionality of braccio_adapter.py.
-│   ├── requirements.txt                  # File listing required dependencies.
-│   └── tests/
-│       └── test_interface.py             # Test cases for the Braccio Arm.
-├── docs                                  # Directory with architecture diagrams and documentation on AI tools and related resources.
-├── LICENSE                               # File defining licensing terms for using, modifying, or distributing the project.
-└── README.md                             # Primary documentation file with an overview of the project, setup instructions, and essential information.
+├── .github/             # Templates and workflows
+├── .gitignore           # Other files
+├── LICENSE              ...
+├── README.md            ...
+├── Research/            # Research files
+├── code/                # All project code
+└──  docs/                # Project documentation 
 ```
+More details can be found using the 'Handover Documentation' link at the top or by looking at the README in /docs.
 
 ## User Instructions
 
-**Requirements**: [Python](https://www.python.org/downloads/), [Arduino IDE](https://www.arduino.cc/en/software), Arduino UNO and a Braccio robot arm
-
-Download interface.py, braccio_adapter.py and the arduino_script directory in "code". Place all three in the same directory on your machine.
+**Requirements**: 
+- [Python](https://www.python.org/downloads/),
+- [Arduino IDE](https://www.arduino.cc/en/software),
+- Arduino UNO and a Braccio robot arm
+- Two cameras of the exact same specification,
+- A computer with enough processing power to run the detection,
+- An object displaying an 8 by 6 (measured by interior vertices) chessboard pattern.
+  
+Download the latest release of the project onto your device.
 
 Connect your arm to the Arduino and power it on.
 
 Open the arduino_script.ino file in the arduino IDE and click Upload in the top right. The arm should now move to the safety position.
 
 Now navigate to the directory the python files are stored in on your machine via command line and run 
+
+```console
+cd 2024-LitterRecognition1/code/StereoVision
+```
+
+Then:
+
+```console
+python take_Images.py
+```
+
+This should then display the two camera feeds on your screen. From here you will need to take a minimum of 5 photos by pressing the 's' key.
+
+> [!IMPORTANT]
+> Pictures must include the chessboard at different orientations and angles in every frame. For example, the first picture could just be the chessboard held to the middle of the frame, while another could have the chessboard held to the corner of one of the cameras at an angle. Examples can be found in:
+
+```bash
+2024-LitterRecognition1
+├── code/          
+│   ├── StereoVision/
+|   |   ├── calibration_images
+|   |   |   ├── left  # HERE
+|   |   |   ├── right # HERE
+```
+
+### Step 2: Calibrate your Cameras
+Once the images have been taken, they should be saved into the local files 'left' and 'right' like above. Now run:
+
+```console
+python calibration.py
+```
+
+This should show a series of frames with openCV having detected the chessboard corners in the images you took earlier. These corner locations are used to create a local file 'stereoMap.xml' needed to rectify the images which will be taken while running the depth and image detection. This file can be reused whenever now that you have calibrated the two cameras.
+
+### Step 3: Run the Detection Script
+Now that you have completed the preliminary tasks, all you need to do is run:
+
+```console
+cd ..
+```
+Then:
+
+```console
+python -m StereoVision.distInf
+```
+
+This script runs real time inference on the camera feeds using the TFlite TACO-trained model powering our project. If both frames detect an object, the distance of this object should be calculated and displayed with the help of the rectification parameters you calculated via the calibration script.
+
+
+**If you would like to control the arm manually, run:**
 
 ```console
 python interface.py
@@ -178,38 +227,40 @@ Press "m" to select coordinates screen, then enter the x,y,z coordinates when pr
 **Requirements**: 
 - [Python](https://www.python.org/downloads/),
 - [Arduino IDE](https://www.arduino.cc/en/software),
-- Raspberry Pi 4B,
-- A PiCamera or equivalent,
 - The libraries present within /code/requirements.txt,
-- Arduino UNO and a Braccio robot arm.
+- Arduino UNO and a Braccio robot arm,
+- Two cameras of the exact same specification,
+- A computer with enough processing power to run the detection,
+- An object displaying an 8 by 6 (measured by interior vertices) chessboard pattern.
+  
 
 All code can be found within the /code file of the GitHub and the fully built tflite model can be found within code/Model.
+
+A much more detailed description of the codebase can be seen in the handover documentation found at the link at the top of the README. The documentation can also be found within /docs.
 
 
 ## Tech Stack
 ### Hardware 
  - Sensors:
     - Cameras
-    - LIDAR
  - Actuators:
     - Robotic Arms
-    - Wheel
  - Microcontroller
     - Raspberry Pi
 ### Software 
  - Operating System
  - Python
  - Computer Vision
-     - YOLO
- - Machine Learning
-    - Pytorch
- - Image Processing
     - OPENCV
+ - Image Processing
+    - TensorFlow
  - Robotics
- - Control Systems
- - Route Planning System
+
 ### Development Tools
  - GitHub
+ - Google Colab
+ - Jupyter Notebook
+ - Visual Studio Code
 
 
 ## Architecture Diagram

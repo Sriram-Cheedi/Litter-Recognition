@@ -447,10 +447,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([270, -90, 165])
-    camera_position2 = np.array([277, -90, 165])
+    camera_position1 = np.array([0, -90, 850])
+    camera_position2 = np.array([0, -90, 850])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 35
+    camera_angle = 50
 
         
     # Main detection loop
@@ -521,38 +521,72 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 display_text("PICKING UP!", 780, 520, GREEN)
                 pygame.display.flip()
                 depth *= 10
+                depth = 1500
 
-                # Calculate angles to object from the normal to the camera and 
-                midpointx = screen_width / 2
-                midpointy = screen_height / 2
+                # New coordinate calculations
 
-                theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
-                phi1 = (centreLeft[0] - midpointx) * (alpha / width)
+                # Pixels per mm value
+                p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
+                print(p)
 
-                theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
-                phi2 = (centreRight[0] - midpointx) * (alpha / width)
+                mpx = 640 / 2
+                mpy = 480 / 2
 
-                # Average the two angles between the cameras
-                theta = (theta1 + theta2) / 2
-                phi = (phi1 + phi2) / 2
-                print("Theta: ", theta)
-                print("Phi: ", phi)
+                x = (centreLeft[0] + centreRight[0]) / 2
+                y = (centreLeft[1] + centreRight[1]) / 2
+                print(x, y)
 
-                # Calculating coordinates based on depth and angles from the cameras normal vectors
-                z = depth * np.sin(np.deg2rad(theta))
-                x = depth * np.sin(np.deg2rad(phi))
-                y = np.sqrt(depth**2 - x**2 - z**2)
+                P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
+                print(P)
+
+                norm = np.linalg.norm(P)
+
+                PNorm = P / norm
+                
+                print(PNorm)
+                print(depth)
+
+                rotMatrix = np.array([[1, 0, 0],
+                                      [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
+                                      [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
+
+                ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
+                print(PNorm * depth)
+                print(camera_position)
+                print(ObjCoords)
+
+                # # Calculate angles to object from the normal to the camera and 
+                # midpointx = screen_width / 2
+                # midpointy = screen_height / 2
+
+                # theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
+                # phi1 = (centreLeft[0] - midpointx) * (alpha / width)
+
+                # theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
+                # phi2 = (centreRight[0] - midpointx) * (alpha / width)
+
+                # # Average the two angles between the cameras
+                # theta = (theta1 + theta2) / 2
+                # phi = (phi1 + phi2) / 2
+                # print("Theta: ", theta)
+                # print("Phi: ", phi)
+
+                # # Calculating coordinates based on depth and angles from the cameras normal vectors
+                # z = depth * np.sin(np.deg2rad(theta))
+                # x = depth * np.sin(np.deg2rad(phi))
+                # y = np.sqrt(depth**2 - x**2 - z**2)
                 
                 
-                # Translate the vector to the position of the robot
-                vector = [x,y,z] + camera_position
+                # # Translate the vector to the position of the robot
+                vector = ObjCoords.transpose()
                 
                 
                 # vector[0] = int(input("Enter x:"))
                 # vector[1] = int(input("Enter y:"))
                 # vector[2] = int(input("Enter z:"))
-                print([x, y, z])
-                print(camera_position)
+                # print([x, y, z])
+                # print(camera_position)
+                vector[0] = -vector[0]
                 print(vector)
 
                 objects.append((labelL, vector))
