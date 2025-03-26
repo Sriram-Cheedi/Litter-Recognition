@@ -74,7 +74,7 @@ def boundVector(oldVector):
   vector = oldVector
 
   # Make sure z value is no greater than 
-  vector[2] = max(vector[2], -50)
+  vector[2] = max(vector[2], -150)
 
   # Get the magnitude of the vector
   mag = np.linalg.norm(vector)
