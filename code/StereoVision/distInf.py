@@ -1,6 +1,7 @@
 #Running this file by "python -m StereoVision.distInf"
 
 import os
+import random
 import sys
 import cv2
 import numpy as np
@@ -31,7 +32,98 @@ screen_width = 1080
 screen_height = 720
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Object Interface")
+pygame.display.set_caption("Litter Recognition")
+clock = pygame.time.Clock()
+FPS = 30
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+BACKGROUND_TOP = (40, 0, 80)
+BACKGROUND_BOTTOM = (0, 0, 40)
+
+
+font = pygame.font.Font(None, 36)
+font_title = pygame.font.Font(None, 64)
+
+
+
+input_box = pygame.Rect(600, 564, 150, 40)
+color_inactive = pygame.Color('lightskyblue3')
+color_active = pygame.Color('dodgerblue2')
+
+
+
+
+
+
+def load_image(path, size):
+    return pygame.transform.smoothscale(pygame.image.load(path).convert(), size)
+
+braccio_left = load_image("braccioright.png", (100, 100))
+braccio_right = load_image("braccioleft.png", (100, 100))
+group_image = load_image("group.jpg", (600, 400))
+
+def gradient(surface, top_color, bottom_color):
+    for y in range(surface.get_height()):
+        ratio = y / surface.get_height()
+        color = tuple([
+            int(top_color[i] + (bottom_color[i] - top_color[i]) * ratio)
+            for i in range(3)
+        ])
+        pygame.draw.line(surface, color, (0, y), (surface.get_width(), y))
+
+
+def title():
+    title = font_title.render("Litter Recognition", True, WHITE)
+    rect = title.get_rect(center = (screen_width // 2, 40))
+    screen.blit(title, rect)
+    pygame.draw.line(screen, WHITE, (rect.left, rect.bottom + 5), (rect.right, rect.bottom + 5), 2)
+    screen.blit(braccio_left, (rect.left - 110, rect.centery - 40))
+    screen.blit(braccio_right, (rect.right + 10, rect.centery - 40))
+
+def label():
+    label = font.render("Enter your Arduino Port:", True, WHITE)
+    screen.blit(label, (240, 570))
+
+def input(text, active):
+    color = color_active if active else color_inactive
+    txt_surface = font.render(text, True, color)
+    input_box.w = max(150, txt_surface.get_width() + 10)
+    screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+    pygame.draw.rect(screen, color, input_box, 2)
+
+
+def serial_port():
+    text = ''
+    active = False
+    while True:
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                active = input_box.collidepoint(event.pos)
+                if button_rect.collidepoint(event.pos) and text:
+                    return text 
+            elif event.type == KEYDOWN and active:
+                if event.key == K_RETURN and text:
+                    return text
+                elif event.key == K_BACKSPACE:
+                    text = text[:-1]
+                else:
+                    text += event.unicode
+
+        gradient(screen, BACKGROUND_TOP, BACKGROUND_BOTTOM)
+        title()
+        label()
+        input(text, active)
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
 
 detected_objects = []  # Store (label, position) tuples
 
@@ -53,14 +145,6 @@ def display_litter_history(objects):
 
     pygame.display.update()
 
-
-
-        
-        
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-GREEN = (0,255,0)
-RED = (255,0,0)
 
 font = pygame.font.Font(None, 36)
 
@@ -289,7 +373,7 @@ def createPieChart():
     
 
 # Main script for real time detection
-def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
+def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
 
     timeCounter = 0
     # display_text("PICKING UP!", 780, 520, GREEN)
@@ -301,8 +385,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     # pygame.display.flip()
 
     if robot:
-        serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
-        braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
+        # serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
+        braccioDebug = BraccioDebug(serial_port_robot_magnet=port, mock = False)
     
     objects = []
 
@@ -531,4 +615,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 if __name__ == "__main__":
     MODEL_PATH = "./Model/model.tflite"
     LABELMAP_PATH = "./Model/labels.txt"
-    detect(MODEL_PATH, LABELMAP_PATH, True)
+    
+    port = serial_port()
+    detect(MODEL_PATH, LABELMAP_PATH, True,port)
