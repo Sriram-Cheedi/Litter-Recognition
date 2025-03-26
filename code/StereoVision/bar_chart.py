@@ -23,8 +23,8 @@ def bar_chart():
 
     litters = list(counts.keys())
     counter = list(counts.values())
-
-    plt.bar(litters, counter)
+    plt.xticks(rotation=30)
+    plt.bar(litters, counter, width=0.4)
 
     x = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
