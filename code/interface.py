@@ -144,62 +144,9 @@ def jiggle(braccioDebug, baseServo):
         braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
         direction *= -1
         
-        
-screen_width = 800
-screen_height = 600
-screen = pygame.display.set_mode((screen_width, screen_height))
-
-def display_text(text, font, color, x, y):
-        text_surface = font.render(text, True, color)
-        screen.blit(text_surface, (x, y))
-
-        print("Press the keys for the output. Press ESC to quit.")
-        
-def get_serial_port_input(screen, font):
-    input_box = pygame.Rect(100, 200, 600, 50)
-    color_passive = pygame.Color('lightskyblue3')
-    color_active = pygame.Color('dodgerblue2')
-    color = color_passive
-    active = False
-    text = ''
-    done = False
-
-    while not done:
-        screen.fill((0, 0, 0))
-        display_text("Enter Serial Port and press Enter:", font, (255, 255, 255), 100, 150)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if input_box.collidepoint(event.pos):
-                    active = not active
-                else:
-                    active = False
-                color = color_active if active else color_passive
-            elif event.type == pygame.KEYDOWN:
-                if active:
-                    if event.key == pygame.K_RETURN:
-                        done = True
-                        return text
-                    elif event.key == pygame.K_BACKSPACE:
-                        text = text[:-1]
-                    else:
-                        text += event.unicode
-
-        text_surface = font.render(text, True, color)
-        width = max(600, text_surface.get_width()+10)
-        input_box.w = width
-        screen.blit(text_surface, (input_box.x+5, input_box.y+5))
-        pygame.draw.rect(screen, color, input_box, 2)
-        pygame.display.flip()
-        
-
- 
 def robotLogic():
     # Get serial port though user input
-    serial_port = get_serial_port_input(screen,font)
+    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
 
     pygame.init()

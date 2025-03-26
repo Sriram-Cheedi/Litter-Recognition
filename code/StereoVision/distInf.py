@@ -46,7 +46,7 @@ BACKGROUND_BOTTOM = (0, 0, 40)
 
 font = pygame.font.Font(None, 36)
 font_title = pygame.font.Font(None, 64)
-
+font_button = pygame.font.Font(None, 40)
 
 
 input_box = pygame.Rect(600, 564, 150, 40)
@@ -54,8 +54,14 @@ color_inactive = pygame.Color('lightskyblue3')
 color_active = pygame.Color('dodgerblue2')
 
 
+button_rect = pygame.Rect(400, 630, 280, 50)
+button_text = "Let's Start Cleaning"
+button_color = (0, 200, 100)
+button_hover = (0, 255, 150)
+button_text_color = WHITE
 
 
+particles = [(random.randint(0, screen_width), random.randint(0, screen_height),random.randint(1, 3), random.randint(80, 150)) for _ in range(80)]
 
 
 def load_image(path, size):
@@ -74,6 +80,17 @@ def gradient(surface, top_color, bottom_color):
         ])
         pygame.draw.line(surface, color, (0, y), (surface.get_width(), y))
 
+def particle(surface):
+    for x, y, radius, alpha in particles:
+        particle = pygame.Surface((radius*2, radius*2), pygame.SRCALPHA)
+        pygame.draw.circle(particle, (255, 255, 255, alpha), (radius, radius), radius)
+        surface.blit(particle, (x - radius, y - radius))
+
+def image_border(surface, img, pos, border_thickness=5, border_color=(192, 192, 192)):
+    x, y = pos
+    border_rect = pygame.Rect(x - border_thickness, y - border_thickness,img.get_width() + 2 * border_thickness,img.get_height() + 2 * border_thickness)
+    pygame.draw.rect(surface, border_color, border_rect)
+    surface.blit(img, (x, y))
 
 def title():
     title = font_title.render("Litter Recognition", True, WHITE)
@@ -94,6 +111,12 @@ def input(text, active):
     screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
     pygame.draw.rect(screen, color, input_box, 2)
 
+def button(mouse_pos):
+    is_hovered = button_rect.collidepoint(mouse_pos)
+    current_color = button_hover if is_hovered else button_color
+    pygame.draw.rect(screen, current_color, button_rect, border_radius=10)
+    text = font_button.render(button_text, True, button_text_color)
+    screen.blit(text, text.get_rect(center=button_rect.center))
 
 def serial_port():
     text = ''
@@ -117,9 +140,12 @@ def serial_port():
                     text += event.unicode
 
         gradient(screen, BACKGROUND_TOP, BACKGROUND_BOTTOM)
+        particle(screen)
+        image_border(screen, group_image, (240, 100))
         title()
         label()
         input(text, active)
+        button(mouse_pos)
 
         pygame.display.flip()
         clock.tick(FPS)
