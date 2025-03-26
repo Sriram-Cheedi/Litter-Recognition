@@ -643,4 +643,5 @@ if __name__ == "__main__":
     LABELMAP_PATH = "./Model/labels.txt"
     
     port = serial_port()
-    detect(MODEL_PATH, LABELMAP_PATH, True,port)
+    if port:
+        detect(MODEL_PATH, LABELMAP_PATH, robot=True, port=port)
