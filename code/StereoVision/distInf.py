@@ -63,13 +63,18 @@ button_text_color = WHITE
 
 particles = [(random.randint(0, screen_width), random.randint(0, screen_height),random.randint(1, 3), random.randint(80, 150)) for _ in range(80)]
 
-
 def load_image(path, size):
     return pygame.transform.smoothscale(pygame.image.load(path).convert_alpha(), size)
 
-braccio_left = load_image("./StereoVision/assets/braccioright.png", (100, 100))
-braccio_right = load_image("./StereoVision/assets/braccioleft.png", (100, 100))
-group_image = load_image("./StereoVision/assets/group.jpg", (600, 400))
+base_dir = os.path.dirname(os.path.abspath(__file__))
+IMAGE_PATH_LEFT = os.path.join(base_dir, "assets", "braccioright.png")
+IMAGE_PATH_RIGHT = os.path.join(base_dir, "assets", "braccioleft.png")
+IMAGE_PATH_GROUP = os.path.join(base_dir, "assets", "group.jpg")
+
+braccio_left = load_image(IMAGE_PATH_LEFT, (100, 100))
+braccio_right = load_image(IMAGE_PATH_RIGHT, (100, 100))
+group_image = load_image(IMAGE_PATH_GROUP, (100, 100))
+
 
 def gradient(surface, top_color, bottom_color):
     for y in range(surface.get_height()):

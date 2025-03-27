@@ -36,6 +36,11 @@ jobs:
         protoc object_detection/protos/*.proto --python_out=.
         cp object_detection/packages/tf2/setup.py .
         python -m pip install .
+    - name: Create mock image files
+      run: |
+        mkdir -p ./StereoVision/assets 
+        touch ./StereoVision/assets/braccioright.png
+        
     - name: Test with pytest
       env:
         USE_MOCK: true
