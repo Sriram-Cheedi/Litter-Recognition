@@ -1,6 +1,7 @@
 #Running this file by "python -m StereoVision.distInf"
 
 import os
+import random
 import sys
 import cv2
 import numpy as np
@@ -8,8 +9,12 @@ import tensorflow.lite as tflite
 import time
 import imutils
 from matplotlib import pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as figCanvas
 import pygame
+from pygame.locals import *
 from enum import Enum
+import pandas as pd
+from StereoVision.bar_chart import bar_chart
 
 # Other packages we have created
 # Make sure python can tell StereoVision is one of the packages
@@ -27,25 +32,154 @@ screen_width = 1080
 screen_height = 720
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Object Interface")
+pygame.display.set_caption("Litter Recognition")
+clock = pygame.time.Clock()
+FPS = 30
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+BACKGROUND_TOP = (40, 0, 80)
+BACKGROUND_BOTTOM = (0, 0, 40)
+
+
+font = pygame.font.Font(None, 36)
+font_title = pygame.font.Font(None, 64)
+font_button = pygame.font.Font(None, 40)
+
+
+input_box = pygame.Rect(600, 564, 150, 40)
+color_inactive = pygame.Color('lightskyblue3')
+color_active = pygame.Color('dodgerblue2')
+
+
+button_rect = pygame.Rect(400, 630, 280, 50)
+button_text = "Let's Start Cleaning"
+button_color = (0, 200, 100)
+button_hover = (0, 255, 150)
+button_text_color = WHITE
+
+
+particles = [(random.randint(0, screen_width), random.randint(0, screen_height),random.randint(1, 3), random.randint(80, 150)) for _ in range(80)]
+
+def load_image(path, size):
+    return pygame.transform.smoothscale(pygame.image.load(path).convert_alpha(), size)
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+IMAGE_PATH_LEFT = os.path.join(base_dir, "assets", "braccioright.png")
+IMAGE_PATH_RIGHT = os.path.join(base_dir, "assets", "braccioleft.png")
+IMAGE_PATH_GROUP = os.path.join(base_dir, "assets", "group.jpg")
+
+braccio_left = load_image(IMAGE_PATH_LEFT, (100, 100))
+braccio_right = load_image(IMAGE_PATH_RIGHT, (100, 100))
+group_image = load_image(IMAGE_PATH_GROUP, (100, 100))
+
+
+def gradient(surface, top_color, bottom_color):
+    for y in range(surface.get_height()):
+        ratio = y / surface.get_height()
+        color = tuple([
+            int(top_color[i] + (bottom_color[i] - top_color[i]) * ratio)
+            for i in range(3)
+        ])
+        pygame.draw.line(surface, color, (0, y), (surface.get_width(), y))
+
+def particle(surface):
+    for x, y, radius, alpha in particles:
+        particle = pygame.Surface((radius*2, radius*2), pygame.SRCALPHA)
+        pygame.draw.circle(particle, (255, 255, 255, alpha), (radius, radius), radius)
+        surface.blit(particle, (x - radius, y - radius))
+
+def image_border(surface, img, pos, border_thickness=5, border_color=(192, 192, 192)):
+    x, y = pos
+    border_rect = pygame.Rect(x - border_thickness, y - border_thickness,img.get_width() + 2 * border_thickness,img.get_height() + 2 * border_thickness)
+    pygame.draw.rect(surface, border_color, border_rect)
+    surface.blit(img, (x, y))
+
+def title():
+    title = font_title.render("Litter Recognition", True, WHITE)
+    rect = title.get_rect(center = (screen_width // 2, 40))
+    screen.blit(title, rect)
+    pygame.draw.line(screen, WHITE, (rect.left, rect.bottom + 5), (rect.right, rect.bottom + 5), 2)
+    screen.blit(braccio_left, (rect.left - 110, rect.centery - 40))
+    screen.blit(braccio_right, (rect.right + 10, rect.centery - 40))
+
+def label():
+    label = font.render("Enter your Arduino Port:", True, WHITE)
+    screen.blit(label, (240, 570))
+
+def input(text, active):
+    color = color_active if active else color_inactive
+    txt_surface = font.render(text, True, color)
+    input_box.w = max(150, txt_surface.get_width() + 10)
+    screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+    pygame.draw.rect(screen, color, input_box, 2)
+
+def button(mouse_pos):
+    is_hovered = button_rect.collidepoint(mouse_pos)
+    current_color = button_hover if is_hovered else button_color
+    pygame.draw.rect(screen, current_color, button_rect, border_radius=10)
+    text = font_button.render(button_text, True, button_text_color)
+    screen.blit(text, text.get_rect(center=button_rect.center))
+
+def serial_port():
+    text = ''
+    active = False
+    while True:
+        mouse_pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                active = input_box.collidepoint(event.pos)
+                if button_rect.collidepoint(event.pos) and text:
+                    return text 
+            elif event.type == KEYDOWN and active:
+                if event.key == K_RETURN and text:
+                    return text
+                elif event.key == K_BACKSPACE:
+                    text = text[:-1]
+                else:
+                    text += event.unicode
+
+        gradient(screen, BACKGROUND_TOP, BACKGROUND_BOTTOM)
+        particle(screen)
+        image_border(screen, group_image, (240, 100))
+        title()
+        label()
+        input(text, active)
+        button(mouse_pos)
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
 
 detected_objects = []  # Store (label, position) tuples
 
 def display_litter_history(objects):
     y_offset = 100
-    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, 300, 200)) 
-    display_text("Litter History:", 10, 60, WHITE)
-    for i, obj in enumerate(reversed(objects[-5:])): 
-        label, classification, position = obj  
-        rounded_position = tuple(round(p, 1) for p in position)  
-        display_text(f"{i+1}. {label} ({classification}) at {rounded_position}", 60, y_offset + (i * 30), WHITE)  
 
-    pygame.display.update()  
+    max_items = 5
+    line_height = 30
+    box_width = 700
+    box_height = max_items * line_height + 40
 
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-GREEN = (0,255,0)
-RED = (255,0,0)
+
+    pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, box_width, box_height))
+
+
+    display_text("Litter History:", 60, y_offset - 30, WHITE)
+
+    for i, obj in enumerate(reversed(objects[-max_items:])): 
+        label,  classification, position = obj  
+        rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
+        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
+
+    pygame.display.update()
+
+
 
 font = pygame.font.Font(None, 36)
 
@@ -250,23 +384,58 @@ def calculateFPS(captureLeft, captureRight, start, end):
     
     cv2.putText(captureLeft, f'FPS: {int(fps)}', (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
     
+# Creates a Pie chart of the collected litter so far
+def createPieChart():
+    
+    # Closes all current figures
+    plt.close('all')
+    
+    # Read the collected litter into a dataframe format
+    dataReader = pd.read_csv('Data/litters.txt', header=None, names=["Litter"])
+    sums = dataReader["Litter"].value_counts()
+    
+    fig, ax = plt.subplots()
+    fig.patch.set_facecolor('black')
+    ax.axis('equal')    
+    ax.set_aspect('equal', adjustable='box')
+
+    ax.pie(sums, labels=sums.index, textprops={'color': 'white'}, radius=0.7)
+
+
+    fig.tight_layout()
+
+    
+    pieArea = figCanvas(fig)
+    
+    # Converts the pie chart to a Pygame surface
+    pieArea.draw()
+    renderer = pieArea.get_renderer()
+    rgbData = renderer.tostring_argb()
+    canWidth, canHeight = pieArea.get_width_height()
+    
+    pieSurface = pygame.image.fromstring(rgbData, (canWidth, canHeight), "ARGB")
+    
+    # Renders the surface onto the interface
+    screen.blit(pieSurface, (0, screen_height - canHeight))
+
+    
     
 
 # Main script for real time detection
-def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
+def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
 
     timeCounter = 0
-    display_text("PICKING UP!", 780, 520, GREEN)
-    pygame.display.flip()
-    # input()
-    display_text("PICK UP FAILED!", 780, 570, RED)
-    display_text("NO OBJECTS!", 780, 620, RED)
-    pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
-    pygame.display.flip()
+    # display_text("PICKING UP!", 780, 520, GREEN)
+    # pygame.display.flip()
+    # # input()
+    # display_text("PICK UP FAILED!", 780, 570, RED)
+    # display_text("NO OBJECTS!", 780, 620, RED)
+    # pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
+    # pygame.display.flip()
 
     if robot:
-        serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
-        braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
+        # serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
+        braccioDebug = BraccioDebug(serial_port_robot_magnet=port, mock = False)
     
     objects = []
 
@@ -301,10 +470,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
     # Camera position
-    camera_position1 = np.array([270, -90, 165])
-    camera_position2 = np.array([277, -90, 165])
+    camera_position1 = np.array([0, -90, 850])
+    camera_position2 = np.array([0, -90, 850])
     camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 35
+    camera_angle = 50
 
         
     # Main detection loop
@@ -365,56 +534,91 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
 
-            coords = camera_distance.calculate_object_position(depth, alpha, camera_position)
+           
             #print(coords)
  
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
-            # display_text(f"Depth: {depth:.1f} cm", 300, 80, GREEN)
-            display_text(f"Object Position: {coords}", 300, 50, GREEN, clear_area=True)
 
             if robot:
                 display_text("PICKING UP!", 780, 520, GREEN)
                 pygame.display.flip()
                 depth *= 10
+                depth = 1500
 
-                # Calculate angles to object from the normal to the camera and 
-                midpointx = screen_width / 2
-                midpointy = screen_height / 2
+                # New coordinate calculations
 
-                theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
-                phi1 = (centreLeft[0] - midpointx) * (alpha / width)
+                # Pixels per mm value
+                p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
+                print(p)
 
-                theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
-                phi2 = (centreRight[0] - midpointx) * (alpha / width)
+                mpx = 640 / 2
+                mpy = 480 / 2
 
-                # Average the two angles between the cameras
-                theta = (theta1 + theta2) / 2
-                phi = (phi1 + phi2) / 2
-                print("Theta: ", theta)
-                print("Phi: ", phi)
+                x = (centreLeft[0] + centreRight[0]) / 2
+                y = (centreLeft[1] + centreRight[1]) / 2
+                print(x, y)
 
-                # Calculating coordinates based on depth and angles from the cameras normal vectors
-                z = depth * np.sin(np.deg2rad(theta))
-                x = depth * np.sin(np.deg2rad(phi))
-                y = np.sqrt(depth**2 - x**2 - z**2)
+                P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
+                print(P)
+
+                norm = np.linalg.norm(P)
+
+                PNorm = P / norm
+                
+                print(PNorm)
+                print(depth)
+
+                rotMatrix = np.array([[1, 0, 0],
+                                      [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
+                                      [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
+
+                ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
+                print(PNorm * depth)
+                print(camera_position)
+                print(ObjCoords)
+
+                # # Calculate angles to object from the normal to the camera and 
+                # midpointx = screen_width / 2
+                # midpointy = screen_height / 2
+
+                # theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
+                # phi1 = (centreLeft[0] - midpointx) * (alpha / width)
+
+                # theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
+                # phi2 = (centreRight[0] - midpointx) * (alpha / width)
+
+                # # Average the two angles between the cameras
+                # theta = (theta1 + theta2) / 2
+                # phi = (phi1 + phi2) / 2
+                # print("Theta: ", theta)
+                # print("Phi: ", phi)
+
+                # # Calculating coordinates based on depth and angles from the cameras normal vectors
+                # z = depth * np.sin(np.deg2rad(theta))
+                # x = depth * np.sin(np.deg2rad(phi))
+                # y = np.sqrt(depth**2 - x**2 - z**2)
                 
                 
-                # Translate the vector to the position of the robot
-                vector = [x,y,z] + camera_position
+                # # Translate the vector to the position of the robot
+                vector = ObjCoords.transpose()
                 
                 
                 # vector[0] = int(input("Enter x:"))
                 # vector[1] = int(input("Enter y:"))
                 # vector[2] = int(input("Enter z:"))
-                print([x, y, z])
-                print(camera_position)
+                # print([x, y, z])
+                # print(camera_position)
+                vector[0] = -vector[0]
                 print(vector)
                 
                     
                 objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
                 print(objects)
+                
+                with open('Data/litters.txt', 'a') as file:
+                    file.write(labelL + "\n")
 
                 items = len(objects)
 
@@ -470,16 +674,19 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
             if event.type == pygame.QUIT:
                 cameraLeft.release()
                 cameraRight.release()
+                bar_chart()
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     cameraLeft.release()
                     cameraRight.release()
+                    bar_chart()
                     pygame.quit()
                     sys.exit()
-        screen.fill(BLACK) 
+       
         
+        createPieChart()
         pygame.display.flip()
         
         # Get vector pos
@@ -501,4 +708,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False):
 if __name__ == "__main__":
     MODEL_PATH = "./Model/model.tflite"
     LABELMAP_PATH = "./Model/labels.txt"
-    detect(MODEL_PATH, LABELMAP_PATH, True)
+    
+    port = serial_port()
+    screen.fill(BLACK)
+    pygame.display.flip()
+    if port:
+        detect(MODEL_PATH, LABELMAP_PATH, robot=True, port=port)
