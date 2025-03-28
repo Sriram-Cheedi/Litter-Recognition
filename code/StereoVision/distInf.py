@@ -339,7 +339,7 @@ def loadLabelMap(LABELMAP_PATH):
                 
                 if index1 in bio:
                     classificationMap[index1] = "Biodegradable"
-                elif index in non_bio:
+                elif index1 in non_bio:
                     classificationMap[index1] = "Non-Biodegradable"
                 else:
                     classificationMap[index1] = "Unknown"
