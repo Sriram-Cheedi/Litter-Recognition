@@ -73,7 +73,7 @@ IMAGE_PATH_GROUP = os.path.join(base_dir, "assets", "group.jpg")
 
 braccio_left = load_image(IMAGE_PATH_LEFT, (100, 100))
 braccio_right = load_image(IMAGE_PATH_RIGHT, (100, 100))
-group_image = load_image(IMAGE_PATH_GROUP, (100, 100))
+group_image = load_image(IMAGE_PATH_GROUP, (600, 400))
 
 
 def gradient(surface, top_color, bottom_color):
@@ -175,7 +175,7 @@ def display_litter_history(objects):
     for i, obj in enumerate(reversed(objects[-max_items:])): 
         label,  classification, position = obj  
         rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
-        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
+        display_text(f"{i+1}. {label}({classification}) at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
 
     pygame.display.update()
 
@@ -651,14 +651,26 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
             
                 vector = Inverse_kinematics.move(vector)[4]
                 if classificationL == "Biodegradable":
-                    bin_position = [200, 100, 10]  
+                    bin_position = 0  
                 else:
-                    bin_position = [-200, 100, 10]
+                    bin_position = 180
                     
-                braccioDebug.servo_movement(90 - Inverse_kinematics.move(bin_position)[0], 90 - Inverse_kinematics.move(bin_position)[1], 90 - Inverse_kinematics.move(bin_position)[2], 90 - Inverse_kinematics.move(bin_position)[3], braccioDebug.s5, braccioDebug.s6)
-                braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10) 
-                time.sleep(1)
-                braccioDebug.home_position()
+                # Rotate to face bin
+                braccioDebug.servo_movement(bin_position, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                
+                # Bend over bin
+                braccioDebug.servo_movement(braccioDebug.s1, 15,braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                
+                # Open claw
+                braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
+                
+                # Return to start position
+                braccioDebug.straight_position()
+                    
+                # braccioDebug.servo_movement(90 - Inverse_kinematics.move(bin_position)[0], 90 - Inverse_kinematics.move(bin_position)[1], 90 - Inverse_kinematics.move(bin_position)[2], 90 - Inverse_kinematics.move(bin_position)[3], braccioDebug.s5, braccioDebug.s6)
+                # braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10) 
+                # time.sleep(1)
+                # braccioDebug.home_position()
 
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
