@@ -163,7 +163,7 @@ def display_litter_history(objects):
 
     max_items = 5
     line_height = 30
-    box_width = 700
+    box_width = 950
     box_height = max_items * line_height + 40
 
 
@@ -360,7 +360,7 @@ def drawBoxes(capture, scores, boxes, lblMap,classificationMap, classes):
     label = None
     classification = "Unknown"
     for i in range(len(scores)):
-        if scores[i] > 0.75:
+        if scores[i] > 0.6:
             count += 1
             # Gets the coordinates of the bounding boxes
             (startY, startX, endY, endX) = (int(boxes[i][0] * h), int(boxes[i][1] * w), int(boxes[i][2] * h), int(boxes[i][3] * w))
