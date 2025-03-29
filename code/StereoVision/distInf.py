@@ -73,7 +73,7 @@ IMAGE_PATH_GROUP = os.path.join(base_dir, "assets", "group.jpg")
 
 braccio_left = load_image(IMAGE_PATH_LEFT, (100, 100))
 braccio_right = load_image(IMAGE_PATH_RIGHT, (100, 100))
-group_image = load_image(IMAGE_PATH_GROUP, (100, 100))
+group_image = load_image(IMAGE_PATH_GROUP, (600, 400))
 
 
 def gradient(surface, top_color, bottom_color):
@@ -160,21 +160,25 @@ detected_objects = []  # Store (label, position) tuples
 
 def display_litter_history(objects):
     y_offset = 100
+
     max_items = 5
     line_height = 30
-    box_width = 700
+    box_width = 950
     box_height = max_items * line_height + 40
 
+
     pygame.draw.rect(screen, BLACK, pygame.Rect(50, y_offset - 40, box_width, box_height))
+
 
     display_text("Litter History:", 60, y_offset - 30, WHITE)
 
     for i, obj in enumerate(reversed(objects[-max_items:])): 
-        label, position = obj  
+        label,  classification, position = obj  
         rounded_position = tuple(f"{round(float(p), 1):.1f}" for p in position)
-        display_text(f"{i+1}. {label} at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
+        display_text(f"{i+1}. {label}({classification}) at {rounded_position}", 60, y_offset + (i * line_height), WHITE)
 
     pygame.display.update()
+
 
 
 font = pygame.font.Font(None, 36)
@@ -319,6 +323,10 @@ def display_text(text, x, y, color=WHITE,clear_area = False):
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
     labelMap = {}
+    classificationMap = {}
+    
+    bio = {16, 26, 32, 14, 15, 17, 18, 19, 20, 21, 31, 33, 34, 35, 57}
+    non_bio = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 27, 28, 29, 30, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60}
     
     with open(LABELMAP_PATH, "r") as lmap:
         for line in lmap:
@@ -326,8 +334,16 @@ def loadLabelMap(LABELMAP_PATH):
             parts = line.strip().split(" ", 1)
             if len(parts) == 2:
                 index, lbl = parts
+                index1 = int(index)
                 labelMap[int(index)] = lbl
-    return labelMap
+                
+                if index1 in bio:
+                    classificationMap[index1] = "Biodegradable"
+                elif index1 in non_bio:
+                    classificationMap[index1] = "Non-Biodegradable"
+                else:
+                    classificationMap[index1] = "Unknown"
+    return labelMap, classificationMap
 
 # Pre process the frame before inference
 def preProcess(frame, width, height):
@@ -337,27 +353,29 @@ def preProcess(frame, width, height):
     return img
 
 # Draws the bounding boxes onto the image
-def drawBoxes(capture, scores, boxes, lblMap, classes):
+def drawBoxes(capture, scores, boxes, lblMap,classificationMap, classes):
     h, w, _ = capture.shape
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
     label = None
+    classification = "Unknown"
     for i in range(len(scores)):
-        if scores[i] > 0.75:
+        if scores[i] > 0.6:
             count += 1
             # Gets the coordinates of the bounding boxes
             (startY, startX, endY, endX) = (int(boxes[i][0] * h), int(boxes[i][1] * w), int(boxes[i][2] * h), int(boxes[i][3] * w))
                 
             # Gets the class and score associated with the detection
             label = lblMap[int(classes[i])]
+            classification = classificationMap[int(classes[i])] 
             score = int(scores[i] * 100)
-                
+            
             # Draws the bounding box
             cv2.rectangle(capture, (startX, startY), (endX, endY), (0, 255, 0), 2)
-            cv2.putText(capture, f"{label}: {score}%", (startX, startY - 10), 
+            cv2.putText(capture, f"{label} ({classification}): {score}%", (startX, startY - 10), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
-    return ((startX + endX) / 2, (startY + endY) / 2), count, label
+    return ((startX + endX) / 2, (startY + endY) / 2), count, label, classification
             
 # Calculates the fps (frames per second)
 def calculateFPS(captureLeft, captureRight, start, end):
@@ -431,7 +449,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
     inpShape = inpTensors[0]['shape']
     height, width = inpShape[1], inpShape[2]
     
-    lblMap = loadLabelMap(LABELMAP_PATH)
+    lblMap,classificationMap  = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
     cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -496,8 +514,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         scores1 = interpreter.get_tensor(outTensors[2]['index'])[0]
 
         # Iterates through the detections
-        centreLeft, leftCount, labelL = drawBoxes(captureLeft, scores, boxes, lblMap, classes)
-        centreRight, rightCount, labelR = drawBoxes(captureRight, scores1, boxes1, lblMap, classes1)
+        centreLeft, leftCount, labelL, classificationL = drawBoxes(captureLeft, scores, boxes, lblMap,classificationMap, classes)
+        centreRight, rightCount, labelR, classificationR = drawBoxes(captureRight, scores1, boxes1, lblMap, classificationMap, classes1)
         
         # Ensures both cameras detect object
         if leftCount == 0 or rightCount == 0:
@@ -593,8 +611,9 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 # print(camera_position)
                 vector[0] = -vector[0]
                 print(vector)
-
-                objects.append((labelL, vector))
+                
+                    
+                objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
                 print(objects)
                 
@@ -631,6 +650,27 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
             
                 vector = Inverse_kinematics.move(vector)[4]
+                if classificationL == "Biodegradable":
+                    bin_position = 0  
+                else:
+                    bin_position = 180
+                    
+                # Rotate to face bin
+                braccioDebug.servo_movement(bin_position, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                
+                # Bend over bin
+                braccioDebug.servo_movement(braccioDebug.s1, 15,braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+                
+                # Open claw
+                braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
+                
+                # Return to start position
+                braccioDebug.straight_position()
+                    
+                # braccioDebug.servo_movement(90 - Inverse_kinematics.move(bin_position)[0], 90 - Inverse_kinematics.move(bin_position)[1], 90 - Inverse_kinematics.move(bin_position)[2], 90 - Inverse_kinematics.move(bin_position)[3], braccioDebug.s5, braccioDebug.s6)
+                # braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10) 
+                # time.sleep(1)
+                # braccioDebug.home_position()
 
         # Calculates and labels depth from object
         # depthCalculation(centreLeft, centreRight)
