@@ -23,8 +23,8 @@ def bar_chart():
 
     litters = list(counts.keys())
     counter = list(counts.values())
-
-    plt.bar(litters, counter)
+    plt.xticks(rotation=30)
+    plt.bar(litters, counter, width=0.4)
 
     x = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -33,6 +33,7 @@ def bar_chart():
     plt.ylabel("Count")
 
     image_path = os.path.join("Data", f'bar_chart-{x.replace(" ", "_").replace(":", "-")}.png') 
+    plt.tight_layout()
     plt.savefig(image_path)
 
     # plt.show()
