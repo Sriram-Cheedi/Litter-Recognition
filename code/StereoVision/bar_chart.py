@@ -33,6 +33,7 @@ def bar_chart():
     plt.ylabel("Count")
 
     image_path = os.path.join("Data", f'bar_chart-{x.replace(" ", "_").replace(":", "-")}.png') 
+    plt.tight_layout()
     plt.savefig(image_path)
 
     # plt.show()
