@@ -424,14 +424,9 @@ def createPieChart():
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
 
+    # Used to calculate frame time
     timeCounter = 0
-    # display_text("PICKING UP!", 780, 520, GREEN)
-    # pygame.display.flip()
-    # # input()
-    # display_text("PICK UP FAILED!", 780, 570, RED)
-    # display_text("NO OBJECTS!", 780, 620, RED)
-    # pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
-    # pygame.display.flip()
+    
 
     if robot:
         # serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyUSB0): ")
@@ -459,6 +454,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
     cameraRight.set(3, 640)
     cameraRight.set(4, 480)
     
+    # Check for a camera failing to open
     if not cameraLeft.isOpened() or not cameraRight.isOpened():
         print("Error: a camera could not be opened")
         exit()
@@ -469,11 +465,11 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
     focalLength = 4 # Camera lense's focal length (mm)
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
-    # Camera position
-    camera_position1 = np.array([0, -90, 850])
-    camera_position2 = np.array([0, -90, 850])
-    camera_position = (camera_position1 + camera_position2)/2
-    camera_angle = 50
+    # Camera positions
+    camera_position1 = np.array([3.5, -90, 850])
+    camera_position2 = np.array([-3.5, -90, 850])
+    camera_position = (camera_position1 + camera_position2)/2 # The average position of the two cameras
+    camera_angle = 50 # The angle from the cameras normal to the horizontal plane
 
         
     # Main detection loop
@@ -486,11 +482,12 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         #  Capture and pre-process image
         ret, captureLeft = cameraLeft.read()
         ret1, captureRight = cameraRight.read()
-        #capture = cv2.cvtColor(capture, cv2.COLOR_RGB2BGR)
-        
+
+        # Correct stereovision distortion
         captureLeft, captureRight = activeCalibration.undistortRect(captureLeft, captureRight)
 
         start = time.time()
+        
         
         img = preProcess(captureLeft, width, height)
         img1 = preProcess(captureRight, width, height)
@@ -517,7 +514,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         centreLeft, leftCount, labelL, classificationL = drawBoxes(captureLeft, scores, boxes, lblMap,classificationMap, classes)
         centreRight, rightCount, labelR, classificationR = drawBoxes(captureRight, scores1, boxes1, lblMap, classificationMap, classes1)
         
-        # Ensures both cameras detect object
+        # This will run if an object is not simultaneously detected by both cameras
         if leftCount == 0 or rightCount == 0:
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(captureRight, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
@@ -527,15 +524,16 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
             if timeCounter >= 60:
                 display_text("NO OBJECTS!", 780, 620, RED)
                 pygame.display.flip()
+
+        # This will run when both cameras detect the same object
         else:
             timeCounter = 0
+
+            # Draw over the UI alerts
             pygame.draw.rect(screen, BLACK, pygame.Rect(780, 620, 300, 45))
             pygame.display.flip()
 
             depth = triangulation.findDepth(centreLeft, centreRight, captureLeft, captureRight, camDist, focalLength, alpha)
-
-           
-            #print(coords)
  
             cv2.putText(captureLeft, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
             cv2.putText(captureRight, "Distance: " + str(round(depth, 1)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
@@ -546,7 +544,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 depth *= 10
                 depth = 1500
 
-                # New coordinate calculations
+                # Calculate coordinates of object from depth
+                # Could make function getCoords(depth, width, height, x, y) -> [x, y, z]
 
                 # Pixels per mm value
                 p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
@@ -565,57 +564,19 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 norm = np.linalg.norm(P)
 
                 PNorm = P / norm
-                
-                print(PNorm)
-                print(depth)
 
                 rotMatrix = np.array([[1, 0, 0],
                                       [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
                                       [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
 
                 ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
-                print(PNorm * depth)
-                print(camera_position)
-                print(ObjCoords)
-
-                # # Calculate angles to object from the normal to the camera and 
-                # midpointx = screen_width / 2
-                # midpointy = screen_height / 2
-
-                # theta1 = -camera_angle + ((midpointy - centreLeft[1]) * (alpha / width))
-                # phi1 = (centreLeft[0] - midpointx) * (alpha / width)
-
-                # theta2 = -camera_angle + ((midpointy - centreRight[1]) * (alpha / width))
-                # phi2 = (centreRight[0] - midpointx) * (alpha / width)
-
-                # # Average the two angles between the cameras
-                # theta = (theta1 + theta2) / 2
-                # phi = (phi1 + phi2) / 2
-                # print("Theta: ", theta)
-                # print("Phi: ", phi)
-
-                # # Calculating coordinates based on depth and angles from the cameras normal vectors
-                # z = depth * np.sin(np.deg2rad(theta))
-                # x = depth * np.sin(np.deg2rad(phi))
-                # y = np.sqrt(depth**2 - x**2 - z**2)
-                
-                
-                # # Translate the vector to the position of the robot
                 vector = ObjCoords.transpose()
                 
-                
-                # vector[0] = int(input("Enter x:"))
-                # vector[1] = int(input("Enter y:"))
-                # vector[2] = int(input("Enter z:"))
-                # print([x, y, z])
-                # print(camera_position)
+                # x value is inverted in our robot coordinate system so negate the x value
                 vector[0] = -vector[0]
-                print(vector)
-                
                     
                 objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
-                print(objects)
                 
                 with open('Data/litters.txt', 'a') as file:
                     file.write(labelL + "\n")
@@ -631,6 +592,8 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                     display_text("PICK UP FAILED!", 780, 570, RED)
                     pygame.display.flip()
 
+
+                # Functionalise the pickup code
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
@@ -667,13 +630,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 # Return to start position
                 braccioDebug.straight_position()
                     
-                # braccioDebug.servo_movement(90 - Inverse_kinematics.move(bin_position)[0], 90 - Inverse_kinematics.move(bin_position)[1], 90 - Inverse_kinematics.move(bin_position)[2], 90 - Inverse_kinematics.move(bin_position)[3], braccioDebug.s5, braccioDebug.s6)
-                # braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10) 
-                # time.sleep(1)
-                # braccioDebug.home_position()
-
-        # Calculates and labels depth from object
-        # depthCalculation(centreLeft, centreRight)
         
         end = time.time()
         calculateFPS(captureLeft, captureRight, start, end)
