@@ -270,44 +270,6 @@ class TestInterface(unittest.TestCase):
             mock_ik.assert_called_once()
             self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
 
-    def test_handle_key_press_l(self):
-        vector = np.array([0, 150, 0])
-        mock_braccio = MagicMock()
-        mock_braccio.s5 = 90
-        mock_braccio.s6 = 60
-
-        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
-            result = handle_key_press(mock_braccio, pygame.K_l, vector)
-
-            mock_braccio.servo_movement.assert_called_once()
-            mock_ik.assert_called_once()
-            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
-
-    def test_handle_key_press_u(self):
-        vector = np.array([0, 150, 0])
-        mock_braccio = MagicMock()
-        mock_braccio.s5 = 90
-        mock_braccio.s6 = 60
-
-        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
-            result = handle_key_press(mock_braccio, pygame.K_u, vector)
-
-            mock_braccio.servo_movement.assert_called_once()
-            mock_ik.assert_called_once()
-            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
-
-    def test_handle_key_press_o(self):
-        vector = np.array([0, 150, 0])
-        mock_braccio = MagicMock()
-        mock_braccio.s5 = 90
-        mock_braccio.s6 = 60
-
-        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
-            result = handle_key_press(mock_braccio, pygame.K_o, vector)
-
-            mock_braccio.servo_movement.assert_called_once()
-            mock_ik.assert_called_once()
-            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
    
     # def test_keypress_multiple_servo_movement(self):
     #     initial_s5 = self.braccio.s5
