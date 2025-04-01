@@ -464,6 +464,45 @@ def getCoords(depth, width, height, x, y):
     return vector
     
 
+def pickUp(braccioDebug, classification, vector):
+    '''
+    Will pick up an object given its position `vector`
+    '''
+
+    # Stand up straight
+    braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
+
+    # Jiggle the base
+    baseServo = 90 - Inverse_kinematics.move(vector)[0]
+    jiggle(braccioDebug, baseServo)
+    
+
+    # Move thew arm down with class open
+    braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
+    
+    # Shut the claw
+    braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
+    
+    # Stand up straight with claw shut
+    braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
+
+    vector = Inverse_kinematics.move(vector)[4]
+    if classification == "Biodegradable":
+        bin_position = 0  
+    else:
+        bin_position = 180
+        
+    # Rotate to face bin
+    braccioDebug.servo_movement(bin_position, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+    
+    # Bend over bin
+    braccioDebug.servo_movement(braccioDebug.s1, 15,braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
+    
+    # Open claw
+    braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
+    
+    # Return to start position
+    braccioDebug.straight_position()
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
@@ -589,36 +628,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 depth = 1500
 
                 # Calculate coordinates of object from depth
-                # Could make function getCoords(depth, width, height, x, y) -> [x, y, z]
                 vector = getCoords()
-
-                # # Pixels per mm value
-                # p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
-                # print(p)
-
-                # mpx = 640 / 2
-                # mpy = 480 / 2
-
-                # x = (centreLeft[0] + centreRight[0]) / 2
-                # y = (centreLeft[1] + centreRight[1]) / 2
-                # print(x, y)
-
-                # P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
-                # print(P)
-
-                # norm = np.linalg.norm(P)
-
-                # PNorm = P / norm
-
-                # rotMatrix = np.array([[1, 0, 0],
-                #                       [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
-                #                       [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
-
-                # ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
-                # vector = ObjCoords.transpose()
-                
-                # # x value is inverted in our robot coordinate system so negate the x value
-                # vector[0] = -vector[0]
                     
                 objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
@@ -637,41 +647,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                     display_text("PICK UP FAILED!", 780, 570, RED)
                     pygame.display.flip()
 
-
-                # Stand up straight
-                braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)
-
-                # Jiggle the base
-                baseServo = 90 - Inverse_kinematics.move(vector)[0]
-                jiggle(braccioDebug, baseServo)
-                
-
-                # Move thew arm down with class open
-                braccioDebug.servo_movement(braccioDebug.s1, 90 - Inverse_kinematics.move(vector)[1], 90 - Inverse_kinematics.move(vector)[2], 90 - Inverse_kinematics.move(vector)[3], braccioDebug.s5, braccioDebug.s6)
-                
-                # Shut the claw
-                braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 73)
-                
-                # Stand up straight with claw shut
-                braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
-            
-                vector = Inverse_kinematics.move(vector)[4]
-                if classificationL == "Biodegradable":
-                    bin_position = 0  
-                else:
-                    bin_position = 180
-                    
-                # Rotate to face bin
-                braccioDebug.servo_movement(bin_position, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
-                
-                # Bend over bin
-                braccioDebug.servo_movement(braccioDebug.s1, 15,braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
-                
-                # Open claw
-                braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, 10)
-                
-                # Return to start position
-                braccioDebug.straight_position()
+                pickUp(braccioDebug, classificationL)
                     
         
         end = time.time()
