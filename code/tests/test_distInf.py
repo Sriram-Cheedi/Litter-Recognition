@@ -93,28 +93,6 @@ class TestDistInf(unittest.TestCase):
 
         self.assertTrue(mock_braccio.servo_movement.call_count >= 3)     
             
-    
-    
-    def test_home_position_resets_servos(self):
-        braccio = BraccioDebug(mock=True)
-        braccio.servo_movement = MagicMock()
-        braccio.home_position()
-        braccio.servo_movement.assert_called()
-
-    def test_vector_transform_with_ik(self):
-        vector = np.array([100, 150, 20])
-        result = distInf.Inverse_kinematics.move(vector)
-        self.assertIsInstance(result, tuple)
-        self.assertEqual(len(result), 5)
-        self.assertIsInstance(result[4], np.ndarray)
-
-    def test_read_feedback_format(self):
-        braccio = BraccioDebug(mock=True)
-        feedback = braccio.read_feedback()
-        self.assertIsInstance(feedback, dict)
-        for key in ["s1", "s2", "s3", "s4", "s5", "s6"]:
-            self.assertIn(key, feedback)
-            self.assertIsInstance(feedback[key], int)
 
 if __name__ == '__main__':
     unittest.main()

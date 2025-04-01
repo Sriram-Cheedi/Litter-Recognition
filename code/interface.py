@@ -114,7 +114,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             servoPos = checkInBounds(servoPos, uBounds, lBounds)
             self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
             self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:] 
-            self.get_position_feedback()
+            # self.get_position_feedback()
         except Exception as e:
             print(f"Error moving joint {servo.name}: {e}")
  
