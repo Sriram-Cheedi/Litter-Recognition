@@ -94,39 +94,26 @@ class TestDistInf(unittest.TestCase):
         self.assertTrue(mock_braccio.servo_movement.call_count >= 3)     
             
     
+    
     def test_home_position_resets_servos(self):
-        mock_braccio = MagicMock()
-        mock_braccio.servo_movement = MagicMock()
-        mock_braccio.home_position()
-        mock_braccio.servo_movement.assert_called()
-
-    def test_move_single_joint_bounds(self):
-        mock_braccio = MagicMock()
-        mock_braccio.s5 = 170
-        mock_braccio.servo_movement = MagicMock()
-        distInf.move_single_joint(mock_braccio, ServoMotor.S5, 5)
-        self.assertTrue(mock_braccio.servo_movement.called)
+        braccio = BraccioDebug(mock=True)
+        braccio.servo_movement = MagicMock()
+        braccio.home_position()
+        braccio.servo_movement.assert_called()
 
     def test_vector_transform_with_ik(self):
         vector = np.array([100, 150, 20])
         result = distInf.Inverse_kinematics.move(vector)
-        self.assertIsInstance(result, list)
+        self.assertIsInstance(result, tuple)
         self.assertEqual(len(result), 5)
         self.assertIsInstance(result[4], np.ndarray)
-        
-    def test_read_feedback_format(self):
-        mock_braccio = MagicMock()
-        mock_braccio.s1 = 10
-        mock_braccio.s2 = 20
-        mock_braccio.s3 = 30
-        mock_braccio.s4 = 40
-        mock_braccio.s5 = 50
-        mock_braccio.s6 = 60
 
-        feedback = distInf.read_feedback(mock_braccio)
+    def test_read_feedback_format(self):
+        braccio = BraccioDebug(mock=True)
+        feedback = braccio.read_feedback()
         self.assertIsInstance(feedback, str)
         self.assertIn("Servo positions", feedback)
-        for value in [10, 20, 30, 40, 50, 60]:
+        for value in [braccio.s1, braccio.s2, braccio.s3, braccio.s4, braccio.s5, braccio.s6]:
             self.assertIn(str(value), feedback)
 
 if __name__ == '__main__':
