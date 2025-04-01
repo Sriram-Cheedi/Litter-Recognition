@@ -432,7 +432,15 @@ def createPieChart():
 def getCoords(depth, width, height, x, y):
     '''
     Function that gets the coordinates of a detected object based off of its
-    percieved distance, position on the screen and camera details.
+    percieved distance, position on the screen and camera details. \n
+    ### Returns
+    `vector` 3 coordinates representing the position of the detected object relative to the position of the robot
+    ### Inputs
+    `depth` The distance from camera \n
+    `width` Width of the camera feed(s) \n
+    `height` Height of the camera feed(s) \n
+    `x` x position of object on screen \n
+    `y` y position of object on screen \n
     '''
     global frameRate
     global camDist 
@@ -444,17 +452,21 @@ def getCoords(depth, width, height, x, y):
     # Pixels per mm value
     p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
 
+    # Get the midpoints of the screen
     mpx = width / 2
     mpy = height / 2
 
+    # Gets a unit vector representation of the vector to the object from the focal point of the camera
     P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
     norm = np.linalg.norm(P)
     PNorm = P / norm
 
+    # Rotation matrix representing the rotation of the camera relative to the horizontal plane
     rotMatrix = np.array([[1, 0, 0],
                             [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
                             [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
 
+    # Multiply the normal vector by the distance and offset by cameras position relative to the robot
     ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
     vector = ObjCoords.transpose()
     
@@ -486,6 +498,7 @@ def pickUp(braccioDebug, classification, vector):
     # Stand up straight with claw shut
     braccioDebug.servo_movement(90, 90, 90, 90, 90, braccioDebug.s6)
 
+    # Sort the object into two bins
     vector = Inverse_kinematics.move(vector)[4]
     if classification == "Biodegradable":
         bin_position = 0  
