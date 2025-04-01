@@ -494,7 +494,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
     lblMap,classificationMap  = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
-    cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    cameraLeft = cv2.VideoCapture(1, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
     cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
@@ -517,7 +517,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         
     # Main detection loop
     while True:
-
+        print('here beginning')
         # Draw over the previous picking up alert
         pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
         pygame.display.flip()
@@ -557,6 +557,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         centreLeft, leftCount, labelL, classificationL = drawBoxes(captureLeft, scores, boxes, lblMap,classificationMap, classes)
         centreRight, rightCount, labelR, classificationR = drawBoxes(captureRight, scores1, boxes1, lblMap, classificationMap, classes1)
         
+        print('here detect')
         # This will run if an object is not simultaneously detected by both cameras
         if leftCount == 0 or rightCount == 0:
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
@@ -698,10 +699,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         
         createPieChart()
         pygame.display.flip()
-        
-        # Get vector pos
-
-       
+        print('here end')
 
         # Press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):

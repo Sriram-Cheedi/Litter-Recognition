@@ -113,7 +113,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             servoPos = checkInBounds(servoPos, uBounds, lBounds)
             self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
             self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:] 
-            self.get_position_feedback()
+            # self.get_position_feedback()
         except Exception as e:
             print(f"Error moving joint {servo.name}: {e}")
  
@@ -129,7 +129,7 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         
     def calibrate_servos(braccio):
         print("Calibrating servos to default positions...")
-        braccio.servo_movement(90, 90, 90, 90, 90, 90)  # Calibrate to default position0, 40, 180, 0, 180)
+        braccio.servo_movement(90, 90, 90, 90, 90, 90)  # Calibrate to default position (0, 40, 180, 0, 180)
         print("Calibration complete.")
 
 
@@ -143,7 +143,14 @@ def jiggle(braccioDebug, baseServo):
         braccioDebug.servo_movement(baseServo + offset, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
         direction *= -1
         
+
 def robotLogic():
+    '''
+    Function that handles the manual movement of robot in 3d plane.
+    '''
+
+    global vector
+
     # Get serial port though user input
     serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock = False)
