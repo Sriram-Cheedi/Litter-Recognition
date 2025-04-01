@@ -1,3 +1,7 @@
+# This website (https://alextereshenkov.github.io/patching-mock-python-unit-testing.html) was used as a reference for learning how to write unit tests using patch. 
+# The following code was written by applying the concepts and examples provided, which helped in understanding how to mock functions and test the code.
+
+
 import sys
 import os
 import unittest
@@ -20,6 +24,21 @@ class TestInterface(unittest.TestCase):
         self.braccio.s_conn_robot = MagicMock()  # Mock serial connection
         self.braccio.write = MagicMock()  # Mock write function to prevent AttributeError
         self.braccio.servo_movement = MagicMock()  # Mock servo movement to avoid hardware calls
+
+
+    def test_jiggle_function(self):
+        self.braccio.s2 = 90
+        self.braccio.s3 = 90
+        self.braccio.s4 = 90
+        self.braccio.s5 = 90
+        self.braccio.s6 = 90
+        base_servo = 90
+        jiggle(self.braccio, base_servo)
+        self.assertTrue(self.braccio.servo_movement.called)
+        
+    def test_calibrate_servos(self):
+        BraccioDebug.calibrate_servos(self.braccio)
+        self.braccio.servo_movement.assert_called_with(90, 90, 90, 90, 90, 90)
     
     def test_checkInbounds(self):
         uBounds = [30, 180, 165, 180, 180, 180, 73]
@@ -152,18 +171,167 @@ class TestInterface(unittest.TestCase):
         self.s1, self.s2, self.s3, self.s4, self.s5, self.s6
     )
 
-        
-    def test_keypress_multiple_servo_movement(self):
-        initial_s5 = self.braccio.s5
-        initial_s6 = self.braccio.s6
 
-        self.braccio.up(ServoMotor.S5, 5)
-        self.braccio.up(ServoMotor.S6, 5)
-
-        self.assertEqual(self.braccio.s5, min(180, initial_s5 + 5))
-        self.assertEqual(self.braccio.s6, min(73, initial_s6 + 5))
+    @patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])])
+    def test_vector_update_from_inverse_kinematics(self, mock_move):
+        vector = np.array([0, 0, 0])
+        result = Inverse_kinematics.move(vector)
+        self.assertEqual(list(result[4]), [1, 2, 3])
 
 
+    @patch("builtins.input", side_effect=["0", "COM4"])
+    @patch("interface.robotLogic")
+    def test_main_manual_mode(self, mock_robotLogic, mock_input):
+        main()
+        mock_robotLogic.assert_called()
+
+    
+    def test_handle_key_press_a(self):
+        vector = np.array([0, 0, 0])
+        mock_braccio = MagicMock()
+        mock_braccio.s5 = 170
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_a, vector)
+
+            mock_braccio.up.assert_called_with(ServoMotor.S5)
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+    def test_handle_key_press_s(self):
+        vector = np.array([0, 0, 0])
+        mock_braccio = MagicMock()
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_s, vector)
+
+            mock_braccio.up.assert_called_with(ServoMotor.S6)
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+    def test_handle_key_press_w(self):
+        vector = np.array([0, 0, 0])
+        mock_braccio = MagicMock()
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_w, vector)
+
+            mock_braccio.down.assert_called_with(ServoMotor.S6)
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+    def test_handle_key_press_d(self):
+        vector = np.array([0, 0, 0])
+        mock_braccio = MagicMock()
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_d, vector)
+
+            mock_braccio.down.assert_called_with(ServoMotor.S5)
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+    def test_handle_key_press_i(self):
+        vector = np.array([0, 150, 0])
+        mock_braccio = MagicMock()
+        mock_braccio.s5 = 90
+        mock_braccio.s6 = 60
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_i, vector)
+
+            mock_braccio.servo_movement.assert_called_once()
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+    def test_handle_key_press_k(self):
+        vector = np.array([0, 150, 0])
+        mock_braccio = MagicMock()
+        mock_braccio.s5 = 90
+        mock_braccio.s6 = 60
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_k, vector)
+
+            mock_braccio.servo_movement.assert_called_once()
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+    def test_handle_key_press_j(self):
+        vector = np.array([0, 150, 0])
+        mock_braccio = MagicMock()
+        mock_braccio.s5 = 90
+        mock_braccio.s6 = 60
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_j, vector)
+
+            mock_braccio.servo_movement.assert_called_once()
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+
+    def test_handle_key_press_u(self):
+        vector = np.array([0, 150, 0])
+        mock_braccio = MagicMock()
+        mock_braccio.s5 = 90
+        mock_braccio.s6 = 60
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_u, vector)
+
+            mock_braccio.servo_movement.assert_called_once()
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+    def test_handle_key_press_o(self):
+        vector = np.array([0, 150, 0])
+        mock_braccio = MagicMock()
+        mock_braccio.s5 = 90
+        mock_braccio.s6 = 60
+
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_ik:
+            result = handle_key_press(mock_braccio, pygame.K_o, vector)
+
+            mock_braccio.servo_movement.assert_called_once()
+            mock_ik.assert_called_once()
+            self.assertTrue(np.array_equal(result, np.array([1, 2, 3])))
+
+   
+    # def test_keypress_multiple_servo_movement(self):
+    #     initial_s5 = self.braccio.s5
+    #     initial_s6 = self.braccio.s6
+
+    #     self.braccio.up(ServoMotor.S5, 5)
+    #     self.braccio.up(ServoMotor.S6, 5)
+
+    #     self.assertEqual(self.braccio.s5, min(180, initial_s5 + 5))
+    #     self.assertEqual(self.braccio.s6, min(73, initial_s6 + 5))
+
+    # @patch("interface.pygame.display.set_mode")
+    # @patch("interface.pygame.font.Font")
+    # @patch("interface.pygame.init")
+    # @patch("builtins.input", side_effect=["COM4"])
+    # @patch("interface.pygame.event.get", return_value=[
+    #     Mock(type=pygame.KEYDOWN, key=pygame.K_a),  
+    #     Mock(type=pygame.QUIT)                    
+    # ])
+    # @patch("interface.pygame.display.set_caption")
+    # @patch("interface.pygame.key.get_pressed", return_value=[1 if i == pygame.K_a else 0 for i in range(300)])
+    # @patch("interface.pygame.quit")
+    # @patch("interface.sys.exit")
+    # @patch.dict(os.environ, {"USE_MOCK": "true"})
+    # def test_robot_logic_inverse_kinematics(
+    #     self, mock_exit, mock_quit, mock_keys, mock_caption, mock_event, mock_input, mock_init, mock_font, mock_display
+    # ):
+    #     BraccioDebug.s5 = 170
+    #     with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_move, \
+    #          patch("interface.BraccioDebug") as MockBraccio:
+    #         mock_instance = MockBraccio.return_value
+    #         mock_instance.configure_mock(s5=170)
+
+    #         robotLogic()
+    #         self.assertTrue(mock_move.called)
 
 
 if __name__ == "__main__":
