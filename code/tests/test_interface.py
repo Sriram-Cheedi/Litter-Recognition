@@ -1,3 +1,7 @@
+# This website (https://alextereshenkov.github.io/patching-mock-python-unit-testing.html) was used as a reference for learning how to write unit tests using patch. 
+# The following code was written by applying the concepts and examples provided, which helped in understanding how to mock functions and test the code.
+
+
 import sys
 import os
 import unittest
@@ -192,7 +196,30 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(self.braccio.s5, min(180, initial_s5 + 5))
         self.assertEqual(self.braccio.s6, min(73, initial_s6 + 5))
 
+    @patch("interface.pygame.display.set_mode")
+    @patch("interface.pygame.font.Font")
+    @patch("interface.pygame.init")
+    @patch("builtins.input", side_effect=["COM4"])
+    @patch("interface.pygame.event.get", return_value=[
+        Mock(type=pygame.KEYDOWN, key=pygame.K_a),  
+        Mock(type=pygame.QUIT)                    
+    ])
+    @patch("interface.pygame.display.set_caption")
+    @patch("interface.pygame.key.get_pressed", return_value=[1 if i == pygame.K_a else 0 for i in range(300)])
+    @patch("interface.pygame.quit")
+    @patch("interface.sys.exit")
+    @patch.dict(os.environ, {"USE_MOCK": "true"})
+    def test_robot_logic_inverse_kinematics(
+        self, mock_exit, mock_quit, mock_keys, mock_caption, mock_event, mock_input, mock_init, mock_font, mock_display
+    ):
+        BraccioDebug.s5 = 170
+        with patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])]) as mock_move, \
+             patch("interface.BraccioDebug") as MockBraccio:
+            mock_instance = MockBraccio.return_value
+            mock_instance.configure_mock(s5=170)
 
+            robotLogic()
+            self.assertTrue(mock_move.called)
 
 
 if __name__ == "__main__":
