@@ -31,6 +31,16 @@ pygame.init()
 screen_width = 1080
 screen_height = 720
 
+frameRate = 60
+camDist = 7 # Distance between cams (cm)
+focalLength = 4 # Camera lense's focal length (mm)
+alpha = 60 # Camera fov in horizontal plane (degrees)
+
+camera_position1 = np.array([3.5, -90, 850])
+camera_position2 = np.array([-3.5, -90, 850])
+camera_position = (camera_position1 + camera_position2)/2 # The average position of the two cameras
+camera_angle = 50 # The angle from the cameras normal to the horizontal plane
+
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Litter Recognition")
 clock = pygame.time.Clock()
@@ -418,11 +428,48 @@ def createPieChart():
     # Renders the surface onto the interface
     screen.blit(pieSurface, (0, screen_height - canHeight))
 
+
+def getCoords(depth, width, height, x, y):
+    '''
+    Function that gets the coordinates of a detected object based off of its
+    percieved distance, position on the screen and camera details.
+    '''
+    global frameRate
+    global camDist 
+    global focalLength 
+    global alpha 
+    global camera_angle
+    global camera_position
+
+    # Pixels per mm value
+    p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
+
+    mpx = width / 2
+    mpy = height / 2
+
+    P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
+    norm = np.linalg.norm(P)
+    PNorm = P / norm
+
+    rotMatrix = np.array([[1, 0, 0],
+                            [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
+                            [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
+
+    ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
+    vector = ObjCoords.transpose()
     
+    # x value is inverted in our robot coordinate system so negate the x value
+    vector[0] = -vector[0]
+
+    return vector
     
+
 
 # Main script for real time detection
 def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
+
+    # Camera positions
+    global camera_position
 
     # Used to calculate frame time
     timeCounter = 0
@@ -465,11 +512,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
     focalLength = 4 # Camera lense's focal length (mm)
     alpha = 60 # Camera fov in horizontal plane (degrees)
 
-    # Camera positions
-    camera_position1 = np.array([3.5, -90, 850])
-    camera_position2 = np.array([-3.5, -90, 850])
-    camera_position = (camera_position1 + camera_position2)/2 # The average position of the two cameras
-    camera_angle = 50 # The angle from the cameras normal to the horizontal plane
+    
 
         
     # Main detection loop
@@ -546,34 +589,35 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
 
                 # Calculate coordinates of object from depth
                 # Could make function getCoords(depth, width, height, x, y) -> [x, y, z]
+                vector = getCoords()
 
-                # Pixels per mm value
-                p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
-                print(p)
+                # # Pixels per mm value
+                # p = (np.tan(np.deg2rad(alpha/2)) * focalLength) / 320
+                # print(p)
 
-                mpx = 640 / 2
-                mpy = 480 / 2
+                # mpx = 640 / 2
+                # mpy = 480 / 2
 
-                x = (centreLeft[0] + centreRight[0]) / 2
-                y = (centreLeft[1] + centreRight[1]) / 2
-                print(x, y)
+                # x = (centreLeft[0] + centreRight[0]) / 2
+                # y = (centreLeft[1] + centreRight[1]) / 2
+                # print(x, y)
 
-                P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
-                print(P)
+                # P = np.array([(x - mpx) * p, focalLength, (mpy - y) * p])
+                # print(P)
 
-                norm = np.linalg.norm(P)
+                # norm = np.linalg.norm(P)
 
-                PNorm = P / norm
+                # PNorm = P / norm
 
-                rotMatrix = np.array([[1, 0, 0],
-                                      [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
-                                      [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
+                # rotMatrix = np.array([[1, 0, 0],
+                #                       [0, np.cos(np.deg2rad(camera_angle)), np.sin(np.deg2rad(camera_angle))],
+                #                       [0, -np.sin(np.deg2rad(camera_angle)), np.cos(np.deg2rad(camera_angle))]])
 
-                ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
-                vector = ObjCoords.transpose()
+                # ObjCoords = rotMatrix @ (PNorm * depth) + camera_position
+                # vector = ObjCoords.transpose()
                 
-                # x value is inverted in our robot coordinate system so negate the x value
-                vector[0] = -vector[0]
+                # # x value is inverted in our robot coordinate system so negate the x value
+                # vector[0] = -vector[0]
                     
                 objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
@@ -592,8 +636,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                     display_text("PICK UP FAILED!", 780, 570, RED)
                     pygame.display.flip()
 
-
-                # Functionalise the pickup code
 
                 # Stand up straight
                 braccioDebug.servo_movement(90, 90, 90, 90, 90, 10)

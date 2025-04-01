@@ -9,8 +9,7 @@ import os
 
 import time
 
-import StereoVision.distInf
-import camera_distance
+import StereoVision.distInf as distInf
 
 # Initial vector position and distance 
 vector = np.array([0, 150, 0])
@@ -371,8 +370,14 @@ def cameraLogic():
 
 
 def automatedSystem():
-  # TODO: Implemement logic to open the camera and the robot code and have them eventually be automated.
-    print("You know... The thing we promised to have done in less than two weeks...")
+    MODEL_PATH = "./Model/model.tflite"
+    LABELMAP_PATH = "./Model/labels.txt"
+    
+    port = distInf.serial_port()
+    distInf.screen.fill(distInf.BLACK)
+    pygame.display.flip()
+    if port:
+        distInf.detect(MODEL_PATH, LABELMAP_PATH, robot=True, port=port)
     
 
 
