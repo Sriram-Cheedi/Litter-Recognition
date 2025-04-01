@@ -201,6 +201,8 @@ Then:
 python -m StereoVision.distInf
 ```
 
+or double click LitterRecognition.bat and input the serial port that the arm is connected to.
+
 This script runs real time inference on the camera feeds using the TFlite TACO-trained model powering our project. If both frames detect an object, the distance of this object should be calculated and displayed with the help of the rectification parameters you calculated via the calibration script.
 
 
