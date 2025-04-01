@@ -111,10 +111,10 @@ class TestDistInf(unittest.TestCase):
     def test_read_feedback_format(self):
         braccio = BraccioDebug(mock=True)
         feedback = braccio.read_feedback()
-        self.assertIsInstance(feedback, str)
-        self.assertIn("Servo positions", feedback)
-        for value in [braccio.s1, braccio.s2, braccio.s3, braccio.s4, braccio.s5, braccio.s6]:
-            self.assertIn(str(value), feedback)
+        self.assertIsInstance(feedback, dict)
+        for key in ["s1", "s2", "s3", "s4", "s5", "s6"]:
+            self.assertIn(key, feedback)
+            self.assertIsInstance(feedback[key], int)
 
 if __name__ == '__main__':
     unittest.main()
