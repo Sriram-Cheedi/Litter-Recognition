@@ -365,8 +365,14 @@ def robotLogic():
 
 
 def cameraLogic():
-    # TODO: Implemement logic to open just the camera.
-    print("Camera to be Implemented")
+    MODEL_PATH = "./Model/model.tflite"
+    LABELMAP_PATH = "./Model/labels.txt"
+    
+    port = distInf.serial_port()
+    distInf.screen.fill(distInf.BLACK)
+    pygame.display.flip()
+    if port:
+        distInf.detect(MODEL_PATH, LABELMAP_PATH, robot=False, port=port)
 
 
 def automatedSystem():
