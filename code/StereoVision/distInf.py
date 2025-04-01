@@ -533,7 +533,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
     lblMap,classificationMap  = loadLabelMap(LABELMAP_PATH)
     
     # Set up the camera
-    cameraLeft = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+    cameraLeft = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     cameraLeft.set(3, 640)
     cameraLeft.set(4, 480)
     cameraRight = cv2.VideoCapture(2, cv2.CAP_DSHOW)
@@ -556,7 +556,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         
     # Main detection loop
     while True:
-        print('here beginning')
         # Draw over the previous picking up alert
         pygame.draw.rect(screen, BLACK, pygame.Rect(780, 520, 300, 45))
         pygame.display.flip()
@@ -596,7 +595,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         centreLeft, leftCount, labelL, classificationL = drawBoxes(captureLeft, scores, boxes, lblMap,classificationMap, classes)
         centreRight, rightCount, labelR, classificationR = drawBoxes(captureRight, scores1, boxes1, lblMap, classificationMap, classes1)
         
-        print('here detect')
         # This will run if an object is not simultaneously detected by both cameras
         if leftCount == 0 or rightCount == 0:
             cv2.putText(captureLeft, "OBJECT NOT FOUND", (75, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
@@ -628,7 +626,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                 depth = 1500
 
                 # Calculate coordinates of object from depth
-                vector = getCoords()
+                vector = getCoords(depth, 640, 480, (centreLeft[0] + centreRight[0]) / 2, (centreLeft[1] + centreRight[1]) / 2)
                     
                 objects.append((labelL, classificationL, vector))
                 display_litter_history(objects)
@@ -647,7 +645,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
                     display_text("PICK UP FAILED!", 780, 570, RED)
                     pygame.display.flip()
 
-                pickUp(braccioDebug, classificationL)
+                pickUp(braccioDebug, classificationL, vector)
                     
         
         end = time.time()
@@ -675,7 +673,6 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False,port = None):
         
         createPieChart()
         pygame.display.flip()
-        print('here end')
 
         # Press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):
