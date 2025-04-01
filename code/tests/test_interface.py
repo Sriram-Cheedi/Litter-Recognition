@@ -20,6 +20,21 @@ class TestInterface(unittest.TestCase):
         self.braccio.s_conn_robot = MagicMock()  # Mock serial connection
         self.braccio.write = MagicMock()  # Mock write function to prevent AttributeError
         self.braccio.servo_movement = MagicMock()  # Mock servo movement to avoid hardware calls
+
+
+    def test_jiggle_function(self):
+        self.braccio.s2 = 90
+        self.braccio.s3 = 90
+        self.braccio.s4 = 90
+        self.braccio.s5 = 90
+        self.braccio.s6 = 90
+        base_servo = 90
+        jiggle(self.braccio, base_servo)
+        self.assertTrue(self.braccio.servo_movement.called)
+        
+    def test_calibrate_servos(self):
+        BraccioDebug.calibrate_servos(self.braccio)
+        self.braccio.servo_movement.assert_called_with(90, 90, 90, 90, 90, 90)
     
     def test_checkInbounds(self):
         uBounds = [30, 180, 165, 180, 180, 180, 73]
@@ -151,6 +166,20 @@ class TestInterface(unittest.TestCase):
         return "Mocked feedback: Servo positions - {}, {}, {}, {}, {}, {}".format(
         self.s1, self.s2, self.s3, self.s4, self.s5, self.s6
     )
+
+
+    @patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])])
+    def test_vector_update_from_inverse_kinematics(self, mock_move):
+        vector = np.array([0, 0, 0])
+        result = Inverse_kinematics.move(vector)
+        self.assertEqual(list(result[4]), [1, 2, 3])
+
+
+    @patch("builtins.input", side_effect=["0", "COM4"])
+    @patch("interface.robotLogic")
+    def test_main_manual_mode(self, mock_robotLogic, mock_input):
+        main()
+        mock_robotLogic.assert_called()
 
         
     def test_keypress_multiple_servo_movement(self):
