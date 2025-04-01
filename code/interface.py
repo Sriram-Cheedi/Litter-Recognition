@@ -281,9 +281,7 @@ def robotLogic():
                     running = False
                     
                     
-        def is_safe_move(servo, degrees):
-            new_pos = braccioDebug.__dict__[f"s{servo.value}"] + degrees
-            return 0 <= new_pos <= 180 
+        
 
         keys = pygame.key.get_pressed()
        
