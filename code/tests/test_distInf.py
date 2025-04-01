@@ -3,6 +3,7 @@ from unittest.mock import patch, MagicMock, mock_open
 import numpy as np
 import pygame
 import StereoVision.distInf as distInf
+from interface import *
 
 class TestDistInf(unittest.TestCase):
 
@@ -77,6 +78,56 @@ class TestDistInf(unittest.TestCase):
             self.fail(f"display_text raised an exception: {e}")
         finally:
             pygame.quit()
+    
+    def test_robot_servo_bounds(self):
+        mock_braccio = MagicMock()
+        mock_braccio.servo_movement = MagicMock()
+        mock_braccio.s2 = 90
+        mock_braccio.s3 = 90
+        mock_braccio.s4 = 90
+        mock_braccio.s5 = 90
+        mock_braccio.s6 = 90
+
+        baseServo = 90
+        distInf.jiggle(mock_braccio, baseServo)
+
+        self.assertTrue(mock_braccio.servo_movement.call_count >= 3)     
+            
+    
+    def test_home_position_resets_servos(self):
+        mock_braccio = MagicMock()
+        mock_braccio.servo_movement = MagicMock()
+        mock_braccio.home_position()
+        mock_braccio.servo_movement.assert_called()
+
+    def test_move_single_joint_bounds(self):
+        mock_braccio = MagicMock()
+        mock_braccio.s5 = 170
+        mock_braccio.servo_movement = MagicMock()
+        distInf.move_single_joint(mock_braccio, ServoMotor.S5, 5)
+        self.assertTrue(mock_braccio.servo_movement.called)
+
+    def test_vector_transform_with_ik(self):
+        vector = np.array([100, 150, 20])
+        result = distInf.Inverse_kinematics.move(vector)
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 5)
+        self.assertIsInstance(result[4], np.ndarray)
+        
+    def test_read_feedback_format(self):
+        mock_braccio = MagicMock()
+        mock_braccio.s1 = 10
+        mock_braccio.s2 = 20
+        mock_braccio.s3 = 30
+        mock_braccio.s4 = 40
+        mock_braccio.s5 = 50
+        mock_braccio.s6 = 60
+
+        feedback = distInf.read_feedback(mock_braccio)
+        self.assertIsInstance(feedback, str)
+        self.assertIn("Servo positions", feedback)
+        for value in [10, 20, 30, 40, 50, 60]:
+            self.assertIn(str(value), feedback)
 
 if __name__ == '__main__':
     unittest.main()
