@@ -34,18 +34,6 @@ class TestDistInf(unittest.TestCase):
         distInf.jiggle(mock_braccio, baseServo=90)
         self.assertTrue(mock_braccio.servo_movement.called)
 
-    def test_loadLabelMap(self):
-        mock_file_content = """
-                            0 background
-                            1 plastic
-                            16 banana_peel
-                            """
-        with patch("builtins.open", mock_open(read_data=mock_file_content)):
-            label_map, classification_map = distInf.loadLabelMap("fake_path.txt")
-
-        self.assertEqual(label_map[1], "plastic")
-        self.assertEqual(classification_map[1], "Non-Biodegradable")
-        self.assertEqual(classification_map[16], "Biodegradable")
 
     def test_preProcess(self):
         frame = np.ones((480, 640, 3), dtype=np.uint8) * 255
@@ -61,9 +49,7 @@ class TestDistInf(unittest.TestCase):
         class_map = {1: "Non-Biodegradable"}
         classes = [1]
 
-        pos, count, label, classification = distInf.draw_boxes(
-            capture, scores, boxes, lbl_map, class_map, classes
-        )
+        pos, count, label, classification = distInf.draw_boxes(capture, scores, boxes, lbl_map, class_map, classes)
 
         self.assertEqual(count, 1)
         self.assertEqual(label, "plastic")

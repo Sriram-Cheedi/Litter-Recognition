@@ -1,4 +1,12 @@
-# Running this file by "python -m StereoVision.distInf"
+"""
+distInf.py - Litter Detection and Classification 
+
+This file has the main logic for the object detecion and depth calculation using 2 USB cameras. 
+It uses the TFLite model for litter detection, calculates 3D cooredinates and 
+sends commands to the robo arm to pick and sort the litter into bio and non-biodegradable bins.
+
+Run with: python -m StereoVision.distInf
+"""
 
 import os
 import random
@@ -81,6 +89,9 @@ particles = [
 
 
 def load_image(path, size):
+    """
+    Loads images for the loading screen and scales it.
+    """
     return pygame.transform.smoothscale(pygame.image.load(path).convert_alpha(), size)
 
 
@@ -95,6 +106,9 @@ group_image = load_image(IMAGE_PATH_GROUP, (600, 400))
 
 
 def gradient(surface, top_color, bottom_color):
+    """
+    Gives a gradient background for an aesthetic UI.
+    """
     for y in range(surface.get_height()):
         ratio = y / surface.get_height()
         color = tuple(
@@ -107,13 +121,19 @@ def gradient(surface, top_color, bottom_color):
 
 
 def particle(surface):
+    """
+    Draws particles on the UI to enhance the gradient .
+    """
     for x, y, radius, alpha in particles:
         particle = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
         pygame.draw.circle(particle, (255, 255, 255, alpha), (radius, radius), radius)
         surface.blit(particle, (x - radius, y - radius))
 
 
-def image_border(surface, img, pos, border_thickness=5, border_color=(192, 192, 192)):
+def image_border(surface, img, pos, border_thickness = 5, border_color=(192, 192, 192)):
+    """
+    Draws a border for the images and blits it to the surface.
+    """
     x, y = pos
     border_rect = pygame.Rect(
         x - border_thickness,
@@ -126,6 +146,9 @@ def image_border(surface, img, pos, border_thickness=5, border_color=(192, 192, 
 
 
 def title():
+    """
+        Renders the Project title at the top of the screen.
+    """
     title = font_title.render("Litter Recognition", True, WHITE)
     rect = title.get_rect(center=(SCREEN_WIDTH // 2, 40))
     screen.blit(title, rect)
@@ -137,11 +160,17 @@ def title():
 
 
 def label():
+    """
+    Displays a prompt label for the Arduino port.
+    """
     label = font.render("Enter your Arduino Port:", True, WHITE)
     screen.blit(label, (240, 570))
 
 
 def input(text, active):
+    """
+    Renders the input text box for the Arduino port entry.
+    """
     color = color_active if active else color_inactive
     txt_surface = font.render(text, True, color)
     input_box.w = max(150, txt_surface.get_width() + 10)
@@ -150,14 +179,20 @@ def input(text, active):
 
 
 def button(mouse_pos):
+    """
+    Button to start the autonomous system.
+    """
     is_hovered = button_rect.collidepoint(mouse_pos)
     current_color = button_hover if is_hovered else button_color
     pygame.draw.rect(screen, current_color, button_rect, border_radius=10)
     text = font_button.render(button_text, True, button_text_color)
-    screen.blit(text, text.get_rect(center=button_rect.center))
+    screen.blit(text, text.get_rect(center = button_rect.center))
 
 
 def serial_port():
+    """
+    Handles the Loading screen and input for the Arduino serial port.
+    """
     text = ""
     active = False
     while True:
@@ -194,6 +229,10 @@ detected_objects = []  # Store (label, position) tuples
 
 
 def display_litter_history(objects):
+    """
+    Displays a history of detected litter and its position.
+    """
+    
     y_offset = 100
 
     max_items = 5
@@ -239,6 +278,10 @@ class ServoMotor(Enum):
 # Checks that all of the movement values are within their bounds
 # If not, they are set to the closest bound
 def checkInBounds(values, upper_bound, lower_bound):
+    """
+    Ensures all servo motor values are within their defined bounds.
+    ### Returns `newValues`: Corrected servo motor values.
+    """
     newValues = [0] * 7
     for index, item in enumerate(values):
         if upper_bound[index] < item:
@@ -352,6 +395,10 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
 
 # Function to "correct" the precision error in the base servo
 def jiggle(braccioDebug, baseServo):
+    """
+    Applies a jiggling motion to the base servo to adjust to right position and increase pickup accuracy.
+
+    """
     direction = -1
     jiggleAmount = 5
     for i in range(jiggleAmount + 1):
@@ -368,6 +415,15 @@ def jiggle(braccioDebug, baseServo):
 
 
 def display_text(text, x, y, color=WHITE, clear_area=False):
+    """
+    Renders text on the screen at the specified location.
+    
+        `text` Text to display.\n
+        `x`: X-coordinate.
+        `y`: Y-coordinate.
+        `color`: RGB color.
+        `clear_area`: Whether to clear previous text in the area.
+    """
     if clear_area:
         print(x, y)
         pygame.draw.rect(
@@ -379,6 +435,11 @@ def display_text(text, x, y, color=WHITE, clear_area=False):
 
 # Loads the label map into a list
 def loadLabelMap(LABELMAP_PATH):
+    
+    """
+    Loads label and classification maps from a label map file and classifiees the litter.
+
+    """
     labelMap = {}
     classificationMap = {}
 
