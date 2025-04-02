@@ -55,11 +55,10 @@ such as road signs, barriers, and natural features.
 
 **Classification:** As part of the litter detection model, litter will be classified into different  categories, such as plastic, metal, paper, and other materials. Information about the litter will be collated and stored locally to be shared with councils and environmental researchers.
 
-**Collection Methodology:** Based on the type and size of litter identified, the system will determine the most effective collection method. Larger items may require mechanical arms or grippers, while smaller
-debris could be collected using vacuum systems or sweeping mechanisms. The collection system will be adaptable to different types of litter and their location on the roadside.
+**Collection:** If litter is detected, the system must pick it up. The method in doing so may change depending on the type of litter detected. How ever for the purpose of our proof of concept, collection need only work under limited conditions.
 
-**Litter Storage:** Once collected, the system will place the litter into designated storage containers onboard the autonomous vehicle. These containers will be designed for easy disposal or recycling at
-regular intervals, reducing the need for frequent manual intervention.
+**Storage:** Once collected, the system will sort litter into separate locations depending on its type and how it needs to be recycled or disposed of.
+
 
 ## Benefits and Impact
 The development and deployment of this autonomous litter recognition and collection system will provide several key benefits:
