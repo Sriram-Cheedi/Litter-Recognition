@@ -53,9 +53,7 @@ such as road signs, barriers, and natural features.
 ## Project Requirements:
 **Detection:** The system will use image recognition and object detection techniques, such as stereoscopic vision, to identify man-made items. The system will function as a proof of concept for a more advanced product that will use higher grade technology that can function in more contexts and harsher conditions.
 
-**Litter Classification:** The detected litter will be classified into different sizes and categories, such as plastic, metal, paper, and other materials. The classification system will differentiate between
-larger objects (e.g., plastic bottles, vehicle debris) and smaller, more dispersed litter (e.g., cigarette butts, snack wrappers). This classification will inform the optimal collection method for each type of
-waste.
+**Classification:** As part of the litter detection model, litter will be classified into different  categories, such as plastic, metal, paper, and other materials. Information about the litter will be collated and stored locally to be shared with councils and environmental researchers.
 
 **Collection Methodology:** Based on the type and size of litter identified, the system will determine the most effective collection method. Larger items may require mechanical arms or grippers, while smaller
 debris could be collected using vacuum systems or sweeping mechanisms. The collection system will be adaptable to different types of litter and their location on the roadside.
