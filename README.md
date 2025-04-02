@@ -267,7 +267,7 @@ A much more detailed description of the codebase can be seen in the handover doc
 
 ## Architecture Diagram
 
-![Architecture Diagram](docs/Architecture-Diagrams/beta_diagram_colour.jpeg)
+![Architecture Diagram](docs/Architecture-Diagrams/FinalArchDiagram.jpeg)
 
 
 
