@@ -35,22 +35,24 @@ can detect and clear road litter efficiently, reducing human intervention while 
 
 
 ## Project Description:
-This proposal will investigate an advanced system for the identification and collection of litter that will automate the litter recognition and collecting process in roadside environments. The system would utilize advanced machine learning, computer vision, and robotics to automatically detect litter in rough
-terrain, such as grasslands, shrubs, and trees along the road. The technology will be applied to smaller-scale autonomous vehicles that can safely work at the edge of the road in poor conditions.
+This project is an autonomous system designed to automate both litter recognition and collection. The goal of the project is to automate litter picking to help clean the environment by reducing the need for manual picking. It addresses
+the removal of 'hard shoulder' lane from smart motorways, which restricts access to the verge at the side of the road, and requires expensive lane closures and a greater risk to workers manually collecting litter. The system uses
+advanced Machine Learning,
+Computer Vision and Robotics to detect and collect litter in different terrains. This system will be integrated onto an autonomous vehicle that can safely move by avoiding the obstscles in various conditions.
 
-**The System will leverage several cutting-edge technologies, including:**
-**Computer Vision and Machine Learning:** For accurate detection and classification of litter. Convolutional Neural Networks (CNNs) will be employed to analyze video feeds or images captured by onboard cameras.
-The system will be trained to recognize common types of litter and differentiate them from natural elements like leaves and rocks.
+**Technologies used in this project:** 
+</br>
 
-**Robotic Mechanisms:** The autonomous vehicle will be equipped with mechanical arms to collect litter of various sizes and compositions. These systems will be designed to operate effectively in rough and
-uneven terrain, typical of roadside verges.
+**Computer Vision and Machine Learning:**  Machine Learning is used for litter detection and Computer Vision is used for depth calculation between the litter and the cameras.
+
+**Robotics:** A braccio robotic arm is used for picking and disposing the detected litter into bins. The arm is controlled using serial communication for precise movement.
 
 **Autonomous Navigation:** The vehicle will be capable of navigating along the roadside without human intervention, using GPS and sensor technologies to stay within designated areas while avoiding obstacles
 such as road signs, barriers, and natural features.
 
 **Our project aims to create a proof-of-concept iteration of this design with limited features that can be worked upon. We will use a single arm and a computer to produce a system that can identify and pick up key types of litter.**
 
-## Project Requirements:
+## Project Features:
 **Detection:** The system will use image recognition and object detection techniques, such as stereoscopic vision, to identify man-made items. The system will function as a proof of concept for a more advanced product that will use higher grade technology that can function in more contexts and harsher conditions.
 
 **Classification:** As part of the litter detection model, litter will be classified into different  categories, such as plastic, metal, paper, and other materials. Information about the litter will be collated and stored locally to be shared with councils and environmental researchers.
@@ -61,14 +63,13 @@ such as road signs, barriers, and natural features.
 
 
 ## Benefits and Impact
-The development and deployment of this autonomous litter recognition and collection system will provide several key benefits:
+The benefits of using this autonomous system are:
 
-**Increased Safety:** By reducing the need for manual litter collection in dangerous roadside conditions, this system minimizes the risk to workers.
+**Increase Safety:** It reduces the need of manual litter picking in harsh road side conditions which reduces the risk to workers.
 
-**Cost Efficiency:** The automation of litter detection and collection will lower operational costs by reducing labor expenses and the need for expensive lane closures during manual cleanups.
+**Cost Effective:** Due to autonomous litter picking, the labour expenses will be reduced and also reduces the need for lane closures.
 
-**Environmental Protection:** The system will help maintain cleaner roadsides, preventing litter from polluting local ecosystems and waterways, while also contributing to waste management and recycling
-initiatives.
+**Clean Environment:** It helps to maintain cleaner roadsides and improves the waste management and recyling.
 
 **Scalability:** This solution can be scaled across highways and other high-traffic areas, creating a more systematic and consistent approach to litter management.
 
@@ -76,12 +77,12 @@ initiatives.
 ## Stakeholders:
 **Moss&Gund Ltd:**
 * Role: The commissioning group for this project. They will oversee its development and we will meet biweekly to go over our progress.
-* Purpose for the System: They would like for the system to be able to recognize and discard 6 keys types of roadside litter into a bag. The group would take the autonomous system to market as a commercial 
+* Purpose for the System: They would like for the system to be able to recognize and discard 6 keys types of roadside litter into a bin. The group would take the autonomous system to market as a commercial 
   solution using AGILE X systems to make our system mobile.
 
 **General Public:**
 * Role: The deployment of the project will most likely affect them as the system will be working on the same roads.
-* Purpose for the System: They are not direct users, but the general public do stand to benefit in terms of cleaner roads, reduced litter and improved public safety on the motorways and highways. The system 
+* Purpose for the System: They are not direct users, but the general public do stand to benefit in terms of cleaner roads, reduced litter and improved public safety on the highways. The system 
   will be required to consider the needs of the public.
 
 **Government Agencies and Road Maintenance Authorities:**
@@ -97,20 +98,19 @@ initiatives.
 
 ## User Stories:
 **As a client, I want..**
- * A system that will identify a wide variety of roadside litter and identify how to deal with it.
+ * A system that can identify different roadside litter and knows to deal with it.
 
 **As a Waste Management Contractor, I want to..**
- * Integrate autonomous litter collection vehicles into my operations, so that I can reduce the cost and risk of manual roadside litter collection.
- * Litter types classified correctly by the system so that I have better management of recycling and waste disposal processes.
+ * Integrate autonomous litter collection system into my operations to reduce the cost and risk of manual roadside litter collection.
 
 **As a member of the public I want.**
- * A safe and contained system not impeding my use of the road.
+ * A safe system that avoids the lane closures, so that I can use the road.
 
 **As an Environmental Protection Agency official, I want to..**
- * I want a system which has the capability for quick identification and collection of non-biodegradable litter so that I am able to ensure cleaner environments and the reduction of the impact of pollution on wildlife and ecosystems as much as possible.
+ * Use an autonomous litter detection and collection system to clean the harmful non-biodegradable litter and ensure a clean environment and reduce the impact of pollution on wildlife as much as possible. 
 
 **As a student, I want to..**
- * Create a proof of concept for an autonomous litter detection and disposal system so that I can utilize knowledge in computer
+ * Create a proof of concept for an autonomous litter detection and collection system to utilize my knowledge in computer
     vision and robotics in a meaningful project.
 
 
