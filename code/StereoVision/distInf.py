@@ -3,33 +3,31 @@
 import os
 import random
 import sys
+import time
+from enum import Enum
+
 import cv2
 import numpy as np
-import tensorflow.lite as tflite
-import time
-import imutils
-from matplotlib import pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg as figCanvas
 import pygame
 from pygame.locals import *
-from enum import Enum
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as figCanvas
 import pandas as pd
-from StereoVision.bar_chart import bar_chart
+import tensorflow.lite as tflite
 
 # Other packages we have created
 # Make sure python can tell StereoVision is one of the packages
 import StereoVision.activeCalibration as activeCalibration
 import StereoVision.triangulation as triangulation
-
+from StereoVision.bar_chart import bar_chart
 import braccio_adapter
 import Inverse_kinematics
-
 import camera_distance
 
 pygame.init()
 
-screen_width = 1080
-screen_height = 720
+SCREEN_WIDTH = 1080
+SCREEN_HEIGHT = 720
 
 frameRate = 60
 camDist = 7  # Distance between cams (cm)
@@ -41,7 +39,7 @@ camera_position2 = np.array([-3.5, -90, 850])
 camera_position = (camera_position1 + camera_position2) / 2  # The average position of the two cameras
 camera_angle = 50  # The angle from the cameras normal to the horizontal plane
 
-screen = pygame.display.set_mode((screen_width, screen_height))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Litter Recognition")
 clock = pygame.time.Clock()
 FPS = 30
@@ -73,8 +71,8 @@ button_text_color = WHITE
 
 particles = [
     (
-        random.randint(0, screen_width),
-        random.randint(0, screen_height),
+        random.randint(0, SCREEN_WIDTH),
+        random.randint(0, SCREEN_HEIGHT),
         random.randint(1, 3),
         random.randint(80, 150),
     )
@@ -129,7 +127,7 @@ def image_border(surface, img, pos, border_thickness=5, border_color=(192, 192, 
 
 def title():
     title = font_title.render("Litter Recognition", True, WHITE)
-    rect = title.get_rect(center=(screen_width // 2, 40))
+    rect = title.get_rect(center=(SCREEN_WIDTH // 2, 40))
     screen.blit(title, rect)
     pygame.draw.line(
         screen, WHITE, (rect.left, rect.bottom + 5), (rect.right, rect.bottom + 5), 2
@@ -414,7 +412,7 @@ def preProcess(frame, width, height):
 
 
 # Draws the bounding boxes onto the image
-def drawBoxes(capture, scores, boxes, lblMap, classificationMap, classes):
+def draw_boxes(capture, scores, boxes, lblMap, classificationMap, classes):
     h, w, _ = capture.shape
     startY, startX, endY, endX = 0, 0, 0, 0
     count = 0
@@ -497,10 +495,10 @@ def createPieChart():
     pieSurface = pygame.image.fromstring(rgbData, (canWidth, canHeight), "ARGB")
 
     # Renders the surface onto the interface
-    screen.blit(pieSurface, (0, screen_height - canHeight))
+    screen.blit(pieSurface, (0, SCREEN_HEIGHT - canHeight))
 
 
-def getCoords(depth, width, height, x, y):
+def get_coords(depth, width, height, x, y):
     """
     Function that gets the coordinates of a detected object based off of its
     percieved distance, position on the screen and camera details. \n
@@ -712,10 +710,10 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False, port=None):
         scores1 = interpreter.get_tensor(outTensors[2]["index"])[0]
 
         # Iterates through the detections
-        centreLeft, leftCount, labelL, classificationL = drawBoxes(
+        centreLeft, leftCount, labelL, classificationL = draw_boxes(
             captureLeft, scores, boxes, lblMap, classificationMap, classes
         )
-        centreRight, rightCount, labelR, classificationR = drawBoxes(
+        centreRight, rightCount, labelR, classificationR = draw_boxes(
             captureRight, scores1, boxes1, lblMap, classificationMap, classes1
         )
 
@@ -790,7 +788,7 @@ def detect(MODEL_PATH, LABELMAP_PATH, robot=False, port=None):
                 depth = 1500
 
                 # Calculate coordinates of object from depth
-                vector = getCoords(
+                vector = get_coords(
                     depth,
                     640,
                     480,

@@ -53,7 +53,7 @@ class TestDistInf(unittest.TestCase):
         self.assertEqual(result.shape, (1, 300, 300, 3))
         self.assertEqual(result.dtype, np.uint8)
 
-    def test_drawBoxes(self):
+    def test_draw_boxes(self):
         capture = np.zeros((480, 640, 3), dtype=np.uint8)
         scores = [0.8]
         boxes = [[0.1, 0.1, 0.2, 0.2]]
@@ -61,7 +61,7 @@ class TestDistInf(unittest.TestCase):
         class_map = {1: "Non-Biodegradable"}
         classes = [1]
 
-        pos, count, label, classification = distInf.drawBoxes(
+        pos, count, label, classification = distInf.draw_boxes(
             capture, scores, boxes, lbl_map, class_map, classes
         )
 

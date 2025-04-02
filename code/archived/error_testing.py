@@ -94,10 +94,10 @@ def main():
                             "
     print(braccioControlString)
     pygame.init()
-    screen_width = 800
-    screen_height = 600
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
 
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Keypress Detection")
 
     WHITE = (255, 255, 255)
@@ -255,7 +255,7 @@ def main():
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
 
         if key_history:
-            display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
+            display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT - 100)
 
 
         pygame.display.flip()

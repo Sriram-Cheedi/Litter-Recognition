@@ -276,10 +276,10 @@ def robotLogic():
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock=use_mock)
 
     pygame.init()
-    screen_width = 800
-    screen_height = 600
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
 
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Keypress Detection")
 
     WHITE = (255, 255, 255)
@@ -446,8 +446,8 @@ def robotLogic():
                 f"Last Key Pressed: {key_history[-1]}",
                 font,
                 WHITE,
-                screen_width // 2 - 150,
-                screen_height - 100,
+                SCREEN_WIDTH // 2 - 150,
+                SCREEN_HEIGHT - 100,
             )
 
         pygame.display.flip()
