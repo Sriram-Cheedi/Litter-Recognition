@@ -122,7 +122,7 @@ The structure within the ```/docs``` directory can be found below:
 ```
 
 ## Architecture Diagram:
-![image](./Architecture-Diagrams/beta_diagram_colour.jpeg)
+![image](./Architecture-Diagrams/FinalArchDiagram.jpeg)
 
 ## Robot System Guide
 
