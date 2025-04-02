@@ -23,11 +23,11 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         s4 = self.s4 
         s5 = self.s5
         s6 = self.s6
-        servoPos = [10, s1, s2, s3, s4, s5, s6]
+        servo_position = [10, s1, s2, s3, s4, s5, s6]
 
         #Holds upper and lower bounds for each servo motors movement
-        uBounds = [30, 180, 165, 180, 180, 180, 73]
-        lBounds = [10, 0, 15, 0, 0, 0, 10]
+        upper_bounds = [30, 180, 165, 180, 180, 180, 73]
+        lower_bounds = [10, 0, 15, 0, 0, 0, 10]
     
         if servo.value == 1:
             s1 += degrees
@@ -42,8 +42,8 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         if servo.value == 6:
             s6 += degrees
             
-        servoPos = checkInBounds(servoPos, uBounds, lBounds)
-        self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
+        servo_position = checkInBounds(servo_position, upper_bounds, lower_bounds)
+        self.servo_movement(servo_position[1], servo_position[2], servo_position[3], servo_position[4], servo_position[5], servo_position[6])
     
     def up(self, servo : ServoMotor, degrees = 1):
         self.move_single_joint(servo, degrees)
@@ -53,13 +53,13 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
     
 #Checks that all of the movement values are within their bounds
 #If not, they are set to the closest bound
-def checkInBounds(values, uBound, lBound):
+def checkInBounds(values, upper_bound, lower_bound):
     newValues = [0] * 7
     for index, item in enumerate(values):
-        if (uBound[index] < item):
-            newValues[index] = uBound[index]
-        elif (lBound[index] > item):
-            newValues[index] = lBound[index]
+        if (upper_bound[index] < item):
+            newValues[index] = upper_bound[index]
+        elif (lower_bound[index] > item):
+            newValues[index] = lower_bound[index]
         else:
             newValues[index] = item
     return newValues

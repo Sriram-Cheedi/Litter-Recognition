@@ -41,22 +41,22 @@ class TestInterface(unittest.TestCase):
         self.braccio.servo_movement.assert_called_with(90, 90, 90, 90, 90, 90)
     
     def test_checkInbounds(self):
-        uBounds = [30, 180, 165, 180, 180, 180, 73]
-        lBounds = [10, 0, 15, 0, 0, 0, 10]
+        upper_bounds = [30, 180, 165, 180, 180, 180, 73]
+        lower_bounds = [10, 0, 15, 0, 0, 0, 10]
         
         # Edge cases
-        self.assertEqual(checkInBounds([10, 0, 15, 0, 0, 0, 10], uBounds, lBounds),[10, 0, 15, 0, 0, 0, 10])
-        self.assertEqual(checkInBounds([30, 180, 165, 180, 180, 180, 73], uBounds, lBounds),[30, 180, 165, 180, 180, 180, 73])
+        self.assertEqual(checkInBounds([10, 0, 15, 0, 0, 0, 10], upper_bounds, lower_bounds),[10, 0, 15, 0, 0, 0, 10])
+        self.assertEqual(checkInBounds([30, 180, 165, 180, 180, 180, 73], upper_bounds, lower_bounds),[30, 180, 165, 180, 180, 180, 73])
         
         # Values exceeding bounds
-        self.assertEqual(checkInBounds([20, 90, 90, 90, 90, 90, 40], uBounds, lBounds),[20, 90, 90, 90, 90, 90, 40])
+        self.assertEqual(checkInBounds([20, 90, 90, 90, 90, 90, 40], upper_bounds, lower_bounds),[20, 90, 90, 90, 90, 90, 40])
         
-        self.assertEqual(checkInBounds([-50, 500, 200, -100, 300, -50, 100], uBounds, lBounds),[10, 180, 165, 0, 180, 0, 73])
+        self.assertEqual(checkInBounds([-50, 500, 200, -100, 300, -50, 100], upper_bounds, lower_bounds),[10, 180, 165, 0, 180, 0, 73])
         
-        self.assertEqual(checkInBounds([15, 90, 100, 200, 150, -10, 50], uBounds, lBounds), [15, 90, 100, 180, 150, 0, 50])
+        self.assertEqual(checkInBounds([15, 90, 100, 200, 150, -10, 50], upper_bounds, lower_bounds), [15, 90, 100, 180, 150, 0, 50])
 
         
-        self.assertEqual(checkInBounds([20, 90, 100, 120, 60, 30, 50], uBounds, lBounds),[20, 90, 100, 120, 60, 30, 50])
+        self.assertEqual(checkInBounds([20, 90, 100, 120, 60, 30, 50], upper_bounds, lower_bounds),[20, 90, 100, 120, 60, 30, 50])
         
     
     def test_move_joint_logic(self):

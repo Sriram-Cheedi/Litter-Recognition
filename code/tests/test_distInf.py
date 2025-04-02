@@ -10,17 +10,17 @@ class TestDistInf(unittest.TestCase):
 
     def test_checkInBounds(self):
         values = [20, 100, 100, 100, 100, 100, 50]
-        uBound = [30, 180, 165, 180, 180, 180, 73]
-        lBound = [10, 0, 15, 0, 0, 0, 10]
-        result = distInf.checkInBounds(values, uBound, lBound)
+        upper_bound = [30, 180, 165, 180, 180, 180, 73]
+        lower_bound = [10, 0, 15, 0, 0, 0, 10]
+        result = distInf.checkInBounds(values, upper_bound, lower_bound)
         self.assertEqual(result, values)
 
     def test_checkInBounds_outof_bounds(self):
         values = [-100, 300, 5, -1, 250, -20, 100]
-        uBound = [30, 180, 165, 180, 180, 180, 73]
-        lBound = [10, 0, 15, 0, 0, 0, 10]
+        upper_bound = [30, 180, 165, 180, 180, 180, 73]
+        lower_bound = [10, 0, 15, 0, 0, 0, 10]
         expected = [10, 180, 15, 0, 180, 0, 73]
-        result = distInf.checkInBounds(values, uBound, lBound)
+        result = distInf.checkInBounds(values, upper_bound, lower_bound)
         self.assertEqual(result, expected)
 
     def test_jiggle(self):

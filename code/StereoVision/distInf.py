@@ -238,13 +238,13 @@ class ServoMotor(Enum):
 # Function to ensure servo positions stay within defined bounds
 # Checks that all of the movement values are within their bounds
 # If not, they are set to the closest bound
-def checkInBounds(values, uBound, lBound):
+def checkInBounds(values, upper_bound, lower_bound):
     newValues = [0] * 7
     for index, item in enumerate(values):
-        if uBound[index] < item:
-            newValues[index] = uBound[index]
-        elif lBound[index] > item:
-            newValues[index] = lBound[index]
+        if upper_bound[index] < item:
+            newValues[index] = upper_bound[index]
+        elif lower_bound[index] > item:
+            newValues[index] = lower_bound[index]
         else:
             newValues[index] = item
     return newValues
@@ -303,33 +303,33 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
             s4 = self.s4
             s5 = self.s5
             s6 = self.s6
-            servoPos = [10, s1, s2, s3, s4, s5, s6]
-            uBounds = [30,180,165,180,180,180,73]  # Holds upper and lower bounds for each servo motors movement
-            lBounds = [10, 0, 15, 0, 0, 0, 10]
+            servo_position = [10, s1, s2, s3, s4, s5, s6]
+            upper_bounds = [30,180,165,180,180,180,73]  # Holds upper and lower bounds for each servo motors movement
+            lower_bounds = [10, 0, 15, 0, 0, 0, 10]
 
             if servo.value == 1:  # Adjusts servo based on input degrees
-                servoPos[1] += degrees
+                servo_position[1] += degrees
             if servo.value == 2:
-                servoPos[2] += degrees
+                servo_position[2] += degrees
             if servo.value == 3:
-                servoPos[3] += degrees
+                servo_position[3] += degrees
             if servo.value == 4:
-                servoPos[4] += degrees
+                servo_position[4] += degrees
             if servo.value == 5:
-                servoPos[5] += degrees
+                servo_position[5] += degrees
             if servo.value == 6:
-                servoPos[6] += degrees
+                servo_position[6] += degrees
 
-            servoPos = checkInBounds(servoPos, uBounds, lBounds)
+            servo_position = checkInBounds(servo_position, upper_bounds, lower_bounds)
             self.servo_movement(
-                servoPos[1],
-                servoPos[2],
-                servoPos[3],
-                servoPos[4],
-                servoPos[5],
-                servoPos[6],
+                servo_position[1],
+                servo_position[2],
+                servo_position[3],
+                servo_position[4],
+                servo_position[5],
+                servo_position[6],
             )
-            self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:]
+            self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servo_position[1:]
             self.get_position_feedback()
         except Exception as e:
             print(f"Error moving joint {servo.name}: {e}")
