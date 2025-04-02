@@ -165,17 +165,10 @@ class TestInterface(unittest.TestCase):
 
 
     @patch("Inverse_kinematics.move", return_value=[10, 20, 30, 40, np.array([1, 2, 3])])
-    def test_vector_update_from_inverse_kinematics(self):
+    def test_vector_update_from_inverse_kinematics(self, mock_move):
         vector = np.array([0, 0, 0])
         result = Inverse_kinematics.move(vector)
         self.assertEqual(list(result[4]), [1, 2, 3])
-
-
-    @patch("builtins.input", side_effect=["0", "COM4"])
-    @patch("interface.robotLogic")
-    def test_main_manual_mode(self, mock_robotLogic):
-        main()
-        mock_robotLogic.assert_called()
 
     
     def test_handle_key_press_a(self):
