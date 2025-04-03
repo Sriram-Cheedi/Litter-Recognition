@@ -271,7 +271,7 @@ def robotLogic():
 
     # Get serial port though user input
     global vector
-    serial_port = input("Enter the serial port (e.g., COM3, COM4, /dev/ttyACM0): ")
+    serial_port = input("Enter the serial port (eg: COM3, COM4, /dev/ttyACM0): ")
     use_mock = os.getenv("USE_MOCK", "false").lower() == "true"
     braccioDebug = BraccioDebug(serial_port_robot_magnet=serial_port, mock=use_mock)
 
@@ -446,7 +446,7 @@ def robotLogic():
                 f"Last Key Pressed: {key_history[-1]}",
                 font,
                 WHITE,
-                SCREEN_WIDTH // 2 - 150,
+                100,
                 SCREEN_HEIGHT - 100,
             )
 

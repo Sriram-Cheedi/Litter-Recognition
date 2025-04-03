@@ -239,19 +239,16 @@ def display_litter_history(objects):
     """
     Displays a history of detected litter and its position.
     """
-    
-    y_offset = 100
-
+   
     max_items = 5
     line_height = 30
-    box_width = 950
     box_height = max_items * line_height + 40
 
     pygame.draw.rect(
-        screen, BLACK, pygame.Rect(50, y_offset - 40, box_width, box_height)
+        screen, BLACK, pygame.Rect(50, 100 - 40, 950, box_height)
     )
 
-    display_text("Litter History:", 60, y_offset - 30, WHITE)
+    display_text("Litter History:", 60, 100 - 30, WHITE)
 
     for i, obj in enumerate(reversed(objects[-max_items:])):
         label, classification, position = obj
@@ -259,7 +256,7 @@ def display_litter_history(objects):
         display_text(
             f"{i+1}. {label}({classification}) at {rounded_position}",
             60,
-            y_offset + (i * line_height),
+            100 + (i * line_height),
             WHITE,
         )
 
