@@ -1,7 +1,7 @@
 # This website (https://alextereshenkov.github.io/patching-mock-python-unit-testing.html) was used as a reference for learning how to write unit tests using patch. 
 # The following code was written by applying the concepts and examples provided in the website and, which helped in understanding how to mock functions and test the code. 
-# Used ChatGPT to learn Mocking serial connection and servo_movement .
-# Used this website (https://docs.python.org/3/library/unittest.mock.html) to learn about the kwargs and assert_called_with.
+# Used ChatGPT to learn Mocking serial connection and servo_movement.
+# Used this website (https://docs.python.org/3/library/unittest.mock.html) to learn about the kwargs.
 
 
 import sys
@@ -30,7 +30,7 @@ class TestInterface(unittest.TestCase):
         self.braccio.servo_movement = MagicMock()  # Mock servo movement to avoid hardware calls
 
 
-    def test_jiggle_function(self):
+    def test_jiggle(self):
         self.braccio.s2 = 90
         self.braccio.s3 = 90
         self.braccio.s4 = 90
@@ -63,7 +63,7 @@ class TestInterface(unittest.TestCase):
         self.assertEqual(checkInBounds([20, 90, 100, 120, 60, 30, 50], upper_bounds, lower_bounds),[20, 90, 100, 120, 60, 30, 50])
         
     
-    def test_move_joint_logic(self):
+    def test_move_joint(self):
         
         # Move servo within bounds
         self.braccio.move_single_joint(ServoMotor.S1, 10)
@@ -99,7 +99,7 @@ class TestInterface(unittest.TestCase):
         self.assertIsInstance(result[4], np.ndarray)
         
     
-    def test_key_mapping_logic(self):
+    def test_key_mapping(self):
 
         initial_pos = self.braccio.s5
         
