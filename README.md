@@ -202,26 +202,6 @@ or double click LitterRecognition.bat and input the serial port that the arm is 
 
 This script runs real time inference on the camera feeds using the TFlite TACO-trained model powering our project. If both frames detect an object, the distance of this object should be calculated and displayed with the help of the rectification parameters you calculated via the calibration script.
 
-
-**If you would like to control the arm manually, run:**
-
-```console
-python interface.py
-```
-Now enter the port as displayed in the Arduino IDE.
-A PyGame window will now open.
-
-To control the arm for debugging:
-   w/s -- open/close the claw
-   a/d -- twist wrist
-   i/k -- move arm forwards and backwards in horizontal plane
-   j/l -- move arm left and right in horizontal plane
-   u/o -- move arm up and down
-
-To pick up from specific coordinates:
-Press "m" to select coordinates screen, then enter the x,y,z coordinates when prompted (in millimetres, (0,0,0) is at the middle of the shoulder joint). The arm will then perform the pick up procedure.
-
-
 ## Developer Instructions
 **Requirements**: 
 - [Python](https://www.python.org/downloads/),
