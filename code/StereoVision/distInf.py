@@ -32,6 +32,13 @@ import braccio_adapter
 import Inverse_kinematics
 import camera_distance
 
+
+# The pygame attributes used for creating the loading screen is written by taking reference from these websites:
+# https://www.geeksforgeeks.org/pygame-tutorial/
+# https://www.geeksforgeeks.org/how-to-create-a-text-input-box-with-pygame/
+# https://www.pygame.org/docs/ref/surface.html
+
+
 pygame.init()
 
 SCREEN_WIDTH = 1080
