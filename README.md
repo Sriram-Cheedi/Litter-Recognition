@@ -35,37 +35,41 @@ The way in which litter is managed now is wasteful and dangerous. There exists a
 
 
 ## Project Description:
-The proposal describes the development of an autonomous litter detection and collection system. This system uses advanced techniques in automation including machine learning, computer vision, and robotics for the automatic detection of litter in grasslands, shrub areas
-neighbouring to roads. The technology will be implemented in miniature autonomous vehicle that can operate under various climatic conditions at
-the roadside.
 
-**System will incorporate several advanced technologies such as:**
-**Computer Vision and Machine Learning:** For detection and classification of litter, Convolutional Neural Networks (CNNs) will be utilised in the analysis of the pictures captured by the cameras. The system will identify various forms of litter while distinguishing them from natural objects such as leaves and rocks.
+This project is an autonomous system designed to automate both litter recognition and collection. The goal of the project is to automate litter picking to help clean the environment by reducing the need for manual picking. It addresses
+the removal of 'hard shoulder' lane from smart motorways, which restricts access to the verge at the side of the road, and requires expensive lane closures and a greater risk to workers manually collecting litter. The system uses
+advanced Machine Learning,
+Computer Vision and Robotics to detect and collect litter in different terrains. This system will be integrated onto an autonomous vehicle that can safely move by avoiding the obstscles in various conditions.
 
-**Robotic Mechanisms:** The autonomous system will include a robotic arm for collecting litter. These systems will be intended to function properly under harsh and uneven ground conditions which are characteristic of roadside verges.
+**Technologies used in this project:** 
+</br>
 
-**Autonomous Navigation:** The robo arm will be placed on autonomous moving vehicle which avoids roadside obstacles.
+**Computer Vision and Machine Learning:**  Machine Learning is used for litter detection and Computer Vision is used for depth calculation between the litter and the cameras.
+
+**Robotics:** A braccio robotic arm is used for picking and disposing the detected litter into bins. The arm is controlled using serial communication for precise movement.
 
 **Our project aims to create a proof-of-concept iteration of this design with limited features that can be worked upon. We will use a single arm and a computer to produce a system that can identify and pick up key types of litter.**
 
-## Project Requirements:
-**Litter Detection:** The system will apply sophisticated image recognisation and object detection methods to locate man-made litter alongside roads. This includes detecting litter both on the ground and in the vegetation such as grass, shrubs, and trees. The detection system shall function irrespective of weather or lighting conditions within the domain of roads construction.
 
-**Litter Classification:** The classified litter will be grouped into various categories, for example, plastic, metal, paper, and other compounds. The classification schema will make a distinction between large objects that can be processed easily (plastic drinking bottles, scraps of cars) and small particle litter (cigarette packets, wrappers of chips). This classification will facilitate planning the most effective retrieval procedure for each waste type.
+## Project Features:
+**Detection:** The system will use image recognition and object detection techniques, such as stereoscopic vision, to identify man-made items. The system will function as a proof of concept for a more advanced product that will use higher grade technology that can function in more contexts and harsher conditions.
 
-**Collection Methodology:** The system will analyse and determine the retrieval technique that for larger items such as mechanical arms/grippers and smaller items that will be retrieved by vacuum cleaners/sweepers or combination of both. The retrieval unit system shall be flexible to different litter types and their arrangement on roadside.
+**Classification:** As part of the litter detection model, litter will be classified into different  categories, such as plastic, metal, paper, and other materials. Information about the litter will be collated and stored locally to be shared with councils and environmental researchers.
 
-**Litter Storage:** Once collected, the system will place the litter into designated storage containers onboard the autonomous vehicle. These
-containers will be designed for easy disposal or recycling at regular intervals, reducing the need for frequent manual intervention.
+**Collection:** If litter is detected, the system must pick it up. The method in doing so may change depending on the type of litter detected. How ever for the purpose of our proof of concept, collection need only work under limited conditions.
+
+**Storage:** Once collected, the system will sort litter into separate locations depending on its type and how it needs to be recycled or disposed of.
+
 
 ## Benefits and Impact
-The deployment of this autonomous litter detection and collection system will have a several pronounced benefits as discussed below:
+The benefits of using this autonomous system are:
 
-**Enhanced Safety:** The system safeguards the workers by decreasing the manual litter collection in hazardous roadside areas.
+**Increase Safety:** It reduces the need of manual litter picking in harsh road side conditions which reduces the risk to workers.
 
-**Reduce Cost:** The reduction of operational costs due to less expensive labor and reduced costly lane closures during manual clean-up procedures will be accomplished through the automation of litter detection and collection, thus increasing efficiency.
+**Cost Effective:** Due to autonomous litter picking, the labour expenses will be reduced and also reduces the need for lane closures.
 
-**Environmental Protection:** The system will support waste management and recycling efforts by helping to keep litter out of local ecosystems and waterways, as well as preventing pollution issues, which leads to cleaner roadsides.
+**Clean Environment:** It helps to maintain cleaner roadsides and improves the waste management and recyling.
+
 
 **Flexibility:** Such a solution provides consistency in litter collection and can be implemented to other freeways and busy zones which helps to address a persistent problem systematically.
 
@@ -94,20 +98,19 @@ closing the road and inefficient gathering. The new system is targeted to automa
 
 ## User Stories:
 **As a client, I want..**
- * A system that will identify a wide variety of roadside litter and identify how to deal with it.
+ * A system that can identify different roadside litter and knows to deal with it.
 
 **As a Waste Management Contractor, I want to..**
- * Integrate autonomous litter collection vehicles into my operations, so that I can reduce the cost and risk of manual roadside litter collection.
- * Litter types classified correctly by the system so that I have better management of recycling and waste disposal processes.
+ * Integrate autonomous litter collection system into my operations to reduce the cost and risk of manual roadside litter collection.
 
 **As a member of the public I want.**
- * A safe and contained system not impeding my use of the road.
+ * A safe system that avoids the lane closures, so that I can use the road.
 
 **As an Environmental Protection Agency official, I want to..**
- * I want a system which has the capability for quick identification and collection of non-biodegradable litter so that I am able to ensure cleaner environments and the reduction of the impact of pollution on wildlife and ecosystems as much as possible.
+ * Use an autonomous litter detection and collection system to clean the harmful non-biodegradable litter and ensure a clean environment and reduce the impact of pollution on wildlife as much as possible. 
 
 **As a student, I want to..**
- * Create a proof of concept for an autonomous litter detection and disposal system so that I can utilize knowledge in computer
+ * Create a proof of concept for an autonomous litter detection and collection system to utilize my knowledge in computer
     vision and robotics in a meaningful project.
 
 
@@ -136,7 +139,8 @@ More details can be found using the 'Handover Documentation' link at the top or 
 **Requirements**: 
 - [Python](https://www.python.org/downloads/),
 - [Arduino IDE](https://www.arduino.cc/en/software),
-- Arduino UNO and a Braccio robot arm
+- Arduino UNO and a Braccio robot arm,
+- The libraries present within /code/requirements.txt (```console pip install -r requirements.txt```),
 - Two cameras of the exact same specification,
 - A computer with enough processing power to run the detection,
 - An object displaying an 8 by 6 (measured by interior vertices) chessboard pattern.
@@ -194,33 +198,15 @@ Then:
 python -m StereoVision.distInf
 ```
 
+or double click LitterRecognition.bat and input the serial port that the arm is connected to.
+
 This script runs real time inference on the camera feeds using the TFlite TACO-trained model powering our project. If both frames detect an object, the distance of this object should be calculated and displayed with the help of the rectification parameters you calculated via the calibration script.
-
-
-**If you would like to control the arm manually, run:**
-
-```console
-python interface.py
-```
-Now enter the port as displayed in the Arduino IDE.
-A PyGame window will now open.
-
-To control the arm for debugging:
-   w/s -- open/close the claw
-   a/d -- twist wrist
-   i/k -- move arm forwards and backwards in horizontal plane
-   j/l -- move arm left and right in horizontal plane
-   u/o -- move arm up and down
-
-To pick up from specific coordinates:
-Press "m" to select coordinates screen, then enter the x,y,z coordinates when prompted (in millimetres, (0,0,0) is at the middle of the shoulder joint). The arm will then perform the pick up procedure.
-
 
 ## Developer Instructions
 **Requirements**: 
 - [Python](https://www.python.org/downloads/),
 - [Arduino IDE](https://www.arduino.cc/en/software),
-- The libraries present within /code/requirements.txt,
+- The libraries present within /code/requirements.txt (```console pip install -r requirements.txt```),
 - Arduino UNO and a Braccio robot arm,
 - Two cameras of the exact same specification,
 - A computer with enough processing power to run the detection,
@@ -258,7 +244,7 @@ A much more detailed description of the codebase can be seen in the handover doc
 
 ## Architecture Diagram
 
-![Architecture Diagram](docs/Architecture-Diagrams/beta_diagram_colour.jpeg)
+![Architecture Diagram](docs/Architecture-Diagrams/FinalArchDiagram.jpeg)
 
 
 
