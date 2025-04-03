@@ -1,0 +1,42 @@
+import matplotlib.pyplot as plt
+from collections import Counter
+import os
+import datetime
+def bar_chart():
+
+    """
+
+    Import txt
+    Get all the lines of data
+    Create bar chart
+    save image
+
+    """
+    plt.close('all')
+
+    txt_path = os.path.join("Data", "litters.txt")
+    f = open(txt_path, "r")
+    #Remove \n
+    lines = [line.strip() for line in f.readlines()]
+
+    counts = Counter(lines)
+
+    litters = list(counts.keys())
+    counter = list(counts.values())
+    plt.xticks(rotation=30)
+    plt.bar(litters, counter, width=0.4)
+
+    x = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    plt.title(x)
+    plt.xlabel("Types")
+    plt.ylabel("Count")
+
+    image_path = os.path.join("Data", f'bar_chart-{x.replace(" ", "_").replace(":", "-")}.png') 
+    plt.tight_layout()
+    plt.savefig(image_path)
+
+    # plt.show()
+
+if __name__ == "__main__":
+    bar_chart()

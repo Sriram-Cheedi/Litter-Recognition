@@ -1,3 +1,4 @@
+
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
@@ -26,7 +27,6 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip install Cython
         python -m pip install -r code/requirements.txt
     - name: Install Protoc
       uses: arduino/setup-protoc@v3
@@ -37,10 +37,26 @@ jobs:
         protoc object_detection/protos/*.proto --python_out=.
         cp object_detection/packages/tf2/setup.py .
         python -m pip install .
+    - name: Create mock image files
+      run: |
+        mkdir -p ./StereoVision/assets 
+        touch ./StereoVision/assets/braccioright.png
+        
     - name: Test with pytest
       env:
-        RUN_HARDWARE_TESTS: false  # Skip hardware tests in CI
+        USE_MOCK: true
       run: |
         pip install pytest pytest-cov
-        pytest code/ --ignore=code/inference.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
-        
+        pytest code/ --ignore=code/archived --doctest-modules --junitxml=junit/test-results.xml --cov=code --cov-report=xml --cov-report=html
+
+    - name: Upload HTML coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: htmlcov
+        path: htmlcov/
+
+    - name: Upload XML coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage.xml
+        path: coverage.xml
