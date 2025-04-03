@@ -20,13 +20,13 @@ class ServoMotor(Enum):
     S6 = 6
 
 # Function to ensure servo positions stay within defined bounds
-def checkInBounds(values, uBound, lBound):
+def checkInBounds(values, upper_bound, lower_bound):
     newValues = [0] * 7
     for index, item in enumerate(values):
-        if (uBound[index] < item):
-            newValues[index] = uBound[index]
-        elif (lBound[index] > item):
-            newValues[index] = lBound[index]
+        if (upper_bound[index] < item):
+            newValues[index] = upper_bound[index]
+        elif (lower_bound[index] > item):
+            newValues[index] = lower_bound[index]
         else:
             newValues[index] = item
     return newValues
@@ -45,33 +45,33 @@ class BraccioDebug(braccio_adapter.BraccioAdapter):
         s4 = self.s4 
         s5 = self.s5
         s6 = self.s6
-        servoPos = [10, s1, s2, s3, s4, s5, s6]
+        servo_position = [10, s1, s2, s3, s4, s5, s6]
         
 
         #Holds upper and lower bounds for each servo motors movement
-        uBounds = [30, 180, 165, 180, 180, 180, 73]
-        lBounds = [10, 0, 15, 0, 0, 0, 10]
+        upper_bounds = [30, 180, 165, 180, 180, 180, 73]
+        lower_bounds = [10, 0, 15, 0, 0, 0, 10]
     
         if servo.value == 1:
-            servoPos[1] += degrees
+            servo_position[1] += degrees
         if servo.value == 2:
-            servoPos[2] += degrees
+            servo_position[2] += degrees
         if servo.value == 3:
-            servoPos[3] += degrees
+            servo_position[3] += degrees
         if servo.value == 4:
-            servoPos[4] += degrees
+            servo_position[4] += degrees
         if servo.value == 5:
-            servoPos[5] += degrees
+            servo_position[5] += degrees
         if servo.value == 6:
-            servoPos[6] += degrees
+            servo_position[6] += degrees
 
     
             
-        servoPos = checkInBounds(servoPos, uBounds, lBounds)
-        self.servo_movement(servoPos[1], servoPos[2], servoPos[3], servoPos[4], servoPos[5], servoPos[6])
+        servo_position = checkInBounds(servo_position, upper_bounds, lower_bounds)
+        self.servo_movement(servo_position[1], servo_position[2], servo_position[3], servo_position[4], servo_position[5], servo_position[6])
 
         # Update internal state
-        self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servoPos[1:]
+        self.s1, self.s2, self.s3, self.s4, self.s5, self.s6 = servo_position[1:]
     
     def up(self, servo : ServoMotor, degrees = 1):
         self.move_single_joint(servo, degrees)
@@ -94,10 +94,10 @@ def main():
                             "
     print(braccioControlString)
     pygame.init()
-    screen_width = 800
-    screen_height = 600
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
 
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Keypress Detection")
 
     WHITE = (255, 255, 255)
@@ -255,7 +255,7 @@ def main():
             braccioDebug.servo_movement(braccioDebug.s1, braccioDebug.s2, braccioDebug.s3, braccioDebug.s4, braccioDebug.s5, braccioDebug.s6)
 
         if key_history:
-            display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, screen_width // 2 - 150, screen_height - 100)
+            display_text(f"Last Key Pressed: {key_history[-1]}", font, WHITE, SCREEN_WIDTH // 2 - 150, SCREEN_HEIGHT - 100)
 
 
         pygame.display.flip()
