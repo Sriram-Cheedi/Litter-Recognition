@@ -139,7 +139,8 @@ More details can be found using the 'Handover Documentation' link at the top or 
 **Requirements**: 
 - [Python](https://www.python.org/downloads/),
 - [Arduino IDE](https://www.arduino.cc/en/software),
-- Arduino UNO and a Braccio robot arm
+- Arduino UNO and a Braccio robot arm,
+- The libraries present within /code/requirements.txt (```console pip install -r requirements.txt```),
 - Two cameras of the exact same specification,
 - A computer with enough processing power to run the detection,
 - An object displaying an 8 by 6 (measured by interior vertices) chessboard pattern.
@@ -225,7 +226,7 @@ Press "m" to select coordinates screen, then enter the x,y,z coordinates when pr
 **Requirements**: 
 - [Python](https://www.python.org/downloads/),
 - [Arduino IDE](https://www.arduino.cc/en/software),
-- The libraries present within /code/requirements.txt,
+- The libraries present within /code/requirements.txt (```console pip install -r requirements.txt```),
 - Arduino UNO and a Braccio robot arm,
 - Two cameras of the exact same specification,
 - A computer with enough processing power to run the detection,
