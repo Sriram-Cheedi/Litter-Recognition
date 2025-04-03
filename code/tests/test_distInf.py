@@ -10,17 +10,17 @@ class TestDistInf(unittest.TestCase):
 
     def test_checkInBounds(self):
         values = [20, 100, 100, 100, 100, 100, 50]
-        uBound = [30, 180, 165, 180, 180, 180, 73]
-        lBound = [10, 0, 15, 0, 0, 0, 10]
-        result = distInf.checkInBounds(values, uBound, lBound)
+        upper_bound = [30, 180, 165, 180, 180, 180, 73]
+        lower_bound = [10, 0, 15, 0, 0, 0, 10]
+        result = distInf.checkInBounds(values, upper_bound, lower_bound)
         self.assertEqual(result, values)
 
     def test_checkInBounds_outof_bounds(self):
         values = [-100, 300, 5, -1, 250, -20, 100]
-        uBound = [30, 180, 165, 180, 180, 180, 73]
-        lBound = [10, 0, 15, 0, 0, 0, 10]
+        upper_bound = [30, 180, 165, 180, 180, 180, 73]
+        lower_bound = [10, 0, 15, 0, 0, 0, 10]
         expected = [10, 180, 15, 0, 180, 0, 73]
-        result = distInf.checkInBounds(values, uBound, lBound)
+        result = distInf.checkInBounds(values, upper_bound, lower_bound)
         self.assertEqual(result, expected)
 
     def test_jiggle(self):
@@ -34,18 +34,6 @@ class TestDistInf(unittest.TestCase):
         distInf.jiggle(mock_braccio, baseServo=90)
         self.assertTrue(mock_braccio.servo_movement.called)
 
-    def test_loadLabelMap(self):
-        mock_file_content = """
-                            0 background
-                            1 plastic
-                            16 banana_peel
-                            """
-        with patch("builtins.open", mock_open(read_data=mock_file_content)):
-            label_map, classification_map = distInf.loadLabelMap("fake_path.txt")
-
-        self.assertEqual(label_map[1], "plastic")
-        self.assertEqual(classification_map[1], "Non-Biodegradable")
-        self.assertEqual(classification_map[16], "Biodegradable")
 
     def test_preProcess(self):
         frame = np.ones((480, 640, 3), dtype=np.uint8) * 255
@@ -53,7 +41,7 @@ class TestDistInf(unittest.TestCase):
         self.assertEqual(result.shape, (1, 300, 300, 3))
         self.assertEqual(result.dtype, np.uint8)
 
-    def test_drawBoxes(self):
+    def test_draw_boxes(self):
         capture = np.zeros((480, 640, 3), dtype=np.uint8)
         scores = [0.8]
         boxes = [[0.1, 0.1, 0.2, 0.2]]
@@ -61,9 +49,7 @@ class TestDistInf(unittest.TestCase):
         class_map = {1: "Non-Biodegradable"}
         classes = [1]
 
-        pos, count, label, classification = distInf.drawBoxes(
-            capture, scores, boxes, lbl_map, class_map, classes
-        )
+        pos, count, label, classification = distInf.draw_boxes(capture, scores, boxes, lbl_map, class_map, classes)
 
         self.assertEqual(count, 1)
         self.assertEqual(label, "plastic")

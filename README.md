@@ -26,78 +26,71 @@
 
 
 ## Problem Statement:
-Litter blights our major roads and highways leading to serious environmental and safety issues. Overwhelming litter on the roadsides is mainly attributed to increased use of non-biodegradable items, unattended
-disposal from moving vehicles and regular detachment of plastic undercarriages or mobile vehicle parts (such as tyres). It not only threatens the endless fauna and fish of our life-filled rivers, but it also
+Litter blights our major roads and highways leading to serious environmental and safety issues. Overwhelming litter on the roadsides is mainly
+attributed to increased use of non-biodegradable items, unattended
+disposal from moving vehicles and regular detachment of plastic undercarriages or mobile vehicle parts (such as tyres). It not only threatens the
+endless fauna and fish of our life-filled rivers, but it also
 poses a danger to road traffic when potential hazards form at shoulder level.
-
-The way in which litter is managed now is wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that
-can detect and clear road litter efficiently, reducing human intervention while maintaining safety complying environmental impact as well.
+The way in which litter is managed now is wasteful and dangerous. There exists an urgency to counter this proliferating issue, with the development of a pioneering autonomous litter management solution that can detect and clear road litter efficiently, reducing human intervention while maintaining safety complying environmental impact as well.
 
 
 ## Project Description:
-This proposal will investigate an advanced system for the identification and collection of litter that will automate the litter recognition and collecting process in roadside environments. The system would utilize advanced machine learning, computer vision, and robotics to automatically detect litter in rough
-terrain, such as grasslands, shrubs, and trees along the road. The technology will be applied to smaller-scale autonomous vehicles that can safely work at the edge of the road in poor conditions.
+The proposal describes the development of an autonomous litter detection and collection system. This system uses advanced techniques in automation including machine learning, computer vision, and robotics for the automatic detection of litter in grasslands, shrub areas
+neighbouring to roads. The technology will be implemented in miniature autonomous vehicle that can operate under various climatic conditions at
+the roadside.
 
-**The System will leverage several cutting-edge technologies, including:**
-**Computer Vision and Machine Learning:** For accurate detection and classification of litter. Convolutional Neural Networks (CNNs) will be employed to analyze video feeds or images captured by onboard cameras.
-The system will be trained to recognize common types of litter and differentiate them from natural elements like leaves and rocks.
+**System will incorporate several advanced technologies such as:**
+**Computer Vision and Machine Learning:** For detection and classification of litter, Convolutional Neural Networks (CNNs) will be utilised in the analysis of the pictures captured by the cameras. The system will identify various forms of litter while distinguishing them from natural objects such as leaves and rocks.
 
-**Robotic Mechanisms:** The autonomous vehicle will be equipped with mechanical arms to collect litter of various sizes and compositions. These systems will be designed to operate effectively in rough and
-uneven terrain, typical of roadside verges.
+**Robotic Mechanisms:** The autonomous system will include a robotic arm for collecting litter. These systems will be intended to function properly under harsh and uneven ground conditions which are characteristic of roadside verges.
 
-**Autonomous Navigation:** The vehicle will be capable of navigating along the roadside without human intervention, using GPS and sensor technologies to stay within designated areas while avoiding obstacles
-such as road signs, barriers, and natural features.
+**Autonomous Navigation:** The robo arm will be placed on autonomous moving vehicle which avoids roadside obstacles.
 
 **Our project aims to create a proof-of-concept iteration of this design with limited features that can be worked upon. We will use a single arm and a computer to produce a system that can identify and pick up key types of litter.**
 
 ## Project Requirements:
-**Litter Detection:** The system will use advanced image recognition and object detection techniques to identify man-made items scattered along the roadside. This includes detecting litter both on the ground
-and entangled in roadside vegetation such as grass, shrubs, and trees. The detection system will be capable of operating in varying weather and lighting conditions typical of road environments.
+**Litter Detection:** The system will apply sophisticated image recognisation and object detection methods to locate man-made litter alongside roads. This includes detecting litter both on the ground and in the vegetation such as grass, shrubs, and trees. The detection system shall function irrespective of weather or lighting conditions within the domain of roads construction.
 
-**Litter Classification:** The detected litter will be classified into different sizes and categories, such as plastic, metal, paper, and other materials. The classification system will differentiate between
-larger objects (e.g., plastic bottles, vehicle debris) and smaller, more dispersed litter (e.g., cigarette butts, snack wrappers). This classification will inform the optimal collection method for each type of
-waste.
+**Litter Classification:** The classified litter will be grouped into various categories, for example, plastic, metal, paper, and other compounds. The classification schema will make a distinction between large objects that can be processed easily (plastic drinking bottles, scraps of cars) and small particle litter (cigarette packets, wrappers of chips). This classification will facilitate planning the most effective retrieval procedure for each waste type.
 
-**Collection Methodology:** Based on the type and size of litter identified, the system will determine the most effective collection method. Larger items may require mechanical arms or grippers, while smaller
-debris could be collected using vacuum systems or sweeping mechanisms. The collection system will be adaptable to different types of litter and their location on the roadside.
+**Collection Methodology:** The system will analyse and determine the retrieval technique that for larger items such as mechanical arms/grippers and smaller items that will be retrieved by vacuum cleaners/sweepers or combination of both. The retrieval unit system shall be flexible to different litter types and their arrangement on roadside.
 
-**Litter Storage:** Once collected, the system will place the litter into designated storage containers onboard the autonomous vehicle. These containers will be designed for easy disposal or recycling at
-regular intervals, reducing the need for frequent manual intervention.
+**Litter Storage:** Once collected, the system will place the litter into designated storage containers onboard the autonomous vehicle. These
+containers will be designed for easy disposal or recycling at regular intervals, reducing the need for frequent manual intervention.
 
 ## Benefits and Impact
-The development and deployment of this autonomous litter recognition and collection system will provide several key benefits:
+The deployment of this autonomous litter detection and collection system will have a several pronounced benefits as discussed below:
 
-**Increased Safety:** By reducing the need for manual litter collection in dangerous roadside conditions, this system minimizes the risk to workers.
+**Enhanced Safety:** The system safeguards the workers by decreasing the manual litter collection in hazardous roadside areas.
 
-**Cost Efficiency:** The automation of litter detection and collection will lower operational costs by reducing labor expenses and the need for expensive lane closures during manual cleanups.
+**Reduce Cost:** The reduction of operational costs due to less expensive labor and reduced costly lane closures during manual clean-up procedures will be accomplished through the automation of litter detection and collection, thus increasing efficiency.
 
-**Environmental Protection:** The system will help maintain cleaner roadsides, preventing litter from polluting local ecosystems and waterways, while also contributing to waste management and recycling
-initiatives.
+**Environmental Protection:** The system will support waste management and recycling efforts by helping to keep litter out of local ecosystems and waterways, as well as preventing pollution issues, which leads to cleaner roadsides.
 
-**Scalability:** This solution can be scaled across highways and other high-traffic areas, creating a more systematic and consistent approach to litter management.
+**Flexibility:** Such a solution provides consistency in litter collection and can be implemented to other freeways and busy zones which helps to address a persistent problem systematically.
 
 
 ## Stakeholders:
 **Moss&Gund Ltd:**
 * Role: The commissioning group for this project. They will oversee its development and we will meet biweekly to go over our progress.
-* Purpose for the System: They would like for the system to be able to recognize and discard 6 keys types of roadside litter into a bag. The group would take the autonomous system to market as a commercial 
+* Purpose for the System: To recognise and dispose 6 keys types of roadside litter into bins. The group would take the autonomous system to market as a commercial 
   solution using AGILE X systems to make our system mobile.
 
 **General Public:**
-* Role: The deployment of the project will most likely affect them as the system will be working on the same roads.
-* Purpose for the System: They are not direct users, but the general public do stand to benefit in terms of cleaner roads, reduced litter and improved public safety on the motorways and highways. The system 
+* Role: The deployment of the project will have a greate imapct on them as the system will be working on the same roads.
+* Purpose for the System: They are not direct users, but the general public benefits in terms of cleaner roads, reduced litter and improved public safety on the highways. The system 
   will be required to consider the needs of the public.
 
 **Government Agencies and Road Maintenance Authorities:**
-* Role: They are the biggest beneficiaries of the system, and they would ensure that their utilization of the system would lead to maintaining the roads and protecting the environmental 
+* Role: They are the huge beneficiaries of the system, and they would ensure that their utilisation of the system would lead to maintaining the roads and protecting the environmental 
   concerns associated with roadside litter.
-* Purpose for the System: The authorities will apply the system to improve their current workflow of dispatching groups of litter collectors late at night. They have to clean the road side by side, along with 
-  closing the road and inefficient gathering. The new system is targeted to automate this process for cost reductions and efficiency.
+* Purpose for the System: The authorities will apply the system to improve their manual litter collection. They have to clean the roadside by  
+closing the road and inefficient gathering. The new system is targeted to automate this process for cost reductions and efficiency.
 
 **Environmental Research Institutes:**
-* Role: Scientists will be more interested in the data generated through the implementation of the system and its effect on pollution and local wildlife.
-* Purpose for the System: Institutions may be a keen observer of the system and the results to assess the ability of the system to respond effectively to the reduction in pollution and conservation of nature at 
-  the local level. Data collected may be found useful in determining the progress made in conservation. 
+* Role: Scientists will be more interested in the data generated by the system and its effect on pollution and local wildlife.
+* Purpose for the System: Institutions can play a vital role in monitoring the system and its outcomes to evaluate hoe efficiently the system is reducing pollution and conserving nature. The data collected can be useful for future conservation strategies.
+
 
 ## User Stories:
 **As a client, I want..**
