@@ -48,8 +48,6 @@ Computer Vision and Robotics to detect and collect litter in different terrains.
 
 **Robotics:** A braccio robotic arm is used for picking and disposing the detected litter into bins. The arm is controlled using serial communication for precise movement.
 
-**Autonomous Navigation:** The robo arm will be placed on autonomous moving vehicle which avoids roadside obstacles.
-
 **Our project aims to create a proof-of-concept iteration of this design with limited features that can be worked upon. We will use a single arm and a computer to produce a system that can identify and pick up key types of litter.**
 
 
