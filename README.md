@@ -15,6 +15,8 @@
    - [Benefits and Impact](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#benifits-and-impact)
    - [Stakeholders](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#stakeholders)
    - [User Stories](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#user-stories)
+   - [Loading Screen](https://github.com/Sriram-Cheedi/2024-LitterRecognition/tree/dev?tab=readme-ov-file#Loading-Screen)
+   - [Demo](https://github.com/Sriram-Cheedi/2024-LitterRecognition1/tree/dev?tab=readme-ov-file#Demo)
    - [Links](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#links)
    - [Project Structure](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#project-structure)
    - [User Instructions](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#user-instructions)
@@ -113,6 +115,14 @@ closing the road and inefficient gathering. The new system is targeted to automa
  * Create a proof of concept for an autonomous litter detection and collection system to utilize my knowledge in computer
     vision and robotics in a meaningful project.
 
+
+
+## Loading Screen
+
+![Loadingscreen](docs/Images-And-Videos/Ui.png)
+
+## Demo
+https://github.com/user-attachments/assets/c82cd19e-59c6-4d3c-904e-5260f2345c70
 
   
 ## Links:
