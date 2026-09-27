@@ -122,7 +122,7 @@ closing the road and inefficient gathering. The new system is targeted to automa
 ![Loadingscreen](docs/Images-And-Videos/Ui.png)
 
 ## Demo
-https://github.com/user-attachments/assets/c82cd19e-59c6-4d3c-904e-5260f2345c70
+![Video](docs/Images-And-Videos/demo.mov)
 
   
 ## Links:
