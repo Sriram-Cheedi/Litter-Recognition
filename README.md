@@ -16,7 +16,7 @@
    - [Stakeholders](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#stakeholders)
    - [User Stories](https://github.com/spe-uob/2024-LitterRecognition1/tree/main?tab=readme-ov-file#user-stories)
    - [Loading Screen](https://github.com/Sriram-Cheedi/2024-LitterRecognition/tree/dev?tab=readme-ov-file#Loading-Screen)
-   - [Demo](https://github.com/Sriram-Cheedi/2024-LitterRecognition1/tree/dev?tab=readme-ov-file#Demo)
+   - [Demo](https://github.com/Sriram-Cheedi/2024-LitterRecognition/tree/dev?tab=readme-ov-file#Demo)
    - [Links](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#links)
    - [Project Structure](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#project-structure)
    - [User Instructions](https://github.com/spe-uob/2024-LitterRecognition1?tab=readme-ov-file#user-instructions)
