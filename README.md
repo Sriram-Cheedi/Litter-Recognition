@@ -122,9 +122,9 @@ closing the road and inefficient gathering. The new system is targeted to automa
 ![Loadingscreen](docs/Images-And-Videos/Ui.png)
 
 ## Demo
-![Video](docs/Images-And-Videos/demo.mov)
+https://github.com/user-attachments/assets/7a67d2d2-22fa-411f-b233-ca82e77141d3
 
-  
+
 ## Links:
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/219)
 - [Gantt Chart](https://github.com/orgs/spe-uob/projects/219/views/2)
